@@ -313,6 +313,7 @@
         <li><button class="sb-sub-btn" id="sbtab-gantt" onclick="switchInnerTab('gantt')">📅 Gantt Chart</button></li>
         <li><button class="sb-sub-btn" id="sbtab-roadmap" onclick="switchInnerTab('roadmap')">🗺 Roadmap</button></li>
         <li><button class="sb-sub-btn" id="sbtab-prdmap" onclick="switchInnerTab('prdmap')">📌 PRD → MS Map</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-adp" onclick="switchInnerTab('adp')">🤖 Agentic Deep Plan</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -335,6 +336,7 @@
     <button class="inner-tab-btn" id="itab-gantt" onclick="switchInnerTab('gantt')">📅 Gantt Chart</button>
     <button class="inner-tab-btn" id="itab-roadmap" onclick="switchInnerTab('roadmap')">🗺 Roadmap</button>
     <button class="inner-tab-btn" id="itab-prdmap" onclick="switchInnerTab('prdmap')">📌 PRD → MS Map</button>
+    <button class="inner-tab-btn" id="itab-adp" onclick="switchInnerTab('adp')">🤖 Agentic Deep Plan</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -975,6 +977,10 @@
     <div id="prdmap-content"></div>
   </div><!-- prdmap-tab -->
 
+  <div id="adp-tab" style="display:none">
+    <div id="adp-content"></div>
+  </div><!-- adp-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -983,7 +989,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -993,6 +999,7 @@ function switchInnerTab(tab) {
   if (tab==='gantt'   && !document.getElementById('gantt-chart').innerHTML)   buildGantt();
   if (tab==='roadmap' && !document.getElementById('roadmap-flow').innerHTML)  buildRoadmap();
   if (tab==='prdmap'  && !document.getElementById('prdmap-content').innerHTML) buildPrdMap('all');
+  if (tab==='adp' && !document.getElementById('adp-content').hasChildNodes()) buildADP();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -1864,6 +1871,368 @@ function toggleMs(id) {
   const body = section.querySelector('.ms-body');
   const isCollapsed = section.classList.toggle('ms-collapsed');
   body.classList.toggle('ms-collapsed', isCollapsed);
+}
+
+// ── Agentic Deep Planning builder ────────────────────────────────────
+function buildADP() {
+  const el = document.getElementById('adp-content');
+
+  // Version selector subtabs
+  const versions = ['Version 1'];
+
+  const MILESTONES = [
+    {
+      id:'MS-5', label:'MS-5', status:'done',
+      theme:'GIS Enablement & Campaign Configuration',
+      dates:'Feb 16 – Mar 31, 2026', demoDate:'Apr 7, 2026',
+      color:'#10b981', colorBg:'#ecfdf5', colorBorder:'#6ee7b7',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/4106420253',
+      storyPoints:'TBD',
+      devDays:'~138',
+      keyFeatures:[
+        'Full CRUD: Tenant, Operator, Campaign Settings (UI + API + DB)',
+        'Operator-level GIS ingestion & metrics',
+        'Driving Session Processing pipeline & simulator',
+        'AutoFOV Phase 3 algorithm modernisation (PEAS)',
+        'Common UI/UX Components Phase 3',
+        'Infrastructure, SRE security tooling & QA automation',
+      ],
+      prdDeps:['Sign on & Auth','Settings','RBAC & Tenancy (Phase 0)'],
+      risks:['Settings scope risk — 60+ story points for Abhishek J'],
+      team:['Shriya (UI Lead)','Maksim (UI)','Amin (Lead Dev)','Abhishek J (Lead Dev)','Dependra (Dev 75%)','Abhishek G (UI 50%)','Rishav (Dev 25%)','Sandhya + Vipin (Cloud)','4 QA'],
+    },
+    {
+      id:'MS-6', label:'MS-6', status:'active',
+      theme:'Boundary-First Operations',
+      dates:'Apr 1 – May 15, 2026', demoDate:'TBD',
+      color:'#3b82f6', colorBg:'#eff6ff', colorBorder:'#93c5fd',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/4114874424',
+      storyPoints:'~200–240',
+      devDays:'137.5',
+      keyFeatures:[
+        'RBAC Phase 0 (role enforcement)',
+        'Boundary Management: View Campaign & Operator Boundaries',
+        'Boundary Management: View Driving Sessions on map/panel',
+        'AutoFOV Integration & display on map',
+        'Gaps: data object & pipeline creation',
+        'Tenant/Operator/Campaign Settings — Phase 2',
+        'Common UI/UX Components — Phase 3 (8 components)',
+        'Internationalisation Phase 1',
+      ],
+      prdDeps:['RBAC & Tenancy','Boundary Mgmt: Driving Assignment','FOV','Settings'],
+      risks:['RBAC complexity — potential scope creep','GIS layer data quality per customer'],
+      team:['Full 7 app devs','2 GIS engineers','Sandhya + Vipin (Cloud)','4 QA','Jacqueline + Jacob (PM)','Arpan (PM)'],
+    },
+    {
+      id:'MS-7', label:'MS-7', status:'upcoming',
+      theme:'Results, Reports & Investigation Kickoff',
+      dates:'May 16 – Jun 30, 2026', demoDate:'TBD',
+      color:'#8b5cf6', colorBg:'#f5f3ff', colorBorder:'#c4b5fd',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/4115038212',
+      storyPoints:'~200–240',
+      devDays:'~150',
+      keyFeatures:[
+        'Boundary Results UI (complete)',
+        'Boundary Results & Metadata (technical)',
+        'LISA Boundary Results v0.1',
+        'Manual Report Creation',
+        'Automated LISA/Gap Workflow (basic)',
+        'Delete/Disaggregate/Re-aggregate Sessions',
+        'Investigation Assignments setup',
+        'Investigation Templates & Configuration',
+        'Subcontractor model — full enforcement',
+        'RBAC Phase 1 (full role-based enforcement)',
+      ],
+      prdDeps:['Boundary Management: Boundary Results','LISA Boundary Results','Subcontractor & Service','RBAC Phase 1','Investigation Assignments'],
+      risks:['LISA algorithm stability (PEAS dependency)','Investigation scope growing beyond estimate'],
+      team:['Full team','Dheeraj + DVN (GIS focus on results layers)'],
+    },
+    {
+      id:'MS-8', label:'MS-8', status:'upcoming',
+      theme:'Driver View, Investigations & Fleet',
+      dates:'Jul 1 – Aug 15, 2026', demoDate:'TBD',
+      color:'#f97316', colorBg:'#fff7ed', colorBorder:'#fed7aa',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/4115464199',
+      storyPoints:'~220–260',
+      devDays:'~160',
+      keyFeatures:[
+        'Driver View v2 (all 41 requirements)',
+        'Capture Mode (field data capture)',
+        'Fleet Management & Configurations',
+        'Observer View (basic)',
+        'Investigation Sessions and Results',
+        'Investigation Metadata (technical)',
+        'Boundary Management: Investigation Results',
+        'GIS Historical P-Cubed Data Migration',
+        'Security Audit & hardening Phase 1',
+      ],
+      prdDeps:['Driver View v2','Fleet Management','Investigation Sessions','Boundary Mgmt: Investigation Results','GIS Data Ingestion'],
+      risks:['Driver View v2 — 41 requirements, highest risk item','Historical data migration quality from customer GIS'],
+      team:['Full team','Amin + Abhishek J leading Investigation stream','Shriya + Maksim leading Driver View v2'],
+    },
+    {
+      id:'MS-9', label:'MS-9', status:'upcoming',
+      theme:'Hardening, Performance & Cutover Prep',
+      dates:'Aug 16 – Sep 30, 2026', demoDate:'TBD',
+      color:'#10b981', colorBg:'#ecfdf5', colorBorder:'#6ee7b7',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/3535274589',
+      storyPoints:'~100–120',
+      devDays:'~80',
+      keyFeatures:[
+        'End-to-end regression across all V1 features',
+        'Performance benchmarks (500+ customer target)',
+        'Security penetration testing',
+        'Historical P-Cubed data migration validation',
+        'Customer onboarding documentation',
+        'Cutover runbook finalisation',
+        'Shadow mode pilot (1–2 customers)',
+        'Accessibility (WCAG 2.1 AA) audit',
+      ],
+      prdDeps:['All V1 PRDs must be code-complete'],
+      risks:['Shadow mode reveals UX gaps','SRE prod environment not ready'],
+      team:['4 QA lead','All devs on bug-fix rotation','Cloud: Sandhya + Vipin (prod infra)'],
+    },
+    {
+      id:'MS-10', label:'MS-10', status:'upcoming',
+      theme:'Regional Expansion & Beta Hardening',
+      dates:'Oct 1 – Nov 15, 2026', demoDate:'TBD',
+      color:'#f59e0b', colorBg:'#fffbeb', colorBorder:'#fde68a',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/3535274589',
+      storyPoints:'~80–100',
+      devDays:'~60',
+      keyFeatures:[
+        'EU/regional compliance checks',
+        'Beta customer onboarding (3–5 customers)',
+        'Load testing — 50 concurrent tenants',
+        'Disaster recovery drill',
+        'Customer training materials',
+        'Internal Picarro training',
+        'Go/No-Go gate review',
+      ],
+      prdDeps:['All V1 PRDs signed off'],
+      risks:['Customer data quality issues during beta','Regulatory gaps identified late'],
+      team:['PM-led: Jacob + Jacqueline + Arpan','Devs on beta support rotation'],
+    },
+    {
+      id:'MS-11', label:'MS-11 🚀', status:'launch',
+      theme:'V1 NA Launch',
+      dates:'Nov 16 – Dec 31, 2026', demoDate:'Dec 31, 2026',
+      color:'#ef4444', colorBg:'#fef2f2', colorBorder:'#fca5a5',
+      confUrl:'https://picarro.atlassian.net/wiki/spaces/PH/pages/3535274589',
+      storyPoints:'—',
+      devDays:'—',
+      keyFeatures:[
+        'Production cutover',
+        'Customer migration from P-Cubed → P-Cubed Pro',
+        'Live monitoring & incident response',
+        '🎯 V1 NA Commercial Launch: December 31, 2026',
+      ],
+      prdDeps:['All 28 V1 PRDs delivered & QA-signed'],
+      risks:['Migration rollback complexity','Customer adoption velocity'],
+      team:['All hands — war-room mode'],
+    },
+  ];
+
+  const RISKS = [
+    {num:1, risk:'RBAC / Multi-tenancy complexity delays MS-6', prob:'HIGH', impact:'HIGH', color:'#fee2e2', mitigation:'Dedicated RBAC squad (Amin + Abhishek J); freeze scope to Phase 1'},
+    {num:2, risk:'Driver View v2 (41 req) runs over in MS-8', prob:'MED', impact:'HIGH', color:'#fef3c7', mitigation:'Phase Driver View: MVP in MS-7, full in MS-8'},
+    {num:3, risk:'GIS data migration blockers (customer data quality)', prob:'HIGH', impact:'MED', color:'#fef3c7', mitigation:'Start migration validation in MS-6 with NiSource data'},
+    {num:4, risk:'SRE infra delays — Prod not ready for MS-9', prob:'MED', impact:'HIGH', color:'#fef3c7', mitigation:'Prod env kickoff in MS-6, weekly SRE sync cadence'},
+    {num:5, risk:'AutoFOV / PEAS algorithm stability', prob:'MED', impact:'MED', color:'#ecfdf5', mitigation:'Budget 20% buffer in MS-7 for algorithm regression'},
+    {num:6, risk:'Team attrition / India holiday impact', prob:'LOW', impact:'MED', color:'#ecfdf5', mitigation:'Cross-train, document critical paths, plan around holidays'},
+    {num:7, risk:'Shadow mode pilot reveals UX gaps (MS-9)', prob:'MED', impact:'MED', color:'#ecfdf5', mitigation:'Start shadow mode no later than Aug 1 (MS-8 midpoint)'},
+  ];
+
+  const EXCLUDED = [
+    'OTA (Operation Transfer Assistant)','Data Explorer','Emissions360','Safety360',
+    'Priority Score 2 — PS2','Evolution of Highlighted Assets (PS2)',
+    'Hardware: Predictive Maintenance','Mobile App Integration',
+    'Handheld Data Management','Handheld Algorithms',
+    'ESRI Integration','Multi-Campaign Aggregation','Product Analytics'
+  ];
+
+  const SOURCES = [
+    {icon:'📄', label:'Confluence PH Space', detail:'137 pages — MS3-MS8 milestone docs, PRD library, Software Docs'},
+    {icon:'🎯', label:'Jira PH Project', detail:'MS-5 & MS-6 epics, sprint assignments, story point velocity'},
+    {icon:'📊', label:'GTM Roadmap Spreadsheet', detail:'MS5–MS11 dates, V1 NA Dec 31 2026 target, team allocations'},
+    {icon:'🖼', label:'Image: Roadmap Overview', detail:'Visual roadmap shared by Manish — milestone sequence & V1 scope'},
+    {icon:'💻', label:'Code Repo (prd-dashboard)', detail:'PRD status data, 41 topics, readiness scores'},
+  ];
+
+  const probColor = p => p==='HIGH'?'#dc2626':p==='MED'?'#d97706':'#16a34a';
+
+  let html = `
+  <div style="margin-bottom:24px">
+    <!-- Sub-version tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button onclick="switchADPVersion('v1')" id="adpv-v1"
+        style="padding:7px 20px;border-radius:20px;border:2px solid #0f3460;background:#0f3460;color:white;font-size:12px;font-weight:700;cursor:pointer">
+        Version 1 &nbsp;<span style="background:rgba(255,255,255,.2);padding:1px 7px;border-radius:10px;font-size:10px">Dec 31 2026</span>
+      </button>
+      <button onclick="switchADPVersion('v2')" id="adpv-v2"
+        style="padding:7px 20px;border-radius:20px;border:2px solid #e2e8f0;background:white;color:#64748b;font-size:12px;font-weight:600;cursor:pointer">
+        Version 2 &nbsp;<span style="background:#f1f5f9;padding:1px 7px;border-radius:10px;font-size:10px;color:#94a3b8">TBD</span>
+      </button>
+    </div>
+
+    <!-- Data sources banner -->
+    <div style="background:linear-gradient(135deg,#1e293b,#0f3460);border-radius:12px;padding:14px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+      <span style="color:#94a3b8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;flex-shrink:0">🤖 Synthesised from:</span>
+      ${SOURCES.map(s=>`<span style="background:rgba(255,255,255,.07);color:#e2e8f0;font-size:11px;padding:4px 12px;border-radius:20px">${s.icon} ${s.label}</span>`).join('')}
+    </div>
+
+    <div id="adp-v1-content">
+      <!-- stat cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px">
+        ${[
+          {n:'17',l:'Team Members',s:'5 devs · 2 UI · 2 GIS · 4 QA · 2 Cloud · 2 PM',c:'#0f3460'},
+          {n:'6',l:'Milestones',s:'MS-6 through MS-11',c:'#7c3aed'},
+          {n:'28',l:'V1 Features',s:'of 41 total PRD topics',c:'#059669'},
+          {n:'Dec 31',l:'V1 Launch Target',s:'North America · 2026',c:'#dc2626'},
+        ].map(c=>`
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid ${c.c}">
+          <div style="font-size:28px;font-weight:900;color:${c.c};line-height:1">${c.n}</div>
+          <div style="font-size:13px;font-weight:700;color:#1e293b;margin-top:4px">${c.l}</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:3px">${c.s}</div>
+        </div>`).join('')}
+      </div>
+
+      <!-- milestone cards -->
+      <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:24px">
+        <h3 style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:18px;display:flex;align-items:center;gap:8px">
+          📅 Milestone Plan — MS-5 through V1 Launch
+          <span style="font-size:10px;font-weight:500;color:#94a3b8;margin-left:4px">Click any milestone to expand</span>
+        </h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${MILESTONES.map((m,i)=>`
+          <div style="border:1.5px solid ${m.colorBorder};border-radius:10px;overflow:hidden;background:${m.colorBg}">
+            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"
+              style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;user-select:none">
+              <div style="width:52px;min-width:52px;background:${m.color};color:white;border-radius:6px;text-align:center;padding:4px 0;font-size:11px;font-weight:800">${m.id}</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:700;color:#1e293b">${m.theme}</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px">${m.dates}${m.demoDate&&m.demoDate!=='TBD'?' · Demo: '+m.demoDate:''}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                ${m.storyPoints!=='—'?`<span style="font-size:10px;background:white;border:1px solid ${m.colorBorder};color:${m.color};padding:2px 10px;border-radius:20px;font-weight:700">${m.storyPoints} SPs</span>`:''}
+                <span style="font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700;background:${m.status==='done'?'#10b981':m.status==='active'?'#3b82f6':m.status==='launch'?'#ef4444':'#94a3b8'};color:white">${m.status==='done'?'✅ Done':m.status==='active'?'🔵 Active':m.status==='launch'?'🚀 Launch':'⏳ Upcoming'}</span>
+                <span style="color:#94a3b8;font-size:14px">▾</span>
+              </div>
+            </div>
+            <div style="display:none;padding:14px 16px 16px;border-top:1px solid ${m.colorBorder};background:white">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Key Deliverables</div>
+                  ${m.keyFeatures.map(f=>`<div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:${m.color};flex-shrink:0">▸</span>${f}</div>`).join('')}
+                </div>
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">PRD Dependencies</div>
+                  ${m.prdDeps.map(p=>`<div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6;flex-shrink:0">📌</span>${p}</div>`).join('')}
+                  <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin:10px 0 6px">Risks</div>
+                  ${m.risks.map(r=>`<div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b;flex-shrink:0">⚠</span>${r}</div>`).join('')}
+                  <div style="margin-top:10px">
+                    <a href="${m.confUrl}" target="_blank" rel="noopener"
+                      style="font-size:10px;color:#3b82f6;text-decoration:none;border:1px solid #bfdbfe;padding:3px 10px;border-radius:6px;background:#eff6ff">
+                      View in Confluence ↗
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9">
+                <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:6px">Team</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  ${m.team.map(t=>`<span style="font-size:10px;background:#f8fafc;border:1px solid #e2e8f0;color:#475569;padding:2px 8px;border-radius:12px">${t}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- V1 scope in/out -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+          <h4 style="font-size:12px;font-weight:800;color:#059669;margin-bottom:12px">✅ V1 IN SCOPE (28 features)</h4>
+          ${['Sign-on & Authentication','RBAC & Multi-Tenancy','RBAC Phase 1','Settings (Tenant/Operator/Campaign/User)','Subcontractor & Service model','GIS Data Ingestion (via Data Hub)','Migrating Historical P-Cubed Data','Driving Campaigns (create/edit/manage)','Boundary Management: Driving Assignments','Driver View v2','Capture Mode','Snap to Street','Driving Sessions without Assignment','Driving Sessions and Metadata','Fleet Management & Configurations','Observer View (basic)','Driving Results: Historical View','Automated Survey QC','Delete / Disaggregate / Re-aggregate','Boundary Management: Boundary Results (UI)','Boundary Results & Metadata (Technical)','Manual Creation of Reports','Automated LISA/Gap Workflow','Investigation Assignments','Investigation Templates & Configuration','Investigation Sessions and Results','Investigation Sessions Metadata','Boundary Management: Investigation Results']
+            .map(f=>`<div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px;border-bottom:1px solid #f1f5f9"><span style="color:#059669">✓</span>${f}</div>`).join('')}
+        </div>
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+          <h4 style="font-size:12px;font-weight:800;color:#dc2626;margin-bottom:12px">🚫 POST-V1 / EXCLUDED (13 features)</h4>
+          ${EXCLUDED.map(f=>`<div style="font-size:11px;color:#94a3b8;padding:3px 0;display:flex;gap:6px;border-bottom:1px solid #f9fafb"><span style="color:#dc2626">✗</span>${f}</div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Risk register -->
+      <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:24px">
+        <h3 style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:16px">⚠️ Risk Register — Top 7</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead>
+            <tr style="background:#f8fafc">
+              <th style="padding:8px 10px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">#</th>
+              <th style="padding:8px 10px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Risk</th>
+              <th style="padding:8px 10px;text-align:center;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Prob</th>
+              <th style="padding:8px 10px;text-align:center;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Impact</th>
+              <th style="padding:8px 10px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Mitigation</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${RISKS.map(r=>`
+            <tr style="border-bottom:1px solid #f1f5f9;background:${r.color}22">
+              <td style="padding:8px 10px;font-weight:700;color:#475569">${r.num}</td>
+              <td style="padding:8px 10px;color:#1e293b;font-weight:500">${r.risk}</td>
+              <td style="padding:8px 10px;text-align:center"><span style="background:${probColor(r.prob)};color:white;padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px">${r.prob}</span></td>
+              <td style="padding:8px 10px;text-align:center"><span style="background:${probColor(r.impact)};color:white;padding:2px 8px;border-radius:10px;font-weight:700;font-size:10px">${r.impact}</span></td>
+              <td style="padding:8px 10px;color:#475569">${r.mitigation}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Resource capacity -->
+      <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:24px">
+        <h3 style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:16px">👥 Team & Capacity (Apr 1 → Dec 31, 2026)</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead>
+            <tr style="background:#f8fafc">
+              ${['Function','People','Names','Dev-Weeks','MS-6','MS-7','MS-8','MS-9+'].map(h=>`<th style="padding:8px 10px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">${h}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${[
+              ['App / Backend Dev','5','Amin, Abhishek J, Abhishek G, Dependra, Rishav','~154','🔵 Full','🔵 Full','🔵 Full','🟡 Bug-fix'],
+              ['Frontend / UI Dev','2','Shriya, Maksim','~44','🔵 Full','🔵 Full','🔵 Full','🟡 Bug-fix'],
+              ['GIS Engineers','2','Dheeraj, DVN Maheswar','~44','🔵 Full','🔵 Full','🔵 Full','🟢 Support'],
+              ['QA Engineers','4','Abhisek (Lead), Bhavika, Priya, Ashutosh','~88','🟡 Ramp','🔵 Full','🔵 Full','🔵 Lead'],
+              ['Cloud Architects','2','Sandhya, Vipin','~26 (50%)','🟡 Infra','🟡 Infra','🟢 Audit','🔵 Prod'],
+              ['Product / PM','2','Jacqueline/Jacob, Arpan','—','🔵 Full','🔵 Full','🔵 Full','🔵 Full'],
+            ].map(r=>`<tr style="border-bottom:1px solid #f1f5f9">${r.map((c,i)=>`<td style="padding:8px 10px;color:${i===0?'#1e293b':'#475569'};font-weight:${i===0?'600':'400'}">${c}</td>`).join('')}</tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Version 2 placeholder -->
+    <div id="adp-v2-content" style="display:none">
+      <div style="background:white;border-radius:14px;padding:40px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+        <div style="font-size:32px;margin-bottom:12px">🔮</div>
+        <div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:8px">Version 2 Plan</div>
+        <div style="font-size:13px;color:#94a3b8">Scope TBD — will include OTA, Data Explorer, Emissions360, Safety360, PS2 and Handheld features post-V1 launch.</div>
+      </div>
+    </div>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+function switchADPVersion(v) {
+  document.getElementById('adp-v1-content').style.display = v==='v1'?'block':'none';
+  document.getElementById('adp-v2-content').style.display = v==='v2'?'block':'none';
+  document.getElementById('adpv-v1').style.background = v==='v1'?'#0f3460':'white';
+  document.getElementById('adpv-v1').style.color = v==='v1'?'white':'#64748b';
+  document.getElementById('adpv-v1').style.borderColor = v==='v1'?'#0f3460':'#e2e8f0';
+  document.getElementById('adpv-v2').style.background = v==='v2'?'#0f3460':'white';
+  document.getElementById('adpv-v2').style.color = v==='v2'?'white':'#64748b';
+  document.getElementById('adpv-v2').style.borderColor = v==='v2'?'#0f3460':'#e2e8f0';
 }
 </script>
 </body>
