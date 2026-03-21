@@ -318,6 +318,7 @@
         <li><button class="sb-sub-btn" id="sbtab-adpv3" onclick="switchInnerTab('adpv3')">🚀 Agentic Deep Dive V3</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv4" onclick="switchInnerTab('adpv4')">📋 PRD-Gated Roadmap V4</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv5" onclick="switchInnerTab('adpv5')">🗺 Roadmap + Gantt V5</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-adpv6" onclick="switchInnerTab('adpv6')">🏊 Swimlane Roadmap V6</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -345,6 +346,7 @@
     <button class="inner-tab-btn" id="itab-adpv3" onclick="switchInnerTab('adpv3')" style="background:linear-gradient(135deg,#6d28d9,#0f3460);color:white;border-color:#6d28d9">🚀 Agentic Deep Dive V3</button>
     <button class="inner-tab-btn" id="itab-adpv4" onclick="switchInnerTab('adpv4')" style="background:linear-gradient(135deg,#0f766e,#0c4a6e);color:white;border-color:#0f766e">📋 PRD-Gated Roadmap V4</button>
     <button class="inner-tab-btn" id="itab-adpv5" onclick="switchInnerTab('adpv5')" style="background:linear-gradient(135deg,#b45309,#0f766e);color:white;border-color:#b45309">🗺 Roadmap + Gantt V5</button>
+    <button class="inner-tab-btn" id="itab-adpv6" onclick="switchInnerTab('adpv6')" style="background:linear-gradient(135deg,#0891b2,#1d4ed8);color:white;border-color:#0891b2">🏊 Swimlane Roadmap V6</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -1005,6 +1007,10 @@
     <div id="adpv5-content"></div>
   </div><!-- adpv5-tab -->
 
+  <div id="adpv6-tab" style="display:none">
+    <div id="adpv6-content"></div>
+  </div><!-- adpv6-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -1013,7 +1019,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -1028,6 +1034,7 @@ function switchInnerTab(tab) {
   if (tab==='adpv3' && !document.getElementById('adpv3-content').hasChildNodes()) buildADPv3();
   if (tab==='adpv4' && !document.getElementById('adpv4-content').hasChildNodes()) buildADPv4();
   if (tab==='adpv5' && !document.getElementById('adpv5-content').hasChildNodes()) buildADPv5();
+  if (tab==='adpv6' && !document.getElementById('adpv6-content').hasChildNodes()) buildADPv6();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -2029,6 +2036,335 @@ function buildADPv5() {
   el.innerHTML += `<div style="display:grid;grid-template-columns:140px 1fr;border-top:2px solid #e2e8f0"><div style="padding:8px 10px;display:flex;align-items:center;gap:5px;background:#fff1f2;border-right:1px solid #fecaca"><span>🔒</span><span style="font-size:10px;font-weight:700;color:#dc2626">PRD Gates</span></div><div style="position:relative;height:48px;background:#fff8f8"><div style="position:absolute;left:10.2%;width:14.4%;height:38px;top:3px;background:#f59e0b;border-radius:6px;padding:3px 7px;box-sizing:border-box;overflow:hidden"><div style="font-size:9px;font-weight:700;color:white">⚠️ MS-6</div><div style="font-size:8px;color:rgba(255,255,255,.85);line-height:1.2;margin-top:1px">All PRDs reviewed. Platform decision TBD.</div></div><div style="position:absolute;left:24.9%;width:14.8%;height:38px;top:3px;background:#dc2626;border-radius:6px;padding:3px 7px;box-sizing:border-box;overflow:hidden"><div style="font-size:9px;font-weight:700;color:white">❌ MS-7 — 2 blockers</div><div style="font-size:8px;color:rgba(255,255,255,.85);line-height:1.2;margin-top:1px">LISA TDD not written. LISA BRs PRD draft.</div></div><div style="position:absolute;left:40.0%;width:14.8%;height:38px;top:3px;background:#dc2626;border-radius:6px;padding:3px 7px;box-sizing:border-box;overflow:hidden"><div style="font-size:9px;font-weight:700;color:white">❌ MS-8 — 2 blockers</div><div style="font-size:8px;color:rgba(255,255,255,.85);line-height:1.2;margin-top:1px">P-34 not started. Hardware owner not assigned.</div></div><div style="position:absolute;left:55.1%;width:14.8%;height:38px;top:3px;background:#dc2626;border-radius:6px;padding:3px 7px;box-sizing:border-box;overflow:hidden"><div style="font-size:9px;font-weight:700;color:white">❌ MS-9 — 1 blocker</div><div style="font-size:8px;color:rgba(255,255,255,.85);line-height:1.2;margin-top:1px">P-34 must be reviewed. Inv PRDs still draft.</div></div><div style="position:absolute;left:70.2%;width:14.8%;height:38px;top:3px;background:#dc2626;border-radius:6px;padding:3px 7px;box-sizing:border-box;overflow:hidden"><div style="font-size:9px;font-weight:700;color:white">❌ MS-10 — 2 blockers</div><div style="font-size:8px;color:rgba(255,255,255,.85);line-height:1.2;margin-top:1px">0 Hardware epics exist. HW owner not assigned.</div></div><div style="position:absolute;left:85.2%;width:14.8%;height:38px;top:3px;background:#f59e0b;border-radius:6px;padding:3px 7px;box-sizing:border-box;overflow:hidden"><div style="font-size:9px;font-weight:700;color:white">⚠️ MS-11</div><div style="font-size:8px;color:rgba(255,255,255,.85);line-height:1.2;margin-top:1px">EU cert + PHMSA docs in progress. Pendo TBD.</div></div><div style="position:absolute;left:0.0%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:10.2%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:20.0%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:30.2%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:40.0%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:50.2%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:60.3%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:70.2%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:80.3%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:90.2%;top:0;bottom:0;border-left:1px solid #f1f5f9"></div><div style="position:absolute;left:6.6%;top:0;bottom:0;border-left:2px solid #f97316;opacity:.5;z-index:5"></div><div style="position:absolute;left:6.6%;top:0;bottom:0;border-left:2px solid #f97316;opacity:.5;z-index:5"></div></div></div>`;
   el.innerHTML += `</div><div style="display:flex;gap:16px;padding:10px 0 0;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:5px"><div style="width:22px;height:2px;border-top:2px dashed #dc2626"></div><span style="font-size:9px;color:#64748b">PRD gate — blocker</span></div><div style="display:flex;align-items:center;gap:5px"><div style="width:3px;height:12px;background:#f97316;border-radius:1px"></div><span style="font-size:9px;color:#64748b">Today (Mar 21, 2026)</span></div></div></div>`;
   el.innerHTML += `<div style="background:white;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.07)"><div style="font-size:13px;font-weight:800;color:#1e293b;margin-bottom:4px">Feature Delivery Matrix — What Ships When</div><div style="font-size:10px;color:#64748b;margin-bottom:14px">Each cell: what ships in that domain × milestone. Bottom row: PRDs required before kickoff.</div><div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%"><thead><tr><th style="padding:8px 10px;background:#1e293b;color:white;font-size:10px;text-align:left;border:1px solid #334155;white-space:nowrap;min-width:110px">Domain</th><th style="padding:8px 6px;background:#1d4ed8;color:white;font-size:10px;text-align:center;border:1px solid rgba(0,0,0,.1);min-width:140px">MS-6<div style="font-weight:400;font-size:8px;margin-top:2px">Apr–May</div></th><th style="padding:8px 6px;background:#6d28d9;color:white;font-size:10px;text-align:center;border:1px solid rgba(0,0,0,.1);min-width:140px">MS-7<div style="font-weight:400;font-size:8px;margin-top:2px">May–Jun</div></th><th style="padding:8px 6px;background:#15803d;color:white;font-size:10px;text-align:center;border:1px solid rgba(0,0,0,.1);min-width:140px">MS-8<div style="font-weight:400;font-size:8px;margin-top:2px">Jul–Aug</div></th><th style="padding:8px 6px;background:#0c4a6e;color:white;font-size:10px;text-align:center;border:1px solid rgba(0,0,0,.1);min-width:140px">MS-9<div style="font-weight:400;font-size:8px;margin-top:2px">Aug–Sep</div></th><th style="padding:8px 6px;background:#92400e;color:white;font-size:10px;text-align:center;border:1px solid rgba(0,0,0,.1);min-width:140px">MS-10<div style="font-weight:400;font-size:8px;margin-top:2px">Oct–Nov</div></th><th style="padding:8px 6px;background:#7f1d1d;color:white;font-size:10px;text-align:center;border:1px solid rgba(0,0,0,.1);min-width:140px">MS-11<div style="font-weight:400;font-size:8px;margin-top:2px">Nov–Dec</div></th></tr></thead><tbody><tr><td style="padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:10px;font-weight:700;color:#4c1d95;white-space:nowrap;vertical-align:top">🗺 Boundary Management</td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dbeafe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#1d4ed8;margin-bottom:4px">7 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Campaign Map</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-06</span><span style="font-size:9px;color:#475569;white-space:nowrap">DS Panel</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-12</span><span style="font-size:9px;color:#475569;white-space:nowrap">AutoFOV pipeline</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-13</span><span style="font-size:9px;color:#475569;white-space:nowrap">AutoFOV panel</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-16</span><span style="font-size:9px;color:#475569;white-space:nowrap">Session QA/QC</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-17</span><span style="font-size:9px;color:#475569;white-space:nowrap">Gaps pipeline</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-18</span><span style="font-size:9px;color:#475569;white-space:nowrap">Gaps panel</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#ede9fe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#6d28d9;margin-bottom:4px">10 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-07</span><span style="font-size:9px;color:#475569;white-space:nowrap">DS map</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-08</span><span style="font-size:9px;color:#475569;white-space:nowrap">DS table</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-09</span><span style="font-size:9px;color:#475569;white-space:nowrap">DS tab</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-14</span><span style="font-size:9px;color:#475569;white-space:nowrap">AutoFOV map</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-15</span><span style="font-size:9px;color:#475569;white-space:nowrap">AutoFOV meta</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-19</span><span style="font-size:9px;color:#475569;white-space:nowrap">Gaps map</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-22</span><span style="font-size:9px;color:#475569;white-space:nowrap">Gaps assets</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-24</span><span style="font-size:9px;color:#475569;white-space:nowrap">LISA pipeline</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-25</span><span style="font-size:9px;color:#475569;white-space:nowrap">LISA panel</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-26</span><span style="font-size:9px;color:#475569;white-space:nowrap">LISA map</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dcfce7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#15803d;margin-bottom:4px">5 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-20</span><span style="font-size:9px;color:#475569;white-space:nowrap">Gaps table</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-27</span><span style="font-size:9px;color:#475569;white-space:nowrap">LISA table</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-30</span><span style="font-size:9px;color:#475569;white-space:nowrap">PS2 Ranking</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-32</span><span style="font-size:9px;color:#475569;white-space:nowrap">Results</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-33</span><span style="font-size:9px;color:#475569;white-space:nowrap">Download</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#e0f2fe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#0c4a6e;margin-bottom:4px">10 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-02</span><span style="font-size:9px;color:#475569;white-space:nowrap">Symbology</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-21</span><span style="font-size:9px;color:#475569;white-space:nowrap">Gap Metadata</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-28</span><span style="font-size:9px;color:#475569;white-space:nowrap">LISA Metadata</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-29</span><span style="font-size:9px;color:#475569;white-space:nowrap">LISA assets</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-34</span><span style="font-size:9px;color:#475569;white-space:nowrap">Assign LISAs</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-35</span><span style="font-size:9px;color:#475569;white-space:nowrap">Assign Gaps</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-36</span><span style="font-size:9px;color:#475569;white-space:nowrap">Inv table</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-37</span><span style="font-size:9px;color:#475569;white-space:nowrap">Inv sessions</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-38</span><span style="font-size:9px;color:#475569;white-space:nowrap">Inv results</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-39</span><span style="font-size:9px;color:#475569;white-space:nowrap">Download</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fee2e2;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#7f1d1d;margin-bottom:4px">1 item</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#4c1d95;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-BM-42</span><span style="font-size:9px;color:#475569;white-space:nowrap">BM Labels</span></div></td></tr><tr><td style="padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:10px;font-weight:700;color:#1e3a5f;white-space:nowrap;vertical-align:top">🔐 Platform & RBAC</td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dbeafe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#1d4ed8;margin-bottom:4px">2 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">RBAC Ph1</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-27</span><span style="font-size:9px;color:#475569;white-space:nowrap">GIS EU</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dcfce7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#15803d;margin-bottom:4px">4 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-14</span><span style="font-size:9px;color:#475569;white-space:nowrap">NA Staging</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-15</span><span style="font-size:9px;color:#475569;white-space:nowrap">EU Staging</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-21</span><span style="font-size:9px;color:#475569;white-space:nowrap">Logging</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-23</span><span style="font-size:9px;color:#475569;white-space:nowrap">User Manual</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fef3c7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#92400e;margin-bottom:4px">4 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-08</span><span style="font-size:9px;color:#475569;white-space:nowrap">Analytics</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-18</span><span style="font-size:9px;color:#475569;white-space:nowrap">Migration</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-19</span><span style="font-size:9px;color:#475569;white-space:nowrap">i18n Lang</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-20</span><span style="font-size:9px;color:#475569;white-space:nowrap">i18n Units</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fee2e2;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#7f1d1d;margin-bottom:4px">2 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-10</span><span style="font-size:9px;color:#475569;white-space:nowrap">NA GA 🚀</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#1e3a5f;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">P-11</span><span style="font-size:9px;color:#475569;white-space:nowrap">EU GA 🚀</span></div></td></tr><tr><td style="padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:10px;font-weight:700;color:#14532d;white-space:nowrap;vertical-align:top">⚙️ Settings & Users</td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dbeafe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#1d4ed8;margin-bottom:4px">3 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-T-05</span><span style="font-size:9px;color:#475569;white-space:nowrap">Tenant PS2</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-T-06</span><span style="font-size:9px;color:#475569;white-space:nowrap">Tenant RFR</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-O-02</span><span style="font-size:9px;color:#475569;white-space:nowrap">Operator Gen</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#ede9fe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#6d28d9;margin-bottom:4px">1 item</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-O-04</span><span style="font-size:9px;color:#475569;white-space:nowrap">Operator DS</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dcfce7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#15803d;margin-bottom:4px">7 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-O-03</span><span style="font-size:9px;color:#475569;white-space:nowrap">Op Summary</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-O-05</span><span style="font-size:9px;color:#475569;white-space:nowrap">Licensed</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-U-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">User Mgmt</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-U-02</span><span style="font-size:9px;color:#475569;white-space:nowrap">User Gen</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-U-03</span><span style="font-size:9px;color:#475569;white-space:nowrap">User Settings</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-I-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Inv Components</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#14532d;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">A-I-02</span><span style="font-size:9px;color:#475569;white-space:nowrap">Inv Templates</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td></tr><tr><td style="padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:10px;font-weight:700;color:#374151;white-space:nowrap;vertical-align:top">📄 Reports & Field</td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dcfce7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#15803d;margin-bottom:4px">2 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-C-03</span><span style="font-size:9px;color:#475569;white-space:nowrap">Copy Campaign</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">U-03</span><span style="font-size:9px;color:#475569;white-space:nowrap">Fleet Map</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#e0f2fe;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#0c4a6e;margin-bottom:4px">5 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-04</span><span style="font-size:9px;color:#475569;white-space:nowrap">Report Create</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-05</span><span style="font-size:9px;color:#475569;white-space:nowrap">Artifacts</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-06</span><span style="font-size:9px;color:#475569;white-space:nowrap">Labels</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-07</span><span style="font-size:9px;color:#475569;white-space:nowrap">Geocode</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-08</span><span style="font-size:9px;color:#475569;white-space:nowrap">Snap to Street</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fef3c7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#92400e;margin-bottom:4px">1 item</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">O-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Handheld TS</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fee2e2;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#7f1d1d;margin-bottom:4px">1 item</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#374151;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">I-DE-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Data Explorer</span></div></td></tr><tr><td style="padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:10px;font-weight:700;color:#7c2d12;white-space:nowrap;vertical-align:top">🔧 Hardware</td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#dcfce7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#15803d;margin-bottom:4px">2 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Car Ingestion</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-02</span><span style="font-size:9px;color:#475569;white-space:nowrap">PSA Updates</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fef3c7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#92400e;margin-bottom:4px">5 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-00</span><span style="font-size:9px;color:#475569;white-space:nowrap">Handheld</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-05</span><span style="font-size:9px;color:#475569;white-space:nowrap">Observer View</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-07</span><span style="font-size:9px;color:#475569;white-space:nowrap">Create Car</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-08</span><span style="font-size:9px;color:#475569;white-space:nowrap">Periphials</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-09</span><span style="font-size:9px;color:#475569;white-space:nowrap">Manage Car</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fee2e2;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#7f1d1d;margin-bottom:4px">2 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-12</span><span style="font-size:9px;color:#475569;white-space:nowrap">Sample Line</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#7c2d12;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">H-13</span><span style="font-size:9px;color:#475569;white-space:nowrap">Anemometer</span></div></td></tr><tr><td style="padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:10px;font-weight:700;color:#0f4c75;white-space:nowrap;vertical-align:top">📱 Mobile</td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fef3c7;vertical-align:top;min-width:140px"><div style="font-size:8px;font-weight:700;color:#92400e;margin-bottom:4px">3 items</div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#0f4c75;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">M-DV-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Driver View Basic</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#0f4c75;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">M-DV-02</span><span style="font-size:9px;color:#475569;white-space:nowrap">Capture Mode</span></div><div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;flex-wrap:nowrap"><span style="background:#0f4c75;color:white;border-radius:3px;padding:1px 4px;font-size:8px;font-weight:700;font-family:monospace;white-space:nowrap;flex-shrink:0">M-App-01</span><span style="font-size:9px;color:#475569;white-space:nowrap">Mobile PCP</span></div></td><td style="padding:6px 8px;border:1px solid #e2e8f0;background:#fafafa;text-align:center;vertical-align:top"><span style="color:#cbd5e1;font-size:9px">—</span></td></tr><tr style="border-top:2px solid #fca5a5"><td style="padding:8px 10px;background:#fee2e2;border:1px solid #fecaca;font-size:10px;font-weight:700;color:#dc2626;white-space:nowrap;vertical-align:top">🔒 PRD Gates<div style="font-size:8px;font-weight:400;color:#7f1d1d;margin-top:2px">Must be done before<br>milestone kickoff</div></td><td style="padding:4px 6px;border:1px solid #e2e8f0;vertical-align:top;background:#fff8f8;min-width:140px"><div style="background:#dcfce7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#15803d">✅</div><div style="font-size:8px;color:#15803d;opacity:.8">RBAC PRD</div></div><div style="background:#dcfce7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#15803d">✅</div><div style="font-size:8px;color:#15803d;opacity:.8">BM Campaign PRD</div></div><div style="background:#dcfce7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#15803d">✅</div><div style="font-size:8px;color:#15803d;opacity:.8">BM DS PRD v0.1</div></div><div style="background:#dcfce7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#15803d">✅</div><div style="font-size:8px;color:#15803d;opacity:.8">AutoFOV PRD</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Decision needed</div><div style="font-size:8px;color:#92400e;opacity:.8">Driver View v2 platform</div></div></td><td style="padding:4px 6px;border:1px solid #e2e8f0;vertical-align:top;background:#fff8f8;min-width:140px"><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not written</div><div style="font-size:8px;color:#dc2626;opacity:.8">LISA Microservice TDD</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Draft v0.1</div><div style="font-size:8px;color:#92400e;opacity:.8">LISA Boundary Results PRD</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Draft</div><div style="font-size:8px;color:#92400e;opacity:.8">Gaps Workflow PRD</div></div><div style="background:#dcfce7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#15803d">✅</div><div style="font-size:8px;color:#15803d;opacity:.8">BM DS+FOV PRD</div></div></td><td style="padding:4px 6px;border:1px solid #e2e8f0;vertical-align:top;background:#fff8f8;min-width:140px"><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not started</div><div style="font-size:8px;color:#dc2626;opacity:.8">P-34 BM Inv Results</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Draft</div><div style="font-size:8px;color:#92400e;opacity:.8">P-30 Inv Session Meta</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Needs review</div><div style="font-size:8px;color:#92400e;opacity:.8">LISA BRs PRD</div></div><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not assigned</div><div style="font-size:8px;color:#dc2626;opacity:.8">Hardware owner</div></div></td><td style="padding:4px 6px;border:1px solid #e2e8f0;vertical-align:top;background:#fff8f8;min-width:140px"><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not started</div><div style="font-size:8px;color:#dc2626;opacity:.8">P-34 must be Reviewed</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Draft</div><div style="font-size:8px;color:#92400e;opacity:.8">P-27/28/29 Inv PRDs</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ Depends on MS8</div><div style="font-size:8px;color:#92400e;opacity:.8">A-I-01/02 shipped</div></div></td><td style="padding:4px 6px;border:1px solid #e2e8f0;vertical-align:top;background:#fff8f8;min-width:140px"><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ 0 exist</div><div style="font-size:8px;color:#dc2626;opacity:.8">Hardware Jira epics</div></div><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not assigned</div><div style="font-size:8px;color:#dc2626;opacity:.8">Hardware owner</div></div><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not decomposed</div><div style="font-size:8px;color:#dc2626;opacity:.8">Driver View v2 stories</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ TBD</div><div style="font-size:8px;color:#92400e;opacity:.8">Platform decision locked</div></div></td><td style="padding:4px 6px;border:1px solid #e2e8f0;vertical-align:top;background:#fff8f8;min-width:140px"><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ In progress</div><div style="font-size:8px;color:#92400e;opacity:.8">EU 2024/1787 cert</div></div><div style="background:#fef3c7;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#92400e">⚠️ In progress</div><div style="font-size:8px;color:#92400e;opacity:.8">PHMSA ALDP docs</div></div><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not started</div><div style="font-size:8px;color:#dc2626;opacity:.8">Pendo audit</div></div><div style="background:#fee2e2;border-radius:3px;padding:2px 5px;margin-bottom:2px"><div style="font-size:8px;font-weight:700;color:#dc2626">❌ Not started</div><div style="font-size:8px;color:#dc2626;opacity:.8">Security+pen test</div></div></td></tr></tbody></table></div></div>`;
+}
+
+
+function buildADPv6() {
+  // Swimlane Roadmap V6 — re-sequenced content in Roadmap visual style
+  // 3 key moves vs spreadsheet:
+  //   Move A: O-BM-32/33 MS9→MS8 (vertical slice, earlier user value)
+  //   Move B: O-BM-34-39 + O-04/05/07/08 MS10→MS9 (PHMSA gate + QA buffer)
+  //   Move C: P-08/18/19/20 + H-07/08/09 + M-DV-01 + M-App-01 + O-01 MS9→MS10
+
+  const ORIGIN = new Date('2026-03-15');
+  const S = 7; // px per day
+
+  function daysFrom(dateStr) {
+    return Math.round((new Date(dateStr) - ORIGIN) / 86400000);
+  }
+  function px(d) { return d * S; }
+
+  const LANES = [
+    {
+      id:'ms6', short:'MS-6', label:'Milestone 6', sub:'Foundation + Pipeline Activation',
+      start:'2026-04-01', end:'2026-05-15', sprints:'Sprint 17–19',
+      color:'#3b82f6', light:'#dbeafe', dark:'#1d4ed8', border:'#93c5fd',
+      status:'active',
+      prdGate:{by:'Mar 18', items:[
+        {t:'PRD: RBAC Phase 0/1 — finalize scope', done:false},
+        {t:'PRD: Tenant Settings PS2 + RFR', done:false},
+        {t:'PRD: BM View Campaign v0.5', done:true},
+        {t:'PRD: Driving Sessions & AutoFOV v0.1', done:true},
+        {t:'Platform decision: Driver View v2 (browser/iPad)', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-01 RBAC & Multi-Tenancy Ph1','P-27 GIS Data Hub EU']},
+        {area:'Admin: Tenant', color:'#7c3aed', items:['A-T-05 Tenant Settings: PS2','A-T-06 Tenant Settings: RFR']},
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-02 Operator Settings: General']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-01 View Campaign (Map)','O-BM-06 View Driving Sessions (panel)','O-BM-12 AutoFOV pipeline','O-BM-13 AutoFOV panel','O-BM-16 Driving Session QA/QC','O-BM-17 Gaps pipeline','O-BM-18 Gaps panel']},
+      ]
+    },
+    {
+      id:'ms7', short:'MS-7', label:'Milestone 7', sub:'Boundary Data Layer + EU Compliance Gate',
+      start:'2026-05-16', end:'2026-06-30', sprints:'Sprint 20–22',
+      color:'#8b5cf6', light:'#ede9fe', dark:'#6d28d9', border:'#c4b5fd',
+      status:'future',
+      prdGate:{by:'May 2', items:[
+        {t:'PRD: Operator Settings Driving Session', done:false},
+        {t:'PRD: BM Driving Sessions (map + table + tab)', done:false},
+        {t:'PRD: AutoFOV map overlay + metadata', done:false},
+        {t:'TDD: LISA microservice (must be done by MS6 end)', done:false},
+        {t:'PRD: LISAs pipeline + panel + map', done:false},
+      ]},
+      groups:[
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-04 Operator Settings: Driving Session']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-07 View DS (map)','O-BM-08 View DS (table)','O-BM-09 View DS (tab)','O-BM-14 AutoFOV map overlay','O-BM-15 AutoFOV metadata','O-BM-19 Gaps map','O-BM-22 Highlighted Assets: Gaps','O-BM-24 LISAs pipeline','O-BM-25 LISAs panel','O-BM-26 LISAs map']},
+        {area:'🇪🇺 EU Gate', color:'#dc2626', items:['EU 2024/1787: Gaps + FOV operational — compliance met']},
+      ]
+    },
+    {
+      id:'ms8', short:'MS-8', label:'Milestone 8', sub:'Results + Investigation Setup + PHMSA Foundation',
+      start:'2026-07-01', end:'2026-08-15', sprints:'Sprint 23–25',
+      color:'#f97316', light:'#ffedd5', dark:'#c2410c', border:'#fdba74',
+      status:'future',
+      prdGate:{by:'Jun 17', items:[
+        {t:'PRD: NA/EU Staging environment spec', done:false},
+        {t:'PRD: User Management finalized', done:false},
+        {t:'PRD: Investigation Components & Templates', done:false},
+        {t:'PRD: LISA PS2 Ranking + Boundary Results', done:false},
+        {t:'PRD: Driver View v2 reviewed (for MS-10)', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-14 P-Cubed Pro NA Staging','P-15 P-Cubed Pro EU Staging','P-21 Centralized Logging','P-23 Dynamic User Manual']},
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-03 Operator Settings: Summary','A-O-05 Licensed Features']},
+        {area:'Admin: User', color:'#7c3aed', items:['A-U-01 User Management','A-U-02 User Settings: General']},
+        {area:'Admin: Investigation', color:'#7c3aed', items:['A-I-01 Investigation: Components','A-I-02 Investigation: Templates']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-20 Gaps table','O-BM-27 LISAs table','O-BM-30 LISA PS2 Ranking & Metadata','⬆ O-BM-32 Boundary Results (moved earlier)','⬆ O-BM-33 Download Boundary Results (moved earlier)']},
+        {area:'Hardware', color:'#059669', items:['H-01 Car Data Ingestion & Storage','H-02 PSA (in-car) Updates','H-03 Fleet Map: Map View']},
+      ]
+    },
+    {
+      id:'ms9', short:'MS-9', label:'Milestone 9', sub:'Investigations Complete + Reports + PHMSA Gate',
+      start:'2026-08-16', end:'2026-09-30', sprints:'Sprint 26–28',
+      color:'#10b981', light:'#d1fae5', dark:'#047857', border:'#6ee7b7',
+      status:'future',
+      prdGate:{by:'Aug 2', items:[
+        {t:'PRD: BM Investigation Assign & Results', done:false},
+        {t:'PRD: Manual Report Creation & Artifacts', done:false},
+        {t:'PRD: LISA/Gap Geocode + Snap to Street', done:false},
+        {t:'PRD: Historical Data Migration (for MS-10)', done:false},
+        {t:'PRD: Driver View v2 stories decomposed', done:false},
+      ]},
+      groups:[
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-02 View Campaign Symbology','O-BM-21 Gap Metadata','O-BM-28 LISA Metadata','O-BM-29 Highlighted Assets: LISAs','⬆ O-BM-34 Assign LISAs for Investigation','⬆ O-BM-35 Assign Gaps for Investigation','⬆ O-BM-36 View & Assign Investigations','⬆ O-BM-37 Show Investigation Sessions','⬆ O-BM-38 Show Investigation Results','⬆ O-BM-39 Download Investigation Results']},
+        {area:'Operator', color:'#0f766e', items:['⬆ O-04 Manual Report Creation','⬆ O-05 Manual Report Artifacts','O-06 Manual Report Labels','⬆ O-07 LISA/Gap Geocode','⬆ O-08 Snap to Street']},
+        {area:'🇺🇸 PHMSA Gate', color:'#dc2626', items:['PHMSA 2025: Investigation framework in place — compliance foundation met']},
+      ]
+    },
+    {
+      id:'ms10', short:'MS-10', label:'Milestone 10', sub:'Hardware + Mobile + Platform Polish',
+      start:'2026-10-01', end:'2026-11-15', sprints:'Sprint 29–31',
+      color:'#f59e0b', light:'#fef3c7', dark:'#b45309', border:'#fde68a',
+      status:'future',
+      prdGate:{by:'Sep 17', items:[
+        {t:'PRD: Historical Data Migration validated', done:false},
+        {t:'PRD: Internationalization Language + Units', done:false},
+        {t:'PRD: Driver View Basic (M-DV-01)', done:false},
+        {t:'PRD: Mobile App PCP Integration', done:false},
+        {t:'Hardware lead assigned + Jira epics created', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['⬇ P-08 Product Analytics','⬇ P-18 Historical Data Migration','⬇ P-19 Internationalization: Language','⬇ P-20 Internationalization: Units']},
+        {area:'Hardware', color:'#059669', items:['H-00 Handheld Data Ingestion','H-05 Observer View','⬇ H-07 Create System: Car','⬇ H-08 Create Peripherals: Car','⬇ H-09 Manage System: Car']},
+        {area:'Mobile', color:'#b45309', items:['⬇ M-DV-01 Driver View: Basic','M-DV-02 Driver View: Capture Mode','⬇ M-App-01 Mobile App: PCP Integration']},
+        {area:'Operator', color:'#0f766e', items:['⬇ O-01 Handheld Timeseries']},
+      ]
+    },
+    {
+      id:'ms11', short:'MS-11', label:'Milestone 11', sub:'🚀 V1 LAUNCH — Zero New Features',
+      start:'2026-11-16', end:'2026-12-31', sprints:'Sprint 32–34',
+      color:'#ef4444', light:'#fee2e2', dark:'#991b1b', border:'#fca5a5',
+      status:'launch',
+      prdGate:{by:'Nov 2', items:[
+        {t:'All E2E regression passed', done:false},
+        {t:'Pen test + security sign-off', done:false},
+        {t:'EU 2024/1787 compliance certified', done:false},
+        {t:'PHMSA ALDP documentation package', done:false},
+        {t:'Go/No-Go reviewed by leadership', done:false},
+      ]},
+      groups:[
+        {area:'🚀 Launch', color:'#dc2626', items:['P-10 P-Cubed Pro NA V1 LAUNCH','P-11 P-Cubed Pro EU LAUNCH']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-42 Boundary Labels']},
+        {area:'Hardware', color:'#059669', items:['H-12 Sample Line Integrity Metrics','H-13 Anemometer Rotation Metrics']},
+        {area:'Data Explorer', color:'#6366f1', items:['I-DE-01 Data Explorer: Network']},
+      ]
+    },
+  ];
+
+  // ── Compute day offsets ──────────────────────────────────────────────
+  const LABEL_W = 170;
+  const ROW_H_BAR = 40;
+  const FEAT_H = 20;
+  const GATE_H = 14;
+  const PAD_BOT = 14;
+
+  LANES.forEach(ln => {
+    ln.sDay = daysFrom(ln.start);
+    ln.eDay = daysFrom(ln.end);
+    ln.gDay = ln.sDay - 14;
+    ln.allFeatures = ln.groups.flatMap(g => g.items.map(it => ({text:it, color:g.color, area:g.area})));
+    ln.laneH = GATE_H + ROW_H_BAR + ln.allFeatures.length * FEAT_H + PAD_BOT;
+  });
+
+  const TOTAL_DAYS = daysFrom('2026-12-31') + 4;
+  const TW = px(TOTAL_DAYS);
+  const TODAY_DAY = daysFrom('2026-03-21');
+
+  const MONTHS = [
+    {label:'Mar',    d: daysFrom('2026-03-15'), span:17},
+    {label:'April',  d: daysFrom('2026-04-01'), span:30},
+    {label:'May',    d: daysFrom('2026-05-01'), span:31},
+    {label:'June',   d: daysFrom('2026-06-01'), span:30},
+    {label:'July',   d: daysFrom('2026-07-01'), span:31},
+    {label:'August', d: daysFrom('2026-08-01'), span:31},
+    {label:'Sept',   d: daysFrom('2026-09-01'), span:30},
+    {label:'Oct',    d: daysFrom('2026-10-01'), span:31},
+    {label:'Nov',    d: daysFrom('2026-11-01'), span:30},
+    {label:'Dec',    d: daysFrom('2026-12-01'), span:31},
+  ];
+
+  var el = document.getElementById('adpv6-content');
+
+  // ── Header banner ────────────────────────────────────────────────────
+  el.innerHTML = `<div style="background:linear-gradient(135deg,#0891b2,#1d4ed8);border-radius:14px;padding:18px 24px;margin-bottom:20px;color:white">
+    <div style="font-size:16px;font-weight:900;margin-bottom:6px">🏊 Swimlane Roadmap — V6</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.9);line-height:1.6;margin-bottom:10px">
+      Same visual design as the Roadmap tab — but with 3 strategic re-sequencing moves applied.
+      Moves are marked: <strong>⬆ moved earlier</strong> (delivered sooner) · <strong>⬇ moved later</strong> (freed critical path).
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 14px;font-size:11px">
+        <div style="font-weight:700;margin-bottom:2px">Move A</div>
+        <div style="color:rgba(255,255,255,.85)">O-BM-32/33: MS9 → MS8</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7)">Vertical slice — results earlier</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 14px;font-size:11px">
+        <div style="font-weight:700;margin-bottom:2px">Move B</div>
+        <div style="color:rgba(255,255,255,.85)">O-BM-34–39 + O-04/05/07/08: MS10 → MS9</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7)">PHMSA gate + full QA buffer</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 14px;font-size:11px">
+        <div style="font-weight:700;margin-bottom:2px">Move C</div>
+        <div style="color:rgba(255,255,255,.85)">P-08/18/19/20 + H-07–09 + Mobile: MS9 → MS10</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.7)">Dedicated hardware/mobile milestone</div>
+      </div>
+    </div>
+  </div>`;
+
+  // ── Compliance gates legend ──────────────────────────────────────────
+  el.innerHTML += `<div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <div style="background:#fef9c3;border:1px solid #fde68a;border-radius:10px;padding:10px 16px;font-size:11px;color:#78350f;flex:1;min-width:200px">
+      <strong>🇪🇺 EU 2024/1787</strong> — Active regulation. Gate: end of MS-7. Gaps + FOV must be operational.
+    </div>
+    <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:10px;padding:10px 16px;font-size:11px;color:#7f1d1d;flex:1;min-width:200px">
+      <strong>🇺🇸 PHMSA 2025</strong> — Active regulation. Gate: end of MS-9. Investigation framework must be in place.
+    </div>
+    <div style="background:#dbeafe;border:1px solid #bfdbfe;border-radius:10px;padding:10px 16px;font-size:11px;color:#1e3a8a;flex:1;min-width:200px">
+      <strong>⬆ / ⬇ Legend</strong> — ⬆ = moved earlier than spreadsheet plan. ⬇ = moved later. PRD gate flag = 2 weeks before milestone start.
+    </div>
+  </div>`;
+
+  // ── Build swimlane HTML ──────────────────────────────────────────────
+  let h = '';
+  h += `<div class="sl-outer">`;
+  h += `<div class="sl-scroll">`;
+
+  // Month header row
+  h += `<div class="sl-header-row">`;
+  h += `<div class="sl-lhd">Milestone</div>`;
+  h += `<div class="sl-months-wrap" style="width:${TW}px">`;
+  MONTHS.forEach(m => {
+    h += `<div class="sl-month" style="left:${px(m.d)}px;width:${m.span*S}px">${m.label}</div>`;
+  });
+  for (let d=0; d<TOTAL_DAYS; d+=7) {
+    h += `<div class="sl-week-line" style="left:${px(d)}px"></div>`;
+  }
+  h += `<div class="sl-today-hd" style="left:${px(TODAY_DAY)}px"><span class="sl-today-hd-label">TODAY</span></div>`;
+  h += `</div></div>`;
+
+  // Swim lanes
+  LANES.forEach(ln => {
+    const barL  = px(ln.sDay);
+    const barW  = px(ln.eDay - ln.sDay + 1);
+    const gateL = px(ln.gDay);
+    const statusLabel = ln.status==='active' ? '⚡ Active' : ln.status==='launch' ? '🚀 Launch' : '⏳ Planned';
+    const statusCls   = ln.status==='active' ? 'sl-pill-active' : ln.status==='launch' ? 'sl-pill-launch' : 'sl-pill-future';
+
+    h += `<div class="sl-lane" style="height:${ln.laneH}px">`;
+
+    // Left label
+    h += `<div class="sl-lane-lbl" style="border-left:4px solid ${ln.color}">`;
+    h += `<div class="sl-lbl-ms" style="color:${ln.dark}">${ln.short}</div>`;
+    h += `<div class="sl-lbl-name">${ln.label}</div>`;
+    h += `<div class="sl-lbl-sub">${ln.sub}</div>`;
+    h += `<div class="sl-lbl-dates" style="color:${ln.dark}">${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} → ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>`;
+    h += `<div class="sl-lbl-sprints">${ln.sprints}</div>`;
+    h += `<div class="sl-status-pill ${statusCls}">${statusLabel}</div>`;
+    h += `</div>`;
+
+    // Track
+    h += `<div class="sl-track" style="width:${TW}px;height:${ln.laneH}px">`;
+
+    // Alternating month bands
+    MONTHS.forEach((m,i) => {
+      h += `<div style="position:absolute;top:0;bottom:0;left:${px(m.d)}px;width:${m.span*S}px;background:${i%2===0?'rgba(0,0,0,.018)':'transparent'}"></div>`;
+    });
+
+    // Week grid lines
+    for (let d=0; d<TOTAL_DAYS; d+=7) {
+      h += `<div style="position:absolute;top:0;bottom:0;left:${px(d)}px;width:1px;background:rgba(0,0,0,.04)"></div>`;
+    }
+
+    // MS bar
+    const barTop = GATE_H;
+    h += `<div class="sl-ms-bar" style="left:${barL}px;width:${barW}px;top:${barTop}px;height:${ROW_H_BAR}px;background:linear-gradient(135deg,${ln.dark},${ln.color})">`;
+    h += `<span class="sl-bar-label">${ln.short} &nbsp;·&nbsp; ${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})} &nbsp;·&nbsp; ${ln.sprints}</span>`;
+    h += `</div>`;
+
+    // PRD gate flag
+    const gateItems = ln.prdGate.items;
+    const gateDoneCount = gateItems.filter(g=>g.done).length;
+    const allDone = gateDoneCount === gateItems.length;
+    h += `<div class="sl-gate" style="left:${gateL}px;height:${ln.laneH}px">`;
+    h += `<div class="sl-gate-flag" style="background:${allDone?'#16a34a':'#f59e0b'};color:white">`;
+    h += `📋 PRD Gate<br><span style="font-size:9px;font-weight:500">by ${ln.prdGate.by} · ${gateDoneCount}/${gateItems.length} done</span>`;
+    h += `</div>`;
+    h += `<div class="sl-gate-tooltip">`;
+    h += `<div style="font-weight:700;margin-bottom:6px;font-size:11px">PRD Gate — ${ln.label}</div>`;
+    gateItems.forEach(g => {
+      h += `<div style="display:flex;align-items:flex-start;gap:5px;margin-bottom:4px;font-size:11px">`;
+      h += `<span style="color:${g.done?'#16a34a':'#94a3b8'};font-weight:700;flex-shrink:0">${g.done?'✓':'○'}</span>`;
+      h += `<span style="color:${g.done?'#064e3b':'#374151'}">${g.t}</span>`;
+      h += `</div>`;
+    });
+    h += `</div></div>`;
+
+    // Feature rows
+    const featTop = GATE_H + ROW_H_BAR + 2;
+    ln.allFeatures.forEach((feat, fi) => {
+      const y = featTop + fi * FEAT_H;
+      // Detect compliance rows (EU/PHMSA gates) — render differently
+      const isGate = feat.area.includes('Gate') || feat.area.includes('EU') || feat.area.includes('PHMSA');
+      const isMoved = feat.text.startsWith('⬆') || feat.text.startsWith('⬇');
+      const txtColor = isGate ? '#dc2626' : isMoved ? '#065f46' : feat.color;
+      const dotColor = isGate ? '#dc2626' : isMoved ? '#10b981' : feat.color;
+      h += `<div class="sl-feat-row" style="top:${y}px;left:${barL}px;width:${barW}px;${isGate?'background:rgba(220,38,38,.07)':''}">`;
+      h += `<span class="sl-feat-dot" style="background:${dotColor}"></span>`;
+      h += `<span class="sl-feat-text" style="color:${txtColor};${isGate?'font-weight:700':''}">${feat.text}</span>`;
+      h += `</div>`;
+    });
+
+    // TODAY line
+    if (TODAY_DAY >= 0 && TODAY_DAY <= TOTAL_DAYS) {
+      h += `<div class="sl-today-line" style="left:${px(TODAY_DAY)}px;height:${ln.laneH}px"></div>`;
+    }
+
+    h += `</div>`; // sl-track
+    h += `</div>`; // sl-lane
+  });
+
+  // Launch footer bar
+  const launchL = px(daysFrom('2026-12-31'));
+  h += `<div class="sl-launch-row">`;
+  h += `<div class="sl-lhd" style="background:#991b1b;color:white;font-weight:800;font-size:13px">🚀 NA LAUNCH</div>`;
+  h += `<div style="width:${TW}px;position:relative;height:36px;background:#fef2f2">`;
+  h += `<div style="position:absolute;left:${launchL}px;top:0;bottom:0;width:3px;background:#dc2626"></div>`;
+  h += `<div style="position:absolute;left:${launchL+6}px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:#dc2626;white-space:nowrap">🚀 P-Cubed Pro NA V1 — Dec 31, 2026</div>`;
+  h += `</div></div>`;
+
+  h += `</div>`; // sl-scroll
+  h += `</div>`; // sl-outer
+
+  el.innerHTML += h;
+
+  // ── Move legend below chart ──────────────────────────────────────────
+  el.innerHTML += `<div class="sl-legend">
+    <div class="sl-legend-item"><span style="width:12px;height:12px;border-radius:50%;background:#10b981;display:inline-block"></span>⬆ Moved earlier than spreadsheet plan</div>
+    <div class="sl-legend-item"><span style="width:12px;height:12px;border-radius:50%;background:#6366f1;display:inline-block"></span>⬇ Moved later than spreadsheet plan</div>
+    <div class="sl-legend-item"><span style="width:12px;height:12px;border-radius:50%;background:#dc2626;display:inline-block"></span>Compliance gate row</div>
+    <div class="sl-legend-item"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;display:inline-block"></span>PRD Gate flag (2 weeks before kickoff)</div>
+    <div class="sl-legend-item"><span style="width:2px;height:16px;background:#fbbf24;display:inline-block"></span>&nbsp;Today (Mar 21)</div>
+  </div>`;
 }
 
 </script>
