@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P-Cubed Pro — Milestone Deep Plan</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    /* === SHELL LAYOUT === */
+    html,body{height:100%;overflow:hidden}
+    body{display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a2e}
+
+    /* === HEADER === */
+    .header{height:60px;min-height:60px;flex-shrink:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 24px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .header-brand{display:flex;align-items:center;gap:14px}
+    .header-logo{font-size:15px;font-weight:900;background:#e43f5a;color:white;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;letter-spacing:-1px;flex-shrink:0}
+    .header-brand h1{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap}
+    .header-brand .subtitle{font-size:11px;color:#94a3b8;margin-top:2px;white-space:nowrap}
+    .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .badge{display:inline-block;background:#e43f5a;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+    .header-date{font-size:11px;color:#94a3b8;white-space:nowrap}
+
+    /* === BODY SHELL === */
+    .shell{display:flex;flex:1;overflow:hidden}
+
+    /* === SIDEBAR === */
+    .sidebar{width:220px;min-width:220px;background:#0f1c33;display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease,min-width .25s ease;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06)}
+    .sb-section-label{font-size:9px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.8px;padding:16px 16px 6px;white-space:nowrap;overflow:hidden;transition:opacity .2s}
+    .sb-nav{list-style:none;padding:4px 0;flex:1}
+    .sb-item{position:relative}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 14px;color:#94a3b8;text-decoration:none;font-size:12px;font-weight:600;border-radius:8px;margin:1px 8px;transition:all .15s;white-space:nowrap;overflow:hidden}
+    .sb-link:hover{background:rgba(255,255,255,.07);color:#e2e8f0}
+    .sb-item.active>.sb-link{background:rgba(59,130,246,.15);color:#60a5fa}
+    .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+    .sb-label{transition:opacity .15s;overflow:hidden;white-space:nowrap}
+    .sb-sub{list-style:none;margin:2px 8px 6px 44px;overflow:hidden}
+    .sb-sub-btn{display:block;width:100%;text-align:left;padding:5px 10px;font-size:11px;color:#475569;background:none;border:none;border-left:2px solid transparent;cursor:pointer;border-radius:0 6px 6px 0;font-weight:500;transition:all .15s;white-space:nowrap}
+    .sb-sub-btn:hover{color:#94a3b8;background:rgba(255,255,255,.04)}
+    .sb-sub-btn.active{color:#93c5fd;border-left-color:#3b82f6;background:rgba(59,130,246,.08);font-weight:600}
+
+    /* === MAIN CONTENT === */
+    .main{flex:1;overflow-y:auto;background:#f0f2f5;display:flex;flex-direction:column}
+    .main-inner{flex:1;max-width:1400px;margin:0 auto;padding:28px;width:100%}
+
+    /* === INNER TABS === */
+    .inner-tab-nav{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid #e2e8f0}
+    .inner-tab-btn{padding:10px 22px;font-size:12px;font-weight:600;color:#64748b;background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:all .15s;white-space:nowrap}
+    .inner-tab-btn.active{color:#0f3460;border-bottom-color:#0f3460;background:#f8fafc}
+    .inner-tab-btn:hover:not(.active){color:#374151;background:#f8fafc}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    /* LAYOUT */
+    .section-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+
+    /* ALERT BOX */
+    .alert{border-radius:12px;padding:16px 20px;margin-bottom:24px;font-size:13px;line-height:1.6;display:flex;align-items:flex-start;gap:12px}
+    .alert.warn{background:#fef9c3;border:1px solid #fde68a;color:#78350f}
+    .alert.info{background:#dbeafe;border:1px solid #bfdbfe;color:#1e3a8a}
+    .alert.success{background:#dcfce7;border:1px solid #bbf7d0;color:#14532d}
+    .alert-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+
+    /* MILESTONE SECTION */
+    .ms-section{margin-bottom:40px}
+    .ms-header{border-radius:14px 14px 0 0;padding:22px 28px;color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;cursor:pointer;user-select:none}
+    .ms-header-left h2{font-size:20px;font-weight:800;margin-bottom:4px}
+    .ms-header-left .ms-sub{font-size:13px;opacity:.85;line-height:1.5}
+    .ms-header-right{text-align:right;display:flex;align-items:center;gap:14px}
+    .ms-status-pill{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;background:rgba(255,255,255,.2);color:white}
+    .ms-dates{font-size:12px;opacity:.8;margin-top:4px}
+    .ms-body{background:white;border-radius:0 0 14px 14px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden}
+    .ms-body.ms-collapsed{display:none}
+    .ms-section.ms-collapsed>.ms-header{border-radius:14px}
+    .ms-chevron{font-size:18px;opacity:.8;transition:transform .25s;flex-shrink:0}
+    .ms-section.ms-collapsed .ms-chevron{transform:rotate(-90deg)}
+    .ms-expand-hint{font-size:11px;opacity:.7;margin-top:4px;font-style:italic}
+
+    /* ── PRD → Milestone Map ─────────────────────────────────────────── */
+    .pm-stats{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+    .pm-stat{flex:1;min-width:130px;background:white;border-radius:12px;padding:14px 16px;border-top:4px solid var(--c);box-shadow:0 1px 4px rgba(0,0,0,.07)}
+    .pm-stat-n{font-size:28px;font-weight:900;color:var(--c);line-height:1}
+    .pm-stat-l{font-size:11px;color:#64748b;margin-top:4px;line-height:1.4}
+    .pm-filters{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .pm-filter-btn{padding:4px 12px;border-radius:20px;border:1.5px solid;font-size:11px;font-weight:700;cursor:pointer;background:white;transition:all .15s;display:flex;align-items:center;gap:5px}
+    .pm-filter-btn:hover{opacity:.8}
+    .pm-filter-cnt{font-size:10px;font-weight:400;opacity:.8}
+    .pm-table-wrap{overflow-x:auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:16px}
+    .pm-table{width:100%;border-collapse:collapse;background:white;font-size:12px}
+    .pm-table thead{background:#1e293b;color:white;position:sticky;top:0;z-index:5}
+    .pm-table th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;white-space:nowrap}
+    .pm-th-prd{min-width:240px}
+    .pm-th-stat{min-width:90px}
+    .pm-th-own{min-width:130px}
+    .pm-th-need{min-width:90px;text-align:center}
+    .pm-th-ms{min-width:150px;text-align:center;padding:6px 8px}
+    .pm-table td{padding:8px 12px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+    .pm-urgent-row td{border-left:3px solid #dc2626}
+    .pm-td-prd{min-width:240px}
+    .pm-prd-name{font-size:12px;line-height:1.4;margin-bottom:3px}
+    .pm-prd-ref{font-size:10px;color:#94a3b8;font-style:italic}
+    .pm-td-stat{text-align:center;vertical-align:middle}
+    .pm-td-own{font-size:11px;color:#475569}
+    .pm-td-need{text-align:center;vertical-align:middle}
+    .pm-need-ms{font-size:11px;font-weight:800}
+    .pm-need-date{font-size:10px;color:#64748b}
+    .pm-td-ms{padding:6px 8px;vertical-align:top;text-align:left}
+    .pm-ms-dot{width:8px;height:8px;border-radius:50%;margin-bottom:4px}
+    .pm-feat-chip{font-size:10px;font-weight:600;white-space:nowrap;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis}
+    /* Status badges */
+    .pm-status{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+    .pm-s-ready  {background:#dcfce7;color:#15803d}
+    .pm-s-draft  {background:#fef9c3;color:#92400e}
+    .pm-s-wip    {background:#dbeafe;color:#1e40af}
+    .pm-s-missing{background:#fee2e2;color:#dc2626}
+    .pm-legend{display:flex;gap:16px;flex-wrap:wrap;padding:12px 0;border-top:1px solid #e2e8f0}
+    .pm-leg-item{display:flex;align-items:center;gap:8px}
+
+    /* ── Roadmap horizontal swimlanes ────────────────────────────────── */
+    .sl-outer{background:white;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
+    .sl-scroll{overflow-x:auto;overflow-y:visible}
+    /* Header row */
+    .sl-header-row{display:flex;border-bottom:2px solid #1e293b;background:#1e293b;position:sticky;top:0;z-index:20}
+    .sl-lhd{width:170px;min-width:170px;padding:10px 14px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;background:#1e293b;position:sticky;left:0;z-index:25;border-right:1px solid #334155}
+    .sl-months-wrap{position:relative;height:40px;flex-shrink:0}
+    .sl-month{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#94a3b8;border-right:1px solid #334155;white-space:nowrap;letter-spacing:.3px}
+    .sl-week-line{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.06)}
+    .sl-today-hd{position:absolute;top:0;bottom:-1px;width:2px;background:#fbbf24;z-index:5}
+    .sl-today-hd-label{position:absolute;top:4px;left:4px;font-size:9px;font-weight:800;color:#fbbf24;white-space:nowrap;letter-spacing:.5px}
+    /* Swim lane */
+    .sl-lane{display:flex;border-bottom:1px solid #e2e8f0}
+    .sl-lane:hover{background:rgba(0,0,0,.01)}
+    .sl-lane-lbl{width:170px;min-width:170px;padding:12px 10px 12px 14px;background:white;position:sticky;left:0;z-index:10;border-right:1px solid #e2e8f0;display:flex;flex-direction:column;gap:3px;box-shadow:2px 0 6px rgba(0,0,0,.06)}
+    .sl-lbl-ms{font-size:18px;font-weight:900;letter-spacing:-1px;line-height:1}
+    .sl-lbl-name{font-size:10px;font-weight:700;color:#374151;margin-top:1px}
+    .sl-lbl-sub{font-size:9px;color:#64748b;line-height:1.3;margin-top:1px}
+    .sl-lbl-dates{font-size:10px;font-weight:700;margin-top:4px}
+    .sl-lbl-sprints{font-size:9px;color:#94a3b8}
+    .sl-status-pill{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.3px;align-self:flex-start}
+    .sl-pill-active{background:#dbeafe;color:#1d4ed8}
+    .sl-pill-future{background:#f1f5f9;color:#475569}
+    .sl-pill-launch{background:#fee2e2;color:#dc2626}
+    /* Track */
+    .sl-track{position:relative;flex-shrink:0;background:#fafbfd}
+    /* MS bar */
+    .sl-ms-bar{position:absolute;border-radius:6px;display:flex;align-items:center;padding:0 12px;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:5;overflow:hidden}
+    .sl-bar-label{font-size:11px;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.2px}
+    /* Features */
+    .sl-feat-row{position:absolute;display:flex;align-items:center;gap:5px;height:20px;padding:0 8px;overflow:hidden}
+    .sl-feat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .sl-feat-text{font-size:10.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    /* PRD gate */
+    .sl-gate{position:absolute;top:0;z-index:8;width:2px;background:repeating-linear-gradient(to bottom,#f59e0b 0,#f59e0b 5px,transparent 5px,transparent 9px)}
+    .sl-gate:hover .sl-gate-tooltip{display:block}
+    .sl-gate-flag{position:absolute;top:0;left:3px;padding:3px 7px;border-radius:0 5px 5px 0;font-size:9px;font-weight:700;white-space:nowrap;line-height:1.4;z-index:9;cursor:default;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+    .sl-gate-tooltip{display:none;position:absolute;top:36px;left:6px;background:white;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;width:240px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50}
+    /* TODAY line */
+    .sl-today-line{position:absolute;top:0;width:2px;background:#fbbf24;z-index:6;opacity:.9}
+    /* Launch footer row */
+    .sl-launch-row{display:flex;border-top:3px solid #dc2626}
+    /* Legend */
+    .sl-legend{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 0;margin-top:12px;border-top:1px solid #e2e8f0}
+    .sl-legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#475569}
+
+    /* WORK ITEM TABLE */
+    .wi-table{width:100%;border-collapse:collapse}
+    .wi-table thead tr{background:#f8fafc;border-bottom:2px solid #e2e8f0}
+    .wi-table thead th{padding:11px 16px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;white-space:nowrap}
+    .wi-table tbody tr{border-bottom:1px solid #f1f5f9;transition:background .1s}
+    .wi-table tbody tr:last-child{border-bottom:none}
+    .wi-table tbody tr:hover{background:#f8fafc}
+    .wi-table td{padding:14px 16px;vertical-align:top;font-size:12px;color:#374151;line-height:1.5}
+
+    /* WORK ITEM NAME CELL */
+    .wi-name{font-weight:700;color:#1e293b;font-size:13px;margin-bottom:4px}
+    .wi-area{font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+    /* LEAD CHIP */
+    .lead-chip{display:inline-flex;align-items:center;gap:5px;background:#f1f5f9;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:#475569;white-space:nowrap}
+    .lead-avatar{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;flex-shrink:0}
+
+    /* STATUS BADGES */
+    .badge-cell{display:flex;flex-direction:column;gap:6px;min-width:120px}
+    .status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
+    .s-ready{background:#dcfce7;color:#15803d}
+    .s-progress{background:#fef9c3;color:#b45309}
+    .s-missing{background:#fee2e2;color:#dc2626}
+    .s-na{background:#f1f5f9;color:#94a3b8}
+    .s-review{background:#dbeafe;color:#1d4ed8}
+    .badge-label{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+
+    /* PREREQUISITE LIST */
+    .prereq-list{display:flex;flex-direction:column;gap:4px}
+    .prereq-item{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:#475569;line-height:1.4}
+    .prereq-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+    .dot-block{background:#dc2626}
+    .dot-warn{background:#f59e0b}
+    .dot-ok{background:#16a34a}
+    .dot-info{background:#3b82f6}
+
+    /* SP BADGE */
+    .sp-badge{display:inline-block;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;background:#f1f5f9;color:#475569}
+    .sp-tbd{background:#fee2e2;color:#dc2626}
+
+    /* BLOCKER FLAG */
+    .blocker-flag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:#fee2e2;color:#dc2626;margin-left:6px;vertical-align:middle}
+    .compliance-flag{background:#fef3c7;color:#92400e}
+
+    /* NOT PLANNED SECTION */
+    .not-planned{background:white;border-radius:14px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:8px}
+    .not-planned-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+    .not-planned-icon{font-size:28px}
+    .not-planned h3{font-size:16px;font-weight:700;color:#1e293b}
+    .not-planned .np-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+    .expected-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+    .expected-card{background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px dashed #cbd5e1}
+    .expected-card .ec-name{font-size:12px;font-weight:700;color:#1e293b;margin-bottom:6px}
+    .expected-card .ec-prd{font-size:11px;color:#64748b;margin-bottom:4px}
+    .expected-card .ec-note{font-size:10px;color:#94a3b8;font-style:italic}
+
+    /* LEGEND */
+    .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+    .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#475569}
+
+    /* DEPENDENCY CHAIN */
+    .dep-chain{margin-top:8px;padding:8px 12px;background:#f0f9ff;border-radius:8px;border-left:3px solid #3b82f6}
+    .dep-chain-title{font-size:9px;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+    .dep-chain-items{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+    .dep-pill{font-size:10px;padding:2px 8px;border-radius:6px;background:#dbeafe;color:#1d4ed8;font-weight:600}
+    .dep-arrow{color:#94a3b8;font-size:11px}
+
+    /* SUMMARY BAR */
+    .summary-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+    .sum-card{background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.07);border-top:3px solid var(--c)}
+    .sum-card .sn{font-size:28px;font-weight:800;color:var(--c);line-height:1}
+    .sum-card .sl{font-size:10px;color:#64748b;margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+    footer{text-align:center;padding:24px;font-size:12px;color:#94a3b8}
+
+    /* ── GANTT ── */
+    #gantt-tab{display:none}
+    .gantt-outer{background:white;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;margin-bottom:24px}
+    .gantt-scroll{overflow-x:auto}
+    .gantt-inner{width:3000px}
+    .gantt-header-row{display:flex;background:#1e293b;position:sticky;top:0;z-index:20}
+    .gantt-lhd{width:240px;min-width:240px;padding:10px 14px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;border-right:1px solid #334155;flex-shrink:0;background:#1e293b;position:sticky;left:0;z-index:21}
+    .gantt-months-hd{width:1840px;position:relative;height:56px}
+    .g-month{position:absolute;top:0;height:36px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:700;color:#94a3b8;border-right:1px solid #334155;box-sizing:border-box;overflow:hidden}
+    .g-ms-label{position:absolute;bottom:0;height:20px;display:flex;align-items:center;padding-left:6px;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.1);box-sizing:border-box;overflow:hidden}
+    .g-week{position:absolute;top:0;bottom:0;width:1px;background:#2d3f56;pointer-events:none}
+    .gantt-group-row{display:flex;border-bottom:2px solid}
+    .gantt-group-lbl{width:240px;min-width:240px;padding:8px 14px;font-size:11px;font-weight:800;border-right:2px solid;flex-shrink:0;position:sticky;left:0;z-index:2;display:flex;align-items:center;gap:7px}
+    .gantt-group-track{width:1840px;position:relative;height:28px}
+    .gantt-feat-row{display:flex;border-bottom:1px solid #f1f5f9}
+    .gantt-feat-row:hover .gantt-feat-lbl{background:#f0f9ff!important}
+    .gantt-feat-row:hover .gantt-feat-track{background:#f8fafe}
+    .gantt-feat-lbl{width:240px;min-width:240px;padding:5px 10px 5px 20px;font-size:11px;color:#374151;border-right:1px solid #f1f5f9;flex-shrink:0;display:flex;align-items:center;gap:5px;position:sticky;left:0;background:white;z-index:2;line-height:1.3;transition:background .1s}
+    .gantt-feat-track{width:1840px;position:relative;height:32px;transition:background .1s}
+    .g-bar{position:absolute;height:20px;top:6px;border-radius:4px;display:flex;align-items:center;padding:0 7px;font-size:9px;font-weight:700;color:rgba(255,255,255,.92);white-space:nowrap;overflow:hidden;cursor:default;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:all .1s}
+    .g-bar:hover{filter:brightness(1.1);z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .g-bar-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none}
+    .g-bar.is-blocker{outline:2px solid #dc2626;outline-offset:1px}
+    .g-bar.is-risk{outline:2px solid #f59e0b;outline-offset:1px}
+    .g-bar.is-compliance{outline:2px dashed #7c3aed;outline-offset:1px}
+    .g-bar.is-launch{border-radius:3px;font-weight:900;font-size:10px}
+    .g-flag{display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0;letter-spacing:.2px}
+    .gf-b{background:#fee2e2;color:#dc2626}
+    .gf-r{background:#fef9c3;color:#b45309}
+    .gf-c{background:#ede9fe;color:#7c3aed}
+    .g-np{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:#fef9c3;color:#b45309;flex-shrink:0}
+    .g-ms-divider{position:absolute;top:0;bottom:0;width:2px;z-index:4;pointer-events:none}
+    .gantt-legend{display:flex;flex-wrap:wrap;gap:14px;padding:12px 16px;border-top:1px solid #f1f5f9;font-size:11px;color:#64748b;background:#fafbfc}
+    .gantt-legend-item{display:flex;align-items:center;gap:6px}
+    .gl-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">P³</div>
+    <div>
+      <h1>P-Cubed Pro · Milestone Deep Plan</h1>
+      <div class="subtitle">Project Horizon | MS-6 through V1 Launch · Apr 1 – Oct 1, 2026</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge">Project Horizon</span>
+    <span class="header-date">Mar 20, 2026 · Confidential</span>
+  </div>
+</div>
+
+<div class="shell">
+
+<nav class="sidebar" id="sidebar">
+  <p class="sb-section-label">Planning Suite</p>
+  <ul class="sb-nav">
+    <li class="sb-item">
+      <a href="prd-status.html" class="sb-link"><span class="sb-icon">📊</span><span class="sb-label">PRD Status</span></a>
+    </li>
+    <li class="sb-item">
+      <a href="delivery-plan.html" class="sb-link"><span class="sb-icon">🗓</span><span class="sb-label">Delivery Plan</span></a>
+    </li>
+    <li class="sb-item active">
+      <a href="milestone-details.html" class="sb-link"><span class="sb-icon">🔍</span><span class="sb-label">Milestone Deep Plan</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn active" id="sbtab-detail" onclick="switchInnerTab('detail')">📋 Milestone Details</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-gantt" onclick="switchInnerTab('gantt')">📅 Gantt Chart</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-roadmap" onclick="switchInnerTab('roadmap')">🗺 Roadmap</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-prdmap" onclick="switchInnerTab('prdmap')">📌 PRD → MS Map</button></li>
+      </ul>
+    </li>
+    <li class="sb-item">
+      <a href="release-ops.html" class="sb-link"><span class="sb-icon">⚙️</span><span class="sb-label">Release Ops</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">📊 Sprint Capacity</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">✅ Go / No-Go</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">👥 RACI Matrix</button></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <!-- INNER TABS -->
+  <div class="inner-tab-nav">
+    <button class="inner-tab-btn active" id="itab-detail" onclick="switchInnerTab('detail')">📋 Milestone Details</button>
+    <button class="inner-tab-btn" id="itab-gantt" onclick="switchInnerTab('gantt')">📅 Gantt Chart</button>
+    <button class="inner-tab-btn" id="itab-roadmap" onclick="switchInnerTab('roadmap')">🗺 Roadmap</button>
+    <button class="inner-tab-btn" id="itab-prdmap" onclick="switchInnerTab('prdmap')">📌 PRD → MS Map</button>
+  </div>
+
+  <!-- DETAIL TAB CONTENT -->
+  <div id="detail-tab">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div style="font-size:11px;font-weight:700;color:#64748b;margin-right:4px">Legend:</div>
+    <div class="legend-item"><span class="status-badge s-ready">✓ Ready</span> PRD/Design/TDD is complete</div>
+    <div class="legend-item"><span class="status-badge s-review">~ Reviewed</span> Reviewed, minor gaps</div>
+    <div class="legend-item"><span class="status-badge s-progress">⟳ In Progress</span> Being written now</div>
+    <div class="legend-item"><span class="status-badge s-missing">✗ Missing</span> Doesn't exist yet</div>
+    <div class="legend-item"><span class="status-badge s-na">— N/A</span> Not applicable</div>
+    <div class="legend-item"><span class="blocker-flag">BLOCKER</span> Work cannot start</div>
+    <div class="legend-item"><span class="blocker-flag compliance-flag">COMPLIANCE</span> Regulatory requirement</div>
+  </div>
+
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar">
+    <div class="sum-card" style="--c:#3b82f6">
+      <div class="sn">13</div>
+      <div class="sl">MS-6 Work Items<br>(Fully Documented)</div>
+    </div>
+    <div class="sum-card" style="--c:#f59e0b">
+      <div class="sn">2</div>
+      <div class="sl">MS-7 &amp; MS-8<br>Not Yet Planned</div>
+    </div>
+    <div class="sum-card" style="--c:#dc2626">
+      <div class="sn">3</div>
+      <div class="sl">Hard Blockers<br>MS-6</div>
+    </div>
+    <div class="sum-card" style="--c:#8b5cf6">
+      <div class="sn">5</div>
+      <div class="sl">PRDs with TDD<br>Already Written</div>
+    </div>
+    <div class="sum-card" style="--c:#16a34a">
+      <div class="sn">4</div>
+      <div class="sl">Figma Designs<br>Referenced in MS-6</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ MS-6 ══════════════ -->
+  <div class="ms-section" id="ms6-section">
+    <div class="ms-header" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)" onclick="toggleMs('ms6-section')">
+      <div class="ms-header-left">
+        <h2>Milestone 6 — Boundary-First Operations</h2>
+        <div class="ms-sub">Pivot to boundary-driven insights: RBAC, Boundary Management, Settings Phase 3, Gaps pipeline</div>
+      </div>
+      <div class="ms-header-right">
+        <div><div class="ms-status-pill">In Planning</div>
+        <div class="ms-dates">Apr 1 → May 15, 2026 &nbsp;·&nbsp; 6 weeks &nbsp;·&nbsp; Kickoff: TBD</div></div>
+        <span class="ms-chevron">▼</span>
+      </div>
+    </div>
+    <div class="ms-body" id="ms6-body">
+
+      <div class="alert warn" style="margin:16px 16px 0;border-radius:10px">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>MS-6 Not Ready — starts Apr 1 (11 days away).</strong> Jira has 25 epics tagged PCP-Milestone-6. <b>52% (13 epics) still in Technical Refinement · 5 Unrefined · 3 PM Refinement · 0 story points estimated.</b> Kickoff date TBD. 2 epics already blocked. Source: Jira live, 2026-03-21.</div>
+      </div>
+      <div class="alert danger" style="margin:8px 16px 0;border-radius:10px">
+        <span class="alert-icon">⛔</span>
+        <div><b>2 Blocked in MS-6:</b> PH-423 (Dheeraj — Campaign Boundary Search Bar) · PH-278 (Shriya — Toast message for Save Changes). Must be resolved before sprint 1 of MS-6.</div>
+      </div>
+
+      <div style="margin:16px;font-size:11px;color:#64748b;font-style:italic">★ Source: Jira PH, fixVersion="PCP - Milestone 6", live as of 2026-03-21. Story points all null — not yet estimated.</div>
+
+      <table class="wi-table">
+        <thead>
+          <tr>
+            <th style="width:5%">Jira Epic</th>
+            <th style="width:30%">Epic Name</th>
+            <th style="width:15%">Area</th>
+            <th style="width:14%">Owner (Jira Assignee)</th>
+            <th style="width:18%">Status</th>
+            <th style="width:18%">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ACCESS CONTROL -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Access Control</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-430" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-430</a></td>
+            <td><div class="wi-name">RBAC Phase 0 <span class="blocker-flag">BLOCKER</span></div></td>
+            <td><div class="wi-area">Access Control</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#6366f1">J</div>Jacob Cansler</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Design &amp; Plan story PH-613 In-Progress with Amin Ghiasi. PRD: PRD-RBAC-and-Multi-Tenancy.md exists. Must complete before all multi-tenant features.</td>
+          </tr>
+
+          <!-- BOUNDARY MANAGEMENT -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Boundary Management</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-416" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-416</a></td>
+            <td><div class="wi-name">BM: View Campaign &amp; Operator Boundaries</div></td>
+            <td><div class="wi-area">Boundary Management</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">PRD: Boundary Mgmt v0.5 (2026-03-17). GeoServer Layer Config Guide exists (PH-416 doc). Grooming notes captured in Confluence (Mar 11).</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-418" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-418</a></td>
+            <td><div class="wi-name">BM: View Driving Sessions + FOV (Panel + Map)</div></td>
+            <td><div class="wi-area">Boundary Management</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-missing">⚠ PM Refinement</span></td>
+            <td style="font-size:11px;color:#475569">PRD: Boundary Mgmt Driving Sessions &amp; AutoFOV v0.1 (2026-03-17). No engineering assignee yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-419" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-419</a></td>
+            <td><div class="wi-name">BM: AutoFOV Integration &amp; Display</div></td>
+            <td><div class="wi-area">Boundary Management / GIS</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-missing">⚠ PM Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Depends on AutoFOV Ph3 pipeline (MS-5 PH-279) completing QA. No engineering assignee yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-603" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-603</a></td>
+            <td><div class="wi-name">Campaign Settings: Boundaries Phase 2 <span class="blocker-flag">HAS BLOCKED</span></div></td>
+            <td><div class="wi-area">Campaign Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#0ea5e9">D</div>Dheeraj Gambhir</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569"><b style="color:#dc2626">PH-423 BLOCKED</b> — Campaign Boundary Search Bar (child story). PRD: Overlapping Boundaries Warning (2026-03-18) exists. Campaign Mgmt Tech Flow doc (2026-03-20) available.</td>
+          </tr>
+
+          <!-- DATA PIPELINES -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Data Pipelines (GIS / AutoFOV)</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-385" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-385</a></td>
+            <td><div class="wi-name">Auto Data Pipeline: Gaps</div></td>
+            <td><div class="wi-area">GIS / Data Pipeline</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#10b981">A</div>Abhishek Jain</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">PRD-Gaps.md exists. No stories broken down yet. Depends on Gaps micro service (PH-118).</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-118" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-118</a></td>
+            <td><div class="wi-name">Auto Data Pipeline: Gaps Microservice</div></td>
+            <td><div class="wi-area">GIS / Data Pipeline</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#10b981">A</div>Abhishek Jain</div></td>
+            <td><span class="status-badge s-missing">⚠ PM Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Backend microservice for Gaps computation. No TDD yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-104" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-104</a></td>
+            <td><div class="wi-name">Auto Data Pipeline: LISAs</div></td>
+            <td><div class="wi-area">GIS / Data Pipeline</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#10b981">A</div>Abhishek Jain</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">PRD: LISA Boundary Results v0.1 (2026-03-20) — fresh. No engineering breakdown yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-119" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-119</a></td>
+            <td><div class="wi-name">Auto Data Pipeline: LISAs Microservice</div></td>
+            <td><div class="wi-area">GIS / Data Pipeline</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#10b981">A</div>Abhishek Jain</div></td>
+            <td><span class="status-badge s-missing">⚠ PM Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Backend microservice for LISA computation. Depends on PH-104 scope lock.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-248" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-248</a></td>
+            <td><div class="wi-name">Copy Customer GIS Data to Production Schema</div></td>
+            <td><div class="wi-area">GIS / Infrastructure</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#0ea5e9">V</div>Venkatesha K S</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Draft: Design to Migrate Customer GIS Data (Confluence, 2026-03-13). FME pipeline plan. NiSource + Italgas data.</td>
+          </tr>
+
+          <!-- SETTINGS — OPERATOR -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Operator Settings</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-208" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-208</a></td>
+            <td><div class="wi-name">Operator Settings: Operator Summary Page ✓</div></td>
+            <td><div class="wi-area">Operator Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">J</div>Jacqueline Hoege</div></td>
+            <td><span class="status-badge s-ready">✓ Closed</span></td>
+            <td style="font-size:11px;color:#475569">Only MS-6 epic that is Closed. Done.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-209" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-209</a></td>
+            <td><div class="wi-name">Operator Settings: General Settings</div></td>
+            <td><div class="wi-area">Operator Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">HLD/LLD Settings docs exist (2026-03-06). TDD Settings exists.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-184" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-184</a></td>
+            <td><div class="wi-name">Operator Settings: Driving Session Settings</div></td>
+            <td><div class="wi-area">Operator Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Relates to Operator Settings - Driving Session (A-O-04 in roadmap spreadsheet).</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-210" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-210</a></td>
+            <td><div class="wi-name">Operator Settings: GIS Summary</div></td>
+            <td><div class="wi-area">Operator Settings / GIS</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">GIS metrics per operator — depends on GIS data ingestion pipeline completing.</td>
+          </tr>
+
+          <!-- SETTINGS — TENANT -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Tenant Settings</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-185" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-185</a></td>
+            <td><div class="wi-name">Tenant Settings: Priority Score 2 Settings</div></td>
+            <td><div class="wi-area">Tenant Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#6366f1">A</div>Amin Ghiasi</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Confluence page: PS2 Algorithm and RFR Campaign Fields. PATCH endpoint story PH-448 in Review Testing Guidance (MS-5).</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-591" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-591</a></td>
+            <td><div class="wi-name">Tenant Settings: Representative Flow Rate</div></td>
+            <td><div class="wi-area">Tenant Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Confluence: Representative Flow Rate Settings doc (2026-03-06).</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-246" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-246</a></td>
+            <td><div class="wi-name">Tenant Settings: Map Layers for GIS Summary</div></td>
+            <td><div class="wi-area">Tenant Settings / GIS</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#f59e0b">B</div>Bhavika</div></td>
+            <td><span class="status-badge s-progress">⟳ QA Refinement</span></td>
+            <td style="font-size:11px;color:#475569">In QA Refinement — most advanced MS-6 epic after PH-208.</td>
+          </tr>
+
+          <!-- CAMPAIGN SETTINGS -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Campaign Settings</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-598" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-598</a></td>
+            <td><div class="wi-name">Campaign Settings: Campaign SLA</div></td>
+            <td><div class="wi-area">Campaign Settings</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">SLA tracking at campaign level. Confluence: Campaign Mgmt Tech Flow doc (2026-03-20).</td>
+          </tr>
+
+          <!-- COMMON UI + PLATFORM -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Common UI &amp; Platform</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-417" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-417</a></td>
+            <td><div class="wi-name">Common UI/UX Utilities Phase 4 <span class="blocker-flag">HAS BLOCKED</span></div></td>
+            <td><div class="wi-area">Component Library</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569"><b style="color:#dc2626">PH-278 BLOCKED</b> — Toast message for Save Changes (child story). Map Layers Component (PH-609) in Technical Refinement with Dheeraj.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-274" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-274</a></td>
+            <td><div class="wi-name">Internationalization: Language &amp; Settings Support Phase 1</div></td>
+            <td><div class="wi-area">Platform Infrastructure</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#ec4899">S</div>Shriya Singh</div></td>
+            <td><span class="status-badge s-progress">⟳ Technical Refinement</span></td>
+            <td style="font-size:11px;color:#475569">Design &amp; Plan story PH-633 assigned to Shriya Singh. i18n Phase 1 scope.</td>
+          </tr>
+
+          <!-- INFRA / QA -->
+          <tr style="background:#f0f9ff"><td colspan="6" style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.6px;padding:8px 16px">Infrastructure, QA &amp; Bugs</td></tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-326" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-326</a></td>
+            <td><div class="wi-name">Milestone 6: Infrastructure and SRE</div></td>
+            <td><div class="wi-area">Infrastructure</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">No stories defined. Aniket Sabharwal owns SRE/CI-CD in practice.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-323" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-323</a></td>
+            <td><div class="wi-name">Milestone 6: QA Automation and Testing</div></td>
+            <td><div class="wi-area">QA</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">Abhisek Satapathy leads QA in practice. No stories yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-334" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-334</a></td>
+            <td><div class="wi-name">Milestone 6: General Bug Fixes</div></td>
+            <td><div class="wi-area">QA / Bugs</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">Placeholder epic. No bugs filed yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-330" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-330</a></td>
+            <td><div class="wi-name">Milestone 6: Regression Bugs</div></td>
+            <td><div class="wi-area">QA / Bugs</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">Placeholder epic. No regressions filed yet.</td>
+          </tr>
+          <tr>
+            <td><a href="https://picarro.atlassian.net/browse/PH-415" target="_blank" style="color:#1d4ed8;font-weight:700;font-size:11px">PH-415</a></td>
+            <td><div class="wi-name">Milestone 6: Other</div></td>
+            <td><div class="wi-area">Misc</div></td>
+            <td><div class="lead-chip"><div class="lead-avatar" style="background:#94a3b8">?</div>Unassigned</div></td>
+            <td><span class="status-badge s-na">— Unrefined</span></td>
+            <td style="font-size:11px;color:#475569">Catchall — no stories yet.</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div><!-- ms-6 section -->
+
+  <!-- ══════════════ MS-7 ══════════════ -->
+  <div class="ms-section ms-collapsed" id="ms7-section">
+    <div class="ms-header" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)" onclick="toggleMs('ms7-section')">
+      <div class="ms-header-left">
+        <h2>Milestone 7 — Results, Reports &amp; Investigation Kickoff</h2>
+        <div class="ms-sub">Close the boundary loop: results, reports, investigation workflows begin</div>
+      </div>
+      <div class="ms-header-right">
+        <div><div class="ms-status-pill" style="background:rgba(220,38,38,.4)">⚠ Not Yet Planned</div>
+        <div class="ms-dates">May 16 → Jun 30, 2026 &nbsp;·&nbsp; 6 weeks &nbsp;·&nbsp; Confluence doc: empty template</div>
+        <div class="ms-expand-hint">Click to expand</div></div>
+        <span class="ms-chevron">▼</span>
+      </div>
+    </div>
+    <div class="ms-body ms-collapsed" style="padding:20px 24px" id="ms7-body">
+
+      <div class="alert warn" style="margin-bottom:20px;border-radius:10px">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Confluence MS-7 page is an empty template.</strong> No work items, no PRD references, no story points, no engineering leads defined. The work items below are based on our delivery plan and the V1 scope — they need to be formally planned and entered into Confluence before MS-6 finishes.</div>
+      </div>
+
+      <div class="section-title" style="margin-bottom:12px">Expected Work Items (from V1 Scope) — Need Formal Planning</div>
+      <div class="expected-items">
+
+        <div class="expected-card">
+          <div class="ec-name">Boundary Results UI (Complete)</div>
+          <div class="ec-prd">PRD: PRD-LISA-Boundary-Results.md · Status: Reviewed</div>
+          <div class="ec-note">PRD exists; Figma TBD; TDD TBD</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Boundary Results &amp; Metadata — Technical</div>
+          <div class="ec-prd">PRD: PRD-Operations-Boundary-Management.md · Status: Parent doc exists</div>
+          <div class="ec-note">Technical metadata model needs to be specified</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Manual Report Creation</div>
+          <div class="ec-prd">PRD: Current-P-Cubed-Report-Options.md · Status: Reference only</div>
+          <div class="ec-note">No dedicated PRD for new report creation flow — needs to be written</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Automated LISA / Gap Workflow (Basic)</div>
+          <div class="ec-prd">PRD: PRD-LISA-Boundary-Results.md · Status: Reviewed</div>
+          <div class="ec-note">Automation trigger logic needs TDD</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Delete / Disaggregate / Re-aggregate Driving Sessions</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Not started</div>
+          <div class="ec-note">No dedicated PRD — needs to be written</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Investigation Assignments</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Not started</div>
+          <div class="ec-note">No PRD, no Figma, no TDD — full planning needed</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Investigation Templates &amp; Configuration</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Not started</div>
+          <div class="ec-note">No PRD, no Figma, no TDD — full planning needed</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Subcontractor Model — Full Enforcement</div>
+          <div class="ec-prd">PRD: PRD-Subcontractor-and-Service.md · Status: Draft</div>
+          <div class="ec-note">PRD in draft state. Figma and TDD needed</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Settings: Campaign + Subcontractor Settings</div>
+          <div class="ec-prd">PRD: PRD-Settings.md (extension) · Status: In Progress</div>
+          <div class="ec-note">Subcontractor-specific settings not yet defined in PRD</div>
+        </div>
+
+      </div>
+
+      <div class="alert info" style="margin-top:20px;border-radius:10px">
+        <span class="alert-icon">📋</span>
+        <div><strong>Action Required:</strong> MS-7 planning session should happen by end of MS-6 sprint 2 (by mid-April). Product team needs to write PRDs for Investigation Assignments, Manual Reports, and Delete/Disaggregate before dev can start in May.</div>
+      </div>
+
+    </div>
+  </div><!-- ms-7 section -->
+
+  <!-- ══════════════ MS-8 ══════════════ -->
+  <div class="ms-section ms-collapsed" id="ms8-section">
+    <div class="ms-header" style="background:linear-gradient(135deg,#c2410c,#f97316)" onclick="toggleMs('ms8-section')">
+      <div class="ms-header-left">
+        <h2>Milestone 8 — Driver View, Investigations &amp; Fleet</h2>
+        <div class="ms-sub">Field operations: full driver experience, investigation completion, fleet management, GIS data migration</div>
+      </div>
+      <div class="ms-header-right">
+        <div><div class="ms-status-pill" style="background:rgba(220,38,38,.4)">⚠ Not Yet Planned</div>
+        <div class="ms-dates">Jul 1 → Aug 15, 2026 &nbsp;·&nbsp; 6 weeks &nbsp;·&nbsp; Confluence doc: empty template</div>
+        <div class="ms-expand-hint">Click to expand</div></div>
+        <span class="ms-chevron">▼</span>
+      </div>
+    </div>
+    <div class="ms-body ms-collapsed" style="padding:20px 24px" id="ms8-body">
+
+      <div class="alert warn" style="margin-bottom:20px;border-radius:10px">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Confluence MS-8 page is an empty template.</strong> Team and resource slots are listed (Shriya, Amin, Abhishek J/G, Dependra, Dheeraj, DVN, QA team, Sandhya, Vipin) but zero work items or PRD references defined yet.</div>
+      </div>
+
+      <div class="section-title" style="margin-bottom:12px">Expected Work Items (from V1 Scope) — Need Formal Planning</div>
+      <div class="expected-items">
+
+        <div class="expected-card">
+          <div class="ec-name">Driver View v2 — Full (41 requirements)</div>
+          <div class="ec-prd">PRD: PRD-Driver-View-v2.md · Status: Draft v0.1</div>
+          <div class="ec-note">PRD in draft — largest single work item in V1. Needs Figma + TDD. High risk item.</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Capture Mode</div>
+          <div class="ec-prd">PRD: Part of Driver View PRD · Status: Draft</div>
+          <div class="ec-note">Tied to Driver View v2 PRD</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Fleet Management &amp; Configurations</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Not Started</div>
+          <div class="ec-note">No dedicated PRD — needs to be written from scratch</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Observer View (Basic)</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Not Started</div>
+          <div class="ec-note">No PRD, no Figma — needs full product definition</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Investigation Sessions and Results</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Not Started</div>
+          <div class="ec-note">Depends on Investigation Assignments (MS-7)</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Investigation Sessions Metadata (Technical)</div>
+          <div class="ec-prd">PRD: Referenced in PRD-P-Cubed-Pro.md · Status: Partial</div>
+          <div class="ec-note">Technical metadata schema definition needed</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Boundary Management — Investigation Results (Basic)</div>
+          <div class="ec-prd">PRD: PRD-Operations-Boundary-Management.md · Status: Parent exists</div>
+          <div class="ec-note">Investigation-specific boundary views not yet designed</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">GIS Data Migration — Historical P-Cubed Data</div>
+          <div class="ec-prd">PRD: GIS-Data-for-P-Cubed-Pro-Requirements.md · Status: Exists</div>
+          <div class="ec-note">Blocked on SRE infra + customer data quality validation. Start validation in MS-6 with NiSource data.</div>
+        </div>
+
+        <div class="expected-card">
+          <div class="ec-name">Security Audit &amp; Hardening Phase 1</div>
+          <div class="ec-prd">PRD: No dedicated PRD · Status: Not Started</div>
+          <div class="ec-note">Must coordinate with Sandhya/Vipin + SRE/Security team</div>
+        </div>
+
+      </div>
+
+      <div class="alert warn" style="margin-top:20px;border-radius:10px">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>High Risk — Driver View v2:</strong> 41 requirements in PRD-Driver-View-v2.md currently in draft. This is the largest single work item in V1. PRD must reach reviewed status and Figma must be finalized by start of MS-7 (May 16) so that a phased approach can be decided: MVP features in sprint 1, full in sprint 2+.</div>
+      </div>
+
+    </div>
+  </div><!-- ms-8 section -->
+
+  <!-- ══════════════ MS-9 / PROD READY ══════════════ -->
+  <div class="ms-section ms-collapsed" id="ms9-section">
+    <div class="ms-header" style="background:linear-gradient(135deg,#047857,#10b981)" onclick="toggleMs('ms9-section')">
+      <div class="ms-header-left">
+        <h2>Milestone 9 — Hardening, Performance &amp; Cutover Prep</h2>
+        <div class="ms-sub">Production-ready: E2E regression, performance benchmarks, security pen testing, shadow pilot, customer onboarding</div>
+      </div>
+      <div class="ms-header-right">
+        <div><div class="ms-status-pill">Not Yet In Confluence</div>
+        <div class="ms-dates">Aug 16 → Sep 15, 2026 &nbsp;·&nbsp; 4 weeks &nbsp;·&nbsp; No Confluence page yet</div>
+        <div class="ms-expand-hint">Click to expand</div></div>
+        <span class="ms-chevron">▼</span>
+      </div>
+    </div>
+    <div class="ms-body ms-collapsed" style="padding:20px 24px" id="ms9-body">
+      <div class="alert info" style="margin-bottom:20px;border-radius:10px">
+        <span class="alert-icon">ℹ️</span>
+        <div><strong>MS-9 does not exist in Confluence yet.</strong> This is the quality/hardening sprint before launch. No features — only quality gates and launch preparation. Expected to be created during MS-7 planning.</div>
+      </div>
+      <div class="expected-items">
+        <div class="expected-card">
+          <div class="ec-name">End-to-End Regression — All V1 Features</div>
+          <div class="ec-prd">PRD: N/A · Owner: QA Team (Abhisek lead)</div>
+          <div class="ec-note">Full regression across all 28 V1 features</div>
+        </div>
+        <div class="expected-card">
+          <div class="ec-name">Performance Benchmarks (500+ tenants)</div>
+          <div class="ec-prd">PRD: N/A · Owner: Sandhya / Vipin</div>
+          <div class="ec-note">Load test: 50 concurrent tenants minimum</div>
+        </div>
+        <div class="expected-card">
+          <div class="ec-name">Security Penetration Testing</div>
+          <div class="ec-prd">PRD: N/A · Owner: External security team</div>
+          <div class="ec-note">SRE coordination required. Must schedule by Jun 1.</div>
+        </div>
+        <div class="expected-card">
+          <div class="ec-name">Historical Data Migration Validation</div>
+          <div class="ec-prd">PRD: GIS Requirements doc · Owner: Dheeraj / DVN</div>
+          <div class="ec-note">Validate 5-year historical P-Cubed data migrated correctly</div>
+        </div>
+        <div class="expected-card">
+          <div class="ec-name">Shadow Mode Pilot (1-2 customers)</div>
+          <div class="ec-prd">PRD: N/A · Owner: Arpan + Product</div>
+          <div class="ec-note">Must start no later than Aug 1 (mid MS-8)</div>
+        </div>
+        <div class="expected-card">
+          <div class="ec-name">Customer Onboarding Documentation + Training</div>
+          <div class="ec-prd">PRD: N/A · Owner: Product + PM</div>
+          <div class="ec-note">Picarro internal training materials also needed</div>
+        </div>
+        <div class="expected-card">
+          <div class="ec-name">Go / No-Go Review</div>
+          <div class="ec-prd">PRD: N/A · Owner: Arpan + Leadership</div>
+          <div class="ec-note">Target: Sep 25, 2026. Launch gate decision.</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- ms-9 section -->
+
+  <!-- DEPENDENCY CHAIN SUMMARY -->
+  <div class="section-title" style="margin-bottom:12px">Critical Dependency Chain — V1 Launch</div>
+  <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:24px">
+    <div style="font-size:12px;color:#475569;line-height:2;font-family:monospace">
+      <div style="margin-bottom:8px"><strong style="color:#dc2626">BLOCKER CHAIN 1 — Settings &amp; RBAC (highest risk):</strong></div>
+      <div style="margin-left:16px;color:#374151">
+        PRD-Settings finalized → TDD-Settings/TDD-Tenant-Settings →
+        <span style="color:#1d4ed8">Campaign/Tenant/Operator BE APIs</span> →
+        <span style="color:#1d4ed8">Settings FE Pages</span> →
+        <span style="color:#dc2626">RBAC Phase 0 enforcement</span> →
+        SOC2 / Compliance sign-off
+      </div>
+
+      <div style="margin-top:16px;margin-bottom:8px"><strong style="color:#f59e0b">BLOCKER CHAIN 2 — Boundary Operations:</strong></div>
+      <div style="margin-left:16px;color:#374151">
+        Campaign Settings BE (boundary entity model) →
+        GIS data pipeline →
+        <span style="color:#1d4ed8">Map Panel Component (Common UI Ph3)</span> →
+        <span style="color:#1d4ed8">View Campaign &amp; Operator Boundaries</span> →
+        <span style="color:#1d4ed8">View Driving Sessions</span> →
+        <span style="color:#1d4ed8">AutoFOV display</span> →
+        <span style="color:#7c3aed">Gaps pipeline (MS-6)</span> →
+        Boundary Results UI (MS-7) →
+        LISA/Gap Workflow (MS-7)
+      </div>
+
+      <div style="margin-top:16px;margin-bottom:8px"><strong style="color:#0891b2">BLOCKER CHAIN 3 — Investigations &amp; Driver:</strong></div>
+      <div style="margin-left:16px;color:#374151">
+        PRD-Driver-View-v2 finalized (by MS-7 start) →
+        Driver View v2 (MS-8) →
+        Capture Mode →
+        Investigation Assignments (MS-7) →
+        Investigation Templates (MS-7) →
+        Investigation Sessions (MS-8) →
+        Boundary Mgmt: Investigation Results (MS-8)
+      </div>
+
+      <div style="margin-top:16px;margin-bottom:8px"><strong style="color:#047857">BLOCKER CHAIN 4 — GIS &amp; Data Migration:</strong></div>
+      <div style="margin-left:16px;color:#374151">
+        GIS FME schema locked (Mar 27) →
+        Map Layers (MS-6) →
+        GIS Data Migration validation start (MS-6 with NiSource) →
+        Full migration (MS-8) →
+        Historical data validated (MS-9)
+      </div>
+    </div>
+  </div>
+
+  </div><!-- detail-tab -->
+
+  <!-- GANTT TAB CONTENT -->
+  <div id="gantt-tab">
+    <div class="section-title" style="margin-bottom:12px">V1 Delivery Gantt — Apr 1 to Dec 31, 2026 &nbsp;·&nbsp; MS-6 through MS-11 &nbsp;·&nbsp; Source: Official Roadmap</div>
+    <div class="alert info" style="margin-bottom:16px;border-radius:12px;padding:14px 18px;font-size:12px;display:flex;align-items:flex-start;gap:10px;background:#dbeafe;border:1px solid #bfdbfe;color:#1e3a8a">
+      <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+      <span>MS-6 timing is based on Confluence milestone doc. MS-7, MS-8, MS-9 bar placement is derived from the delivery plan (not yet in Confluence). Scroll right to see the full timeline. Hover bars for feature name.</span>
+    </div>
+    <div class="gantt-outer">
+      <div class="gantt-scroll">
+        <div class="gantt-inner" id="gantt-chart"></div>
+      </div>
+      <div class="gantt-legend">
+        <div class="gantt-legend-item"><div class="gl-dot" style="background:#3b82f6"></div>MS-6: Apr 1–May 15</div>
+        <div class="gantt-legend-item"><div class="gl-dot" style="background:#8b5cf6"></div>MS-7: May 16–Jun 30</div>
+        <div class="gantt-legend-item"><div class="gl-dot" style="background:#f97316"></div>MS-8: Jul 1–Aug 15</div>
+        <div class="gantt-legend-item"><div class="gl-dot" style="background:#10b981"></div>MS-9: Aug 16–Sep 30</div>
+        <div class="gantt-legend-item"><div class="gl-dot" style="background:#f59e0b"></div>MS-10: Oct 1–Nov 15</div>
+        <div class="gantt-legend-item"><div class="gl-dot" style="background:#ef4444"></div>MS-11: Nov 16–Dec 31 🚀 Launch</div>
+        <div class="gantt-legend-item" style="margin-left:12px"><span class="g-flag gf-b">BLOCK</span> Hard blocker — dev cannot start without prereq</div>
+        <div class="gantt-legend-item"><span class="g-flag gf-r">RISK</span> High execution risk item</div>
+        <div class="gantt-legend-item"><span class="g-flag gf-c">COMPL</span> Compliance/regulatory requirement</div>
+        <div class="gantt-legend-item"><span class="g-np">Needs Planning</span> Confluence template is empty</div>
+      </div>
+    </div>
+  </div><!-- gantt-tab -->
+
+  <!-- ROADMAP TAB CONTENT -->
+  <div id="roadmap-tab" style="display:none">
+    <div class="section-title" style="margin-bottom:6px">🗺 Roadmap — P-Cubed Pro V1 Launch</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:14px">Horizontal swimlanes · One row per milestone · Time left→right · MS-6 through MS-11 · Dec 31, 2026 · Source: Official Roadmap Spreadsheet</div>
+    <div class="sl-legend" style="margin-bottom:16px;border-top:none;padding-top:0">
+      <div class="sl-legend-item"><div style="width:24px;height:3px;background:#fbbf24;border-radius:2px"></div>Today (Mar 20)</div>
+      <div class="sl-legend-item"><div style="width:2px;height:16px;background:repeating-linear-gradient(to bottom,#f59e0b 0,#f59e0b 5px,transparent 5px,transparent 9px)"></div>📋 PRD Gate (2 wks before MS start) — hover to see checklist</div>
+      <div class="sl-legend-item"><div style="width:24px;height:12px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-radius:3px"></div>Milestone bar</div>
+      <div class="sl-legend-item"><div style="width:8px;height:8px;border-radius:50%;background:#0891b2"></div>Feature item</div>
+    </div>
+    <div id="roadmap-flow"></div>
+  </div><!-- roadmap-tab -->
+
+  <!-- PRD → MILESTONE MAP TAB -->
+  <div id="prdmap-tab" style="display:none">
+    <div class="section-title" style="margin-bottom:6px">📌 PRD → Milestone Dependency Map</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:14px">For every milestone feature, which PRD document must exist — and when it must be ready. Filter by milestone to see exactly what's blocking each sprint.</div>
+    <div id="prdmap-content"></div>
+  </div><!-- prdmap-tab -->
+
+</div><!-- main-inner -->
+<footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
+</div><!-- main -->
+</div><!-- shell -->
+
+<script>
+// ── Inner tab switching ──────────────────────────────────────────────
+function switchInnerTab(tab) {
+  ['detail','gantt','roadmap','prdmap'].forEach(t => {
+    document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
+    document.getElementById('itab-'+t).classList.toggle('active', tab===t);
+  });
+  document.querySelectorAll('.sb-sub-btn').forEach(b => b.classList.remove('active'));
+  const sbBtn = document.getElementById('sbtab-' + tab);
+  if (sbBtn) sbBtn.classList.add('active');
+  if (tab==='gantt'   && !document.getElementById('gantt-chart').innerHTML)   buildGantt();
+  if (tab==='roadmap' && !document.getElementById('roadmap-flow').innerHTML)  buildRoadmap();
+  if (tab==='prdmap'  && !document.getElementById('prdmap-content').innerHTML) buildPrdMap('all');
+}
+
+// ── Gantt chart builder ──────────────────────────────────────────────
+// Timeline: Apr 1 → Dec 31, 2026 = 275 days. Source: official roadmap spreadsheet (MS6–MS11).
+function buildGantt() {
+  const S = 10; // px per day
+  const TOTAL = 275; // Apr 1 (day 0) → Dec 31 (day 274)
+  const CW = TOTAL * S; // 2750px
+
+  // Day offsets from Apr 1:
+  // Apr=30, May=31, Jun=30, Jul=31, Aug=31, Sep=30, Oct=31, Nov=30, Dec=31
+  const months = [
+    {label:'April 2026',     day:0,   days:30},
+    {label:'May 2026',       day:30,  days:31},
+    {label:'June 2026',      day:61,  days:30},
+    {label:'July 2026',      day:91,  days:31},
+    {label:'August 2026',    day:122, days:31},
+    {label:'September 2026', day:153, days:30},
+    {label:'October 2026',   day:183, days:31},
+    {label:'November 2026',  day:214, days:30},
+    {label:'December 2026',  day:244, days:31},
+  ];
+
+  // MS offsets (from roadmap images):
+  // MS6: Apr 1–May 15  = day 0–44
+  // MS7: May 16–Jun 30 = day 45–90
+  // MS8: Jul 1–Aug 15  = day 91–136
+  // MS9: Aug 16–Sep 30 = day 137–182
+  // MS10: Oct 1–Nov 15 = day 183–228
+  // MS11: Nov 16–Dec 31= day 229–274  ← P-10 P-Cubed Pro NA LAUNCH
+  const milestones = [
+    {
+      id:'ms6', label:'MS-6', dates:'Apr 1 – May 15',
+      s:0, e:44, color:'#3b82f6', light:'#dbeafe', border:'#93c5fd', dark:'#1d4ed8',
+      features:[
+        {n:'P-01 — RBAC & Multi-Tenancy Phase 1',           s:0,  d:45, f:'blocker'},
+        {n:'P-27 — GIS Data Hub EU',                        s:0,  d:30},
+        {n:'A-T-05 — Tenant Settings: PS2',                 s:0,  d:21},
+        {n:'A-T-06 — Tenant Settings: RFR',                 s:0,  d:21},
+        {n:'A-O-02 — Operator Settings: General',           s:7,  d:28},
+        {n:'O-BM-01 — BM: View Campaign (Map)',             s:14, d:31},
+        {n:'O-BM-06 — BM: View Driving Sessions (panel)',   s:14, d:31},
+        {n:'O-BM-12 — BM: AutoFOV (data pipeline)',         s:7,  d:38, f:'compliance'},
+        {n:'O-BM-13 — BM: AutoFOV (panel)',                 s:21, d:24},
+        {n:'O-BM-16 — BM: Driving Session QA/QC',          s:21, d:24},
+        {n:'O-BM-17 — BM: Gaps (data pipeline)',            s:14, d:31},
+        {n:'O-BM-18 — BM: Gaps (panel)',                    s:21, d:24},
+      ]
+    },
+    {
+      id:'ms7', label:'MS-7', dates:'May 16 – Jun 30',
+      s:45, e:90, color:'#8b5cf6', light:'#ede9fe', border:'#c4b5fd', dark:'#6d28d9',
+      np:true,
+      features:[
+        {n:'A-O-04 — Operator Settings: Driving Session',   s:45, d:21},
+        {n:'O-BM-07 — BM: View Driving Sessions (map)',     s:45, d:31},
+        {n:'O-BM-08 — BM: View Driving Sessions (table)',   s:52, d:25},
+        {n:'O-BM-09 — BM: View Driving Sessions (tab)',     s:52, d:25},
+        {n:'O-BM-14 — BM: AutoFOV (map)',                   s:45, d:31},
+        {n:'O-BM-15 — BM: AutoFOV metadata',                s:52, d:25},
+        {n:'O-BM-19 — BM: Gaps (map)',                      s:45, d:31},
+        {n:'O-BM-22 — BM: Highlighted Assets for Gaps',    s:59, d:32},
+        {n:'O-BM-24 — BM: LISAs (data pipeline)',           s:45, d:46, f:'compliance'},
+        {n:'O-BM-25 — BM: LISAs (panel)',                   s:59, d:32},
+        {n:'O-BM-26 — BM: LISAs (map)',                     s:66, d:25},
+      ]
+    },
+    {
+      id:'ms8', label:'MS-8', dates:'Jul 1 – Aug 15',
+      s:91, e:136, color:'#f97316', light:'#ffedd5', border:'#fdba74', dark:'#c2410c',
+      np:true,
+      features:[
+        {n:'P-14 — P-Cubed Pro NA Staging',                 s:91,  d:46},
+        {n:'P-15 — P-Cubed Pro EU Staging',                 s:91,  d:46},
+        {n:'P-21 — Centralized Logging',                    s:91,  d:31},
+        {n:'A-O-03 — Operator Settings: Summary',           s:91,  d:21},
+        {n:'A-O-05 — Operator Settings: Licensed Features', s:105, d:32},
+        {n:'A-U-01/02 — User Management & Settings',        s:91,  d:31},
+        {n:'A-I-01 — Investigation: Components',            s:91,  d:31},
+        {n:'A-I-02 — Investigation: Templates',             s:105, d:32},
+        {n:'O-BM-20 — BM: Gaps (table)',                    s:91,  d:31},
+        {n:'O-BM-27 — BM: LISAs (table)',                   s:91,  d:31},
+        {n:'O-BM-30 — BM: LISA PS2 Ranking & Metadata',    s:105, d:32, f:'risk'},
+        {n:'H-01 — Car Data Ingestion & Storage',           s:91,  d:46},
+        {n:'H-02 — PSA (in-car) Updates',                   s:105, d:32},
+      ]
+    },
+    {
+      id:'ms9', label:'MS-9', dates:'Aug 16 – Sep 30',
+      s:137, e:182, color:'#10b981', light:'#d1fae5', border:'#6ee7b7', dark:'#047857',
+      np:true,
+      features:[
+        {n:'P-18 — Historical Data Migration',              s:137, d:46},
+        {n:'P-19 — Internationalization: Language',         s:137, d:31},
+        {n:'P-20 — Internationalization: Units',            s:137, d:31},
+        {n:'O-BM-02 — BM: View Campaign Symbology',         s:137, d:21},
+        {n:'O-BM-32 — BM: Boundary Results',                s:144, d:39},
+        {n:'O-BM-33 — BM: Download Boundary Results',       s:159, d:24},
+        {n:'O-BM-28/29 — BM: LISA & Gap Metadata',         s:144, d:39},
+        {n:'M-DV-01 — Driver View: Basic',                  s:137, d:46, f:'risk'},
+        {n:'M-App-01 — Mobile App: PCP Integration',        s:150, d:33},
+        {n:'H-07/08/09 — Car Fleet: Create & Manage',       s:137, d:46},
+      ]
+    },
+    {
+      id:'ms10', label:'MS-10', dates:'Oct 1 – Nov 15',
+      s:183, e:228, color:'#f59e0b', light:'#fef9c3', border:'#fde68a', dark:'#b45309',
+      np:true,
+      features:[
+        {n:'O-BM-34 — BM: Assign LISAs for Investigation',  s:183, d:31},
+        {n:'O-BM-35 — BM: Assign Gaps for Investigation',   s:183, d:31},
+        {n:'O-BM-36 — BM: View & Assign Investigations',    s:190, d:39},
+        {n:'O-BM-37/38 — BM: Show Investigation Sessions/Results', s:197, d:32},
+        {n:'O-BM-39 — BM: Download Investigation Results',  s:204, d:25},
+        {n:'O-04/05 — Manual Report Creation & Artifacts',  s:183, d:46},
+        {n:'O-07 — LISA/Gap: Geocode',                      s:197, d:32},
+        {n:'O-08 — Driving Session: Snap to Street',        s:190, d:25},
+        {n:'H-00 — Handheld Data Ingestion & Storage',      s:183, d:31},
+        {n:'H-05 — Observer View',                          s:197, d:32},
+        {n:'M-DV-02 — Driver View: Capture Mode',           s:190, d:39},
+      ]
+    },
+    {
+      id:'ms11', label:'MS-11', dates:'Nov 16 – Dec 31',
+      s:229, e:274, color:'#ef4444', light:'#fee2e2', border:'#fca5a5', dark:'#991b1b',
+      features:[
+        {n:'P-10 — 🚀 P-Cubed Pro NA LAUNCH',               s:229, d:46, f:'launch'},
+        {n:'P-11 — P-Cubed Pro EU LAUNCH',                  s:229, d:46, f:'launch'},
+        {n:'O-BM-42 — BM: Boundary Labels',                 s:229, d:31},
+        {n:'H-12 — Sample Line Integrity Metrics',           s:229, d:46},
+        {n:'H-13 — Anemometer Rotation Metrics',             s:229, d:46},
+      ]
+    },
+  ];
+
+  function px(d){ return d*S; }
+
+  let h = '';
+
+  // ── HEADER ──────────────────────────────────────────────────────────
+  h += `<div class="gantt-header-row">`;
+  h += `<div class="gantt-lhd">Feature / Work Item</div>`;
+  h += `<div class="gantt-months-hd" style="width:${CW}px;height:56px;position:relative;background:#1e293b">`;
+
+  months.forEach(m => {
+    const l = px(m.day), w = m.days*S;
+    h += `<div class="g-month" style="left:${l}px;width:${w}px">${m.label}</div>`;
+  });
+
+  milestones.forEach(ms => {
+    const l = px(ms.s), w = (ms.e - ms.s + 1)*S;
+    h += `<div class="g-ms-label" style="left:${l}px;width:${w}px;background:${ms.dark};color:rgba(255,255,255,.9)">${ms.label} · ${ms.dates}</div>`;
+  });
+
+  for (let d=14; d<TOTAL; d+=14) {
+    h += `<div class="g-week" style="left:${px(d)}px"></div>`;
+  }
+
+  [45, 91, 137, 183, 229].forEach(d => {
+    h += `<div style="position:absolute;left:${px(d)}px;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2)"></div>`;
+  });
+
+  h += `</div></div>`;
+
+  // ── ROWS ────────────────────────────────────────────────────────────
+  milestones.forEach(ms => {
+    const bw = (ms.e - ms.s + 1)*S;
+    const bl = px(ms.s);
+
+    h += `<div class="gantt-group-row" style="border-color:${ms.border};background:${ms.light}">`;
+    h += `<div class="gantt-group-lbl" style="color:${ms.dark};background:${ms.light};border-color:${ms.border}">`;
+    h += `<span style="width:10px;height:10px;border-radius:50%;background:${ms.color};display:inline-block;flex-shrink:0"></span>`;
+    h += `<span style="font-size:12px">${ms.label} &nbsp;·&nbsp; ${ms.dates}</span>`;
+    if (ms.np) h += `<span class="g-np">Needs Planning</span>`;
+    h += `</div>`;
+    h += `<div style="width:${CW}px;position:relative;height:28px">`;
+    h += `<div style="position:absolute;left:${bl}px;width:${bw}px;top:0;bottom:0;background:${ms.color};opacity:0.1"></div>`;
+    h += `<div style="position:absolute;left:${bl}px;top:0;bottom:0;width:3px;background:${ms.color}"></div>`;
+    for (let d=ms.s+14; d<=ms.e; d+=14) {
+      h += `<div style="position:absolute;left:${px(d)}px;top:4px;bottom:4px;width:1px;background:${ms.border}"></div>`;
+    }
+    h += `</div></div>`;
+
+    ms.features.forEach((f, i) => {
+      const flag = f.f || '';
+      const barL = px(f.s);
+      const barW = Math.max(f.d * S, 16);
+      const barColor = flag==='launch' ? '#dc2626' : ms.color;
+      const outlineCss = flag==='blocker' ? `outline:2px solid #dc2626;outline-offset:1px;` :
+                         flag==='risk'    ? `outline:2px solid #f59e0b;outline-offset:1px;` :
+                         flag==='compliance' ? `outline:2px dashed #7c3aed;outline-offset:1px;` :
+                         flag==='launch'  ? `outline:2px solid #dc2626;outline-offset:1px;` : '';
+      const flagBadge = flag==='blocker' ? `<span class="g-flag gf-b">BLOCK</span>` :
+                        flag==='risk'    ? `<span class="g-flag gf-r">RISK</span>` :
+                        flag==='compliance' ? `<span class="g-flag gf-c">COMPL</span>` : '';
+      const rowBg = i%2===0 ? 'white' : '#fafbfd';
+
+      h += `<div class="gantt-feat-row">`;
+      h += `<div class="gantt-feat-lbl" style="background:${rowBg}">${flagBadge}${f.n}</div>`;
+      h += `<div class="gantt-feat-track" style="background:${rowBg}">`;
+      h += `<div style="position:absolute;left:${bl}px;width:${bw}px;top:0;bottom:0;background:${ms.light};opacity:0.45"></div>`;
+      for (let d=ms.s+14; d<=ms.e; d+=14) {
+        h += `<div style="position:absolute;left:${px(d)}px;top:0;bottom:0;width:1px;background:${ms.border};opacity:0.4"></div>`;
+      }
+      h += `<div class="g-bar is-${flag}" style="left:${barL}px;width:${barW}px;background:${barColor};${outlineCss}" title="${f.n}">`;
+      if (barW > 45) h += `<span class="g-bar-label">${f.n}</span>`;
+      h += `</div>`;
+      h += `</div></div>`;
+    });
+  });
+
+  // Launch marker at Dec 31
+  h += `<div style="display:flex;border-top:3px solid #dc2626">`;
+  h += `<div style="width:240px;min-width:240px;padding:8px 14px;font-size:11px;font-weight:700;color:#dc2626;background:#fef2f2;position:sticky;left:0;z-index:2;border-right:1px solid #fca5a5">🚀 P-Cubed Pro NA Launch</div>`;
+  h += `<div style="width:${CW}px;position:relative;height:28px;background:#fef2f2">`;
+  h += `<div style="position:absolute;left:${px(274)}px;top:-3px;bottom:0;width:3px;background:#dc2626"></div>`;
+  h += `<div style="position:absolute;left:${px(274)+5}px;top:4px;font-size:9px;font-weight:700;color:#dc2626;white-space:nowrap">Dec 31, 2026 — P-10</div>`;
+  h += `</div></div>`;
+
+  document.getElementById('gantt-chart').innerHTML = h;
+}
+
+// ── Roadmap swimlane builder ──────────────────────────────────────────
+function buildRoadmap() {
+  // Timeline: Mar 15 → Dec 31, 2026
+  // Origin = Mar 15 (so PRD gate for MS-6 has room to the left)
+  const ORIGIN = new Date('2026-03-15');
+  const S = 7; // px per day
+
+  function daysFrom(dateStr) {
+    return Math.round((new Date(dateStr) - ORIGIN) / 86400000);
+  }
+  function px(d) { return d * S; }
+
+  const LANES = [
+    {
+      id:'ms6', short:'MS-6', label:'Milestone 6', sub:'Boundary-First Operations',
+      start:'2026-04-01', end:'2026-05-15', sprints:'Sprint 17–19',
+      color:'#3b82f6', light:'#dbeafe', dark:'#1d4ed8', border:'#93c5fd',
+      status:'active',
+      prdGate:{by:'Mar 18', items:[
+        {t:'PRD: RBAC Phase 0/1 — finalize scope', done:false},
+        {t:'PRD: Tenant Settings PS2 + RFR', done:false},
+        {t:'PRD: BM View Campaign v0.5', done:true},
+        {t:'PRD: Driving Sessions & AutoFOV v0.1', done:true},
+        {t:'TDD: Campaign Settings BE', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-01 RBAC & Multi-Tenancy Ph1','P-27 GIS Data Hub EU']},
+        {area:'Admin: Tenant', color:'#7c3aed', items:['A-T-05 Tenant Settings: PS2','A-T-06 Tenant Settings: RFR']},
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-02 Operator Settings: General']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-01 View Campaign (Map)','O-BM-06 View Driving Sessions (panel)','O-BM-12 AutoFOV pipeline','O-BM-13 AutoFOV panel','O-BM-16 Driving Session QA/QC','O-BM-17 Gaps pipeline','O-BM-18 Gaps panel']},
+      ]
+    },
+    {
+      id:'ms7', short:'MS-7', label:'Milestone 7', sub:'Driving Sessions Deep-Dive',
+      start:'2026-05-16', end:'2026-06-30', sprints:'Sprint 20–22',
+      color:'#8b5cf6', light:'#ede9fe', dark:'#6d28d9', border:'#c4b5fd',
+      status:'future',
+      prdGate:{by:'May 2', items:[
+        {t:'PRD: Operator Settings Driving Session', done:false},
+        {t:'PRD: BM Driving Sessions (map+table+tab)', done:false},
+        {t:'PRD: AutoFOV map overlay + metadata', done:false},
+        {t:'PRD: LISAs pipeline + panel + map', done:false},
+      ]},
+      groups:[
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-04 Operator Settings: Driving Session']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-07 View DS (map)','O-BM-08 View DS (table)','O-BM-09 View DS (tab)','O-BM-14 AutoFOV map','O-BM-15 AutoFOV metadata','O-BM-19 Gaps map','O-BM-22 Highlighted Assets: Gaps','O-BM-24 LISAs pipeline','O-BM-25 LISAs panel','O-BM-26 LISAs map']},
+      ]
+    },
+    {
+      id:'ms8', short:'MS-8', label:'Milestone 8', sub:'Staging, User Mgmt & Investigation Setup',
+      start:'2026-07-01', end:'2026-08-15', sprints:'Sprint 23–25',
+      color:'#f97316', light:'#ffedd5', dark:'#c2410c', border:'#fdba74',
+      status:'future',
+      prdGate:{by:'Jun 17', items:[
+        {t:'PRD: NA/EU Staging environment spec', done:false},
+        {t:'PRD: User Management finalize', done:false},
+        {t:'PRD: Investigation Components & Templates', done:false},
+        {t:'PRD: LISA PS2 Ranking reviewed', done:false},
+        {t:'PRD: Driver View v2 reviewed (for MS-9)', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-14 P-Cubed Pro NA Staging','P-15 P-Cubed Pro EU Staging','P-21 Centralized Logging','P-23 Dynamic User Manual']},
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-03 Operator Settings: Summary','A-O-05 Licensed Features']},
+        {area:'Admin: User', color:'#7c3aed', items:['A-U-01 User Management','A-U-02 User Settings: General']},
+        {area:'Admin: Investigation', color:'#7c3aed', items:['A-I-01 Investigation: Components','A-I-02 Investigation: Templates']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-20 Gaps table','O-BM-27 LISAs table','O-BM-30 LISA PS2 Ranking & Metadata']},
+        {area:'Hardware', color:'#059669', items:['H-01 Car Data Ingestion & Storage','H-02 PSA (in-car) Updates','H-03 Fleet Map: Map View']},
+      ]
+    },
+    {
+      id:'ms9', short:'MS-9', label:'Milestone 9', sub:'Boundary Results, Mobile & Fleet',
+      start:'2026-08-16', end:'2026-09-30', sprints:'Sprint 26–28',
+      color:'#10b981', light:'#d1fae5', dark:'#047857', border:'#6ee7b7',
+      status:'future',
+      prdGate:{by:'Aug 2', items:[
+        {t:'PRD: Historical Data Migration validated', done:false},
+        {t:'PRD: Internationalization Language + Units', done:false},
+        {t:'PRD: Boundary Results + Download', done:false},
+        {t:'PRD: Driver View Basic (M-DV-01)', done:false},
+        {t:'PRD: Mobile App PCP Integration', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-08 Product Analytics','P-18 Historical Data Migration','P-19 Internationalization: Language','P-20 Internationalization: Units']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-02 View Campaign Symbology','O-BM-21 Gap Metadata','O-BM-28 LISA Metadata','O-BM-29 Highlighted Assets: LISAs','O-BM-32 Boundary Results','O-BM-33 Download Boundary Results']},
+        {area:'Operator', color:'#0f766e', items:['O-01 Handheld Timeseries','O-06 Manual Report Labels']},
+        {area:'Hardware', color:'#059669', items:['H-07 Create System: Car','H-08 Create Peripherals: Car','H-09 Manage System: Car']},
+        {area:'Mobile', color:'#b45309', items:['M-DV-01 Driver View: Basic','M-App-01 Mobile App: PCP Integration']},
+      ]
+    },
+    {
+      id:'ms10', short:'MS-10', label:'Milestone 10', sub:'Investigations, Reports & Capture Mode',
+      start:'2026-10-01', end:'2026-11-15', sprints:'Sprint 29–31',
+      color:'#f59e0b', light:'#fef3c7', dark:'#b45309', border:'#fde68a',
+      status:'future',
+      prdGate:{by:'Sep 17', items:[
+        {t:'PRD: BM Investigation Assign & Results', done:false},
+        {t:'PRD: Manual Report Creation & Artifacts', done:false},
+        {t:'PRD: LISA/Gap Geocode', done:false},
+        {t:'PRD: Snap to Street', done:false},
+        {t:'PRD: Driver View Capture Mode (M-DV-02)', done:false},
+      ]},
+      groups:[
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-34 Assign LISAs for Inv.','O-BM-35 Assign Gaps for Inv.','O-BM-36 View & Assign Investigations','O-BM-37 Show Inv. Sessions','O-BM-38 Show Inv. Results','O-BM-39 Download Inv. Results']},
+        {area:'Operator', color:'#0f766e', items:['O-04 Manual Report Creation','O-05 Manual Report Artifacts','O-07 LISA/Gap Geocode','O-08 Snap to Street']},
+        {area:'Hardware', color:'#059669', items:['H-00 Handheld Data Ingestion & Storage','H-05 Observer View']},
+        {area:'Mobile', color:'#b45309', items:['M-DV-02 Driver View: Capture Mode']},
+      ]
+    },
+    {
+      id:'ms11', short:'MS-11', label:'Milestone 11', sub:'🚀 V1 LAUNCH — P-Cubed Pro',
+      start:'2026-11-16', end:'2026-12-31', sprints:'Sprint 32–34',
+      color:'#ef4444', light:'#fee2e2', dark:'#991b1b', border:'#fca5a5',
+      status:'launch',
+      prdGate:{by:'Nov 2', items:[
+        {t:'All E2E regression passed', done:false},
+        {t:'Pen test + security sign-off', done:false},
+        {t:'Go/No-Go reviewed by leadership', done:false},
+        {t:'Customer onboarding docs finalized', done:false},
+      ]},
+      groups:[
+        {area:'🚀 Launch', color:'#dc2626', items:['P-10 P-Cubed Pro NA V1 LAUNCH','P-11 P-Cubed Pro EU LAUNCH']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-42 Boundary Labels']},
+        {area:'Hardware', color:'#059669', items:['H-12 Sample Line Integrity Metrics','H-13 Anemometer Rotation Metrics']},
+        {area:'Data Explorer', color:'#6366f1', items:['I-DE-01 Data Explorer: Network']},
+      ]
+    },
+  ];
+
+  // ── Compute day offsets and lane heights ──────────────────────────
+  const LABEL_W = 170; // px, left sticky column
+  const ROW_H_BAR = 40; // height of the milestone bar strip
+  const FEAT_H = 20;    // height per feature row
+  const GATE_H = 14;    // top space for PRD gate flag
+  const PAD_BOT = 14;
+
+  LANES.forEach(ln => {
+    ln.sDay = daysFrom(ln.start);
+    ln.eDay = daysFrom(ln.end);
+    ln.gDay = ln.sDay - 14; // PRD gate = 2 weeks before
+    // flatten all feature items
+    ln.allFeatures = ln.groups.flatMap(g => g.items.map(it => ({text:it, color:g.color, area:g.area})));
+    ln.laneH = GATE_H + ROW_H_BAR + ln.allFeatures.length * FEAT_H + PAD_BOT;
+  });
+
+  const TOTAL_DAYS = daysFrom('2026-12-31') + 4;
+  const TW = px(TOTAL_DAYS);
+  const TODAY_DAY = daysFrom('2026-03-20');
+
+  // Month labels from Mar 15
+  const MONTHS = [
+    {label:'Mar',     d: daysFrom('2026-03-15'), span:17},
+    {label:'April',   d: daysFrom('2026-04-01'), span:30},
+    {label:'May',     d: daysFrom('2026-05-01'), span:31},
+    {label:'June',    d: daysFrom('2026-06-01'), span:30},
+    {label:'July',    d: daysFrom('2026-07-01'), span:31},
+    {label:'August',  d: daysFrom('2026-08-01'), span:31},
+    {label:'Sept',    d: daysFrom('2026-09-01'), span:30},
+    {label:'Oct',     d: daysFrom('2026-10-01'), span:31},
+    {label:'Nov',     d: daysFrom('2026-11-01'), span:30},
+    {label:'Dec',     d: daysFrom('2026-12-01'), span:31},
+  ];
+
+  let h = '';
+
+  // ── Outer wrapper ──
+  h += `<div class="sl-outer">`;
+  h += `<div class="sl-scroll">`;
+
+  // ── Month header row ──
+  h += `<div class="sl-header-row">`;
+  h += `<div class="sl-lhd">Milestone</div>`;
+  h += `<div class="sl-months-wrap" style="width:${TW}px">`;
+  MONTHS.forEach(m => {
+    h += `<div class="sl-month" style="left:${px(m.d)}px;width:${m.span*S}px">${m.label}</div>`;
+  });
+  // Week grid lines
+  for (let d=0; d<TOTAL_DAYS; d+=7) {
+    h += `<div class="sl-week-line" style="left:${px(d)}px"></div>`;
+  }
+  // TODAY marker in header
+  h += `<div class="sl-today-hd" style="left:${px(TODAY_DAY)}px"><span class="sl-today-hd-label">TODAY</span></div>`;
+  h += `</div></div>`;
+
+  // ── Swim lanes ──
+  LANES.forEach(ln => {
+    const barL   = px(ln.sDay);
+    const barW   = px(ln.eDay - ln.sDay + 1);
+    const gateL  = px(ln.gDay);
+    const statusLabel = ln.status==='active' ? '⚡ Active' : ln.status==='launch' ? '🚀 Launch' : '⏳ Planned';
+    const statusCls   = ln.status==='active' ? 'sl-pill-active' : ln.status==='launch' ? 'sl-pill-launch' : 'sl-pill-future';
+
+    h += `<div class="sl-lane" style="height:${ln.laneH}px">`;
+
+    // ── Left label ──
+    h += `<div class="sl-lane-lbl" style="border-left:4px solid ${ln.color}">`;
+    h += `<div class="sl-lbl-ms" style="color:${ln.dark}">${ln.short}</div>`;
+    h += `<div class="sl-lbl-name">${ln.label}</div>`;
+    h += `<div class="sl-lbl-sub">${ln.sub}</div>`;
+    h += `<div class="sl-lbl-dates" style="color:${ln.dark}">${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} → ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>`;
+    h += `<div class="sl-lbl-sprints">${ln.sprints}</div>`;
+    h += `<div class="sl-status-pill ${statusCls}">${statusLabel}</div>`;
+    h += `</div>`;
+
+    // ── Track area ──
+    h += `<div class="sl-track" style="width:${TW}px;height:${ln.laneH}px">`;
+
+    // Alternating month bands
+    MONTHS.forEach((m,i) => {
+      h += `<div style="position:absolute;top:0;bottom:0;left:${px(m.d)}px;width:${m.span*S}px;background:${i%2===0?'rgba(0,0,0,.018)':'transparent'}"></div>`;
+    });
+
+    // Week grid lines
+    for (let d=0; d<TOTAL_DAYS; d+=7) {
+      h += `<div style="position:absolute;top:0;bottom:0;left:${px(d)}px;width:1px;background:rgba(0,0,0,.04)"></div>`;
+    }
+
+    // MS milestone bar (at top)
+    const barTop = GATE_H;
+    h += `<div class="sl-ms-bar" style="left:${barL}px;width:${barW}px;top:${barTop}px;height:${ROW_H_BAR}px;background:linear-gradient(135deg,${ln.dark},${ln.color})">`;
+    h += `<span class="sl-bar-label">${ln.short} &nbsp;·&nbsp; ${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})} &nbsp;·&nbsp; ${ln.sprints}</span>`;
+    h += `</div>`;
+
+    // PRD gate marker (vertical flag, 2 weeks before start)
+    const gateItems = ln.prdGate.items;
+    const gateDoneCount = gateItems.filter(g=>g.done).length;
+    const allDone = gateDoneCount === gateItems.length;
+    h += `<div class="sl-gate" style="left:${gateL}px;height:${ln.laneH}px">`;
+    h += `<div class="sl-gate-flag" style="background:${allDone?'#16a34a':'#f59e0b'};color:white">`;
+    h += `📋 PRD Gate<br><span style="font-size:9px;font-weight:500">by ${ln.prdGate.by} · ${gateDoneCount}/${gateItems.length} done</span>`;
+    h += `</div>`;
+    // Gate tooltip on hover
+    h += `<div class="sl-gate-tooltip">`;
+    h += `<div style="font-weight:700;margin-bottom:6px;font-size:11px">PRD Gate — ${ln.label}</div>`;
+    gateItems.forEach(g => {
+      h += `<div style="display:flex;align-items:flex-start;gap:5px;margin-bottom:4px;font-size:11px">`;
+      h += `<span style="color:${g.done?'#16a34a':'#94a3b8'};font-weight:700;flex-shrink:0">${g.done?'✓':'○'}</span>`;
+      h += `<span style="color:${g.done?'#064e3b':'#374151'}">${g.t}</span>`;
+      h += `</div>`;
+    });
+    h += `</div>`;
+    h += `</div>`;
+
+    // Features listed vertically below the bar
+    const featTop = GATE_H + ROW_H_BAR + 2;
+    let prevArea = '';
+    ln.allFeatures.forEach((feat, fi) => {
+      const y = featTop + fi * FEAT_H;
+      const isAreaChange = feat.area !== prevArea;
+      prevArea = feat.area;
+      h += `<div class="sl-feat-row" style="top:${y}px;left:${barL}px;width:${barW}px">`;
+      h += `<span class="sl-feat-dot" style="background:${feat.color}"></span>`;
+      h += `<span class="sl-feat-text" style="color:${feat.color}">${feat.text}</span>`;
+      h += `</div>`;
+    });
+
+    // TODAY line
+    if (TODAY_DAY >= 0 && TODAY_DAY <= TOTAL_DAYS) {
+      h += `<div class="sl-today-line" style="left:${px(TODAY_DAY)}px;height:${ln.laneH}px"></div>`;
+    }
+
+    h += `</div>`; // sl-track
+    h += `</div>`; // sl-lane
+  });
+
+  // Launch footer bar at bottom
+  const launchL = px(daysFrom('2026-12-31'));
+  h += `<div class="sl-launch-row">`;
+  h += `<div class="sl-lhd" style="background:#991b1b;color:white;font-weight:800;font-size:13px">🚀 NA LAUNCH</div>`;
+  h += `<div style="width:${TW}px;position:relative;height:36px;background:#fef2f2">`;
+  h += `<div style="position:absolute;left:${launchL}px;top:0;bottom:0;width:3px;background:#dc2626"></div>`;
+  h += `<div style="position:absolute;left:${launchL+6}px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:#dc2626;white-space:nowrap">🚀 P-Cubed Pro NA V1 — Dec 31, 2026</div>`;
+  h += `</div></div>`;
+
+  h += `</div>`; // sl-scroll
+  h += `</div>`; // sl-outer
+
+  document.getElementById('roadmap-flow').innerHTML = h;
+}
+
+// ── PRD → Milestone Map builder ───────────────────────────────────────
+function buildPrdMap(initialFilter) {
+  // Status: 'ready'=exists+complete, 'draft'=exists but incomplete, 'wip'=being written, 'missing'=no doc
+  // needyBy = date PRD must be finalized (2 weeks before MS start)
+  const PRDS = [
+    // ── MS-6 (needed by Mar 18) ─────────────────────────────────────
+    {
+      name:'BM: View Campaign & Operator Boundaries',
+      ref:'PRD-Boundary-Management-View-Campaign-v0.5',
+      status:'draft', owner:'Jacqueline Hoege',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['O-BM-01 View Campaign (Map)'],
+      }
+    },
+    {
+      name:'Driving Sessions & AutoFOV',
+      ref:'PRD-Driving-Sessions-AutoFOV-v0.1',
+      status:'draft', owner:'Jacob Cansler',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['O-BM-06 View DS (panel)','O-BM-12 AutoFOV pipeline','O-BM-13 AutoFOV panel','O-BM-16 DS QA/QC'],
+        'MS-7':['O-BM-07 View DS (map)','O-BM-08 View DS (table)','O-BM-09 View DS (tab)','O-BM-14 AutoFOV map','O-BM-15 AutoFOV metadata'],
+      }
+    },
+    {
+      name:'RBAC & Multi-Tenancy Phase 1',
+      ref:'PRD-RBAC (no dedicated doc yet)',
+      status:'missing', owner:'Amin Ghiasi',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['P-01 RBAC & Multi-Tenancy Phase 1'],
+      }
+    },
+    {
+      name:'GIS Data Hub',
+      ref:'GIS-Data-for-P-Cubed-Pro-Requirements.md',
+      status:'ready', owner:'Abhishek Jain',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['P-27 GIS Data Hub EU'],
+        'MS-8':['P-14 NA Staging','P-15 EU Staging'],
+      }
+    },
+    {
+      name:'Tenant Settings: PS2 & RFR',
+      ref:'PRD-Settings.md (partial)',
+      status:'wip', owner:'Shriya Singh',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['A-T-05 Tenant Settings: PS2','A-T-06 Tenant Settings: RFR'],
+      }
+    },
+    {
+      name:'Operator Settings: General',
+      ref:'PRD-Settings.md (partial)',
+      status:'wip', owner:'Shriya Singh',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['A-O-02 Operator Settings: General'],
+        'MS-8':['A-O-03 Operator Settings: Summary','A-O-05 Licensed Features'],
+      }
+    },
+    {
+      name:'Gaps Data Pipeline',
+      ref:'No dedicated PRD yet',
+      status:'missing', owner:'Abhishek Jain',
+      needBy:{ms:'MS-6', date:'Mar 18'},
+      ms:{
+        'MS-6':['O-BM-17 Gaps pipeline','O-BM-18 Gaps panel'],
+        'MS-7':['O-BM-19 Gaps map','O-BM-22 Highlighted Assets: Gaps'],
+        'MS-8':['O-BM-20 Gaps table'],
+      }
+    },
+    // ── MS-7 (needed by May 2) ──────────────────────────────────────
+    {
+      name:'LISAs Data Pipeline',
+      ref:'Auto Data Pipeline: LISAs (PH-119 epic)',
+      status:'wip', owner:'Abhishek Jain',
+      needBy:{ms:'MS-7', date:'May 2'},
+      ms:{
+        'MS-7':['O-BM-24 LISAs pipeline','O-BM-25 LISAs panel','O-BM-26 LISAs map'],
+        'MS-8':['O-BM-27 LISAs table','O-BM-30 LISA PS2 Ranking'],
+        'MS-9':['O-BM-02 View Campaign Symbology','O-BM-21 Gap Metadata','O-BM-28 LISA Metadata','O-BM-29 Highlighted Assets: LISAs'],
+        'MS-10':['O-BM-34 Assign LISAs for Inv.','O-BM-35 Assign Gaps for Inv.'],
+      }
+    },
+    {
+      name:'Operator Settings: Driving Session',
+      ref:'PRD-Settings.md (extension needed)',
+      status:'missing', owner:'Shriya Singh',
+      needBy:{ms:'MS-7', date:'May 2'},
+      ms:{
+        'MS-7':['A-O-04 Operator Settings: Driving Session'],
+      }
+    },
+    // ── MS-8 (needed by Jun 17) ─────────────────────────────────────
+    {
+      name:'User Management',
+      ref:'No dedicated PRD yet',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-8', date:'Jun 17'},
+      ms:{
+        'MS-8':['A-U-01 User Management','A-U-02 User Settings: General'],
+      }
+    },
+    {
+      name:'Investigation: Components & Templates',
+      ref:'Referenced in PRD-P-Cubed-Pro.md only',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-8', date:'Jun 17'},
+      ms:{
+        'MS-8':['A-I-01 Investigation: Components','A-I-02 Investigation: Templates'],
+        'MS-10':['O-BM-36 View & Assign Investigations','O-BM-37 Show Inv. Sessions','O-BM-38 Show Inv. Results','O-BM-39 Download Inv. Results'],
+      }
+    },
+    {
+      name:'Centralized Logging & Dynamic User Manual',
+      ref:'No dedicated PRD',
+      status:'missing', owner:'Amin Ghiasi',
+      needBy:{ms:'MS-8', date:'Jun 17'},
+      ms:{
+        'MS-8':['P-21 Centralized Logging','P-23 Dynamic User Manual'],
+      }
+    },
+    {
+      name:'Hardware: Car Ingestion, Fleet & PSA',
+      ref:'No dedicated PRD — H-series not yet specified',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-8', date:'Jun 17'},
+      ms:{
+        'MS-8':['H-01 Car Data Ingestion','H-02 PSA (in-car) Updates','H-03 Fleet Map: Map View'],
+        'MS-9':['H-07 Create System: Car','H-08 Create Peripherals: Car','H-09 Manage System: Car'],
+        'MS-10':['H-00 Handheld Data Ingestion & Storage','H-05 Observer View'],
+      }
+    },
+    // ── MS-9 (needed by Aug 2) ──────────────────────────────────────
+    {
+      name:'Historical Data Migration',
+      ref:'GIS-Data-for-P-Cubed-Pro-Requirements.md (partial)',
+      status:'draft', owner:'Dheeraj Gambhir',
+      needBy:{ms:'MS-9', date:'Aug 2'},
+      ms:{
+        'MS-9':['P-18 Historical Data Migration'],
+      }
+    },
+    {
+      name:'Internationalization: Language & Units',
+      ref:'PRD-Phase1-Internationalization (Tech Refinement)',
+      status:'wip', owner:'Shriya Singh',
+      needBy:{ms:'MS-9', date:'Aug 2'},
+      ms:{
+        'MS-9':['P-19 Internationalization: Language','P-20 Internationalization: Units'],
+      }
+    },
+    {
+      name:'LISA Boundary Results',
+      ref:'PRD-LISA-Boundary-Results-v0.1',
+      status:'draft', owner:'Jacob Cansler',
+      needBy:{ms:'MS-9', date:'Aug 2'},
+      ms:{
+        'MS-9':['O-BM-32 Boundary Results','O-BM-33 Download Boundary Results'],
+      }
+    },
+    {
+      name:'Product Analytics',
+      ref:'No dedicated PRD',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-9', date:'Aug 2'},
+      ms:{
+        'MS-9':['P-08 Product Analytics'],
+      }
+    },
+    {
+      name:'Driver View v2 (Basic + Capture Mode)',
+      ref:'PRD-Driver-View-v2.md (draft v0.1)',
+      status:'draft', owner:'Jacqueline Hoege',
+      needBy:{ms:'MS-9', date:'Aug 2'},
+      ms:{
+        'MS-9':['M-DV-01 Driver View: Basic'],
+        'MS-10':['M-DV-02 Driver View: Capture Mode'],
+      }
+    },
+    {
+      name:'Mobile App: PCP Integration',
+      ref:'No dedicated PRD',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-9', date:'Aug 2'},
+      ms:{
+        'MS-9':['M-App-01 Mobile App: PCP Integration'],
+      }
+    },
+    // ── MS-10 (needed by Sep 17) ────────────────────────────────────
+    {
+      name:'BM: Investigation Assign & Results',
+      ref:'PRD-Operations-Boundary-Management.md (partial)',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-10', date:'Sep 17'},
+      ms:{
+        'MS-10':['O-BM-34 Assign LISAs for Inv.','O-BM-35 Assign Gaps for Inv.','O-BM-36 View & Assign Investigations','O-BM-37 Show Inv. Sessions','O-BM-38 Show Inv. Results','O-BM-39 Download Inv. Results'],
+      }
+    },
+    {
+      name:'Manual Report Creation & Artifacts',
+      ref:'No dedicated PRD',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-10', date:'Sep 17'},
+      ms:{
+        'MS-10':['O-04 Manual Report Creation','O-05 Manual Report Artifacts','O-06 Manual Report Labels'],
+      }
+    },
+    {
+      name:'Geocode & Snap to Street',
+      ref:'Referenced in PRD-P-Cubed-Pro.md only',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-10', date:'Sep 17'},
+      ms:{
+        'MS-10':['O-07 LISA/Gap Geocode','O-08 Driving Session: Snap to Street'],
+      }
+    },
+    // ── MS-11 (needed by Nov 2) ─────────────────────────────────────
+    {
+      name:'Go/No-Go & Launch Readiness',
+      ref:'Cutover Strategy doc (mostly empty)',
+      status:'missing', owner:'Arpan Roy Chowdhury',
+      needBy:{ms:'MS-11', date:'Nov 2'},
+      ms:{
+        'MS-11':['P-10 P-Cubed Pro NA V1 LAUNCH','P-11 P-Cubed Pro EU LAUNCH'],
+      }
+    },
+    {
+      name:'Boundary Labels',
+      ref:'No dedicated PRD',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-11', date:'Nov 2'},
+      ms:{
+        'MS-11':['O-BM-42 Boundary Labels'],
+      }
+    },
+    {
+      name:'Hardware: Sample Line & Anemometer Metrics',
+      ref:'No dedicated PRD — H-series not yet specified',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-11', date:'Nov 2'},
+      ms:{
+        'MS-11':['H-12 Sample Line Integrity Metrics','H-13 Anemometer Rotation Metrics'],
+      }
+    },
+    {
+      name:'Data Explorer: Network',
+      ref:'No dedicated PRD',
+      status:'missing', owner:'Unassigned',
+      needBy:{ms:'MS-11', date:'Nov 2'},
+      ms:{
+        'MS-11':['I-DE-01 Data Explorer: Network'],
+      }
+    },
+  ];
+
+  const MS_ORDER = ['MS-6','MS-7','MS-8','MS-9','MS-10','MS-11'];
+  const MS_COLORS = {'MS-6':'#3b82f6','MS-7':'#8b5cf6','MS-8':'#f97316','MS-9':'#10b981','MS-10':'#f59e0b','MS-11':'#ef4444'};
+  const MS_DATES  = {'MS-6':'Apr 1','MS-7':'May 16','MS-8':'Jul 1','MS-9':'Aug 16','MS-10':'Oct 1','MS-11':'Nov 16'};
+
+  const statusMeta = {
+    ready:  {label:'✓ Ready',    cls:'pm-s-ready',   desc:'Complete & reviewed'},
+    draft:  {label:'~ Draft',    cls:'pm-s-draft',   desc:'Exists but incomplete'},
+    wip:    {label:'⟳ In Prog.', cls:'pm-s-wip',     desc:'Being written now'},
+    missing:{label:'✗ Missing',  cls:'pm-s-missing', desc:'No document exists'},
+  };
+
+  // Stats
+  const counts = {ready:0, draft:0, wip:0, missing:0};
+  PRDS.forEach(p => counts[p.status]++);
+  const msCount = PRDS.reduce((acc, p) => { Object.keys(p.ms).forEach(m => { if (!acc[m]) acc[m]=0; acc[m]++; }); return acc; }, {});
+
+  let activeFilter = 'all';
+
+  function render(filter) {
+    const filtered = filter==='all' ? PRDS : PRDS.filter(p => p.ms[filter]);
+    let t = '';
+
+    // Stat cards
+    t += `<div class="pm-stats">`;
+    t += `<div class="pm-stat" style="--c:#dc2626"><div class="pm-stat-n">${counts.missing}</div><div class="pm-stat-l">Missing PRDs<br>(no doc exists)</div></div>`;
+    t += `<div class="pm-stat" style="--c:#f59e0b"><div class="pm-stat-n">${counts.draft+counts.wip}</div><div class="pm-stat-l">Draft / In Prog.<br>(incomplete)</div></div>`;
+    t += `<div class="pm-stat" style="--c:#16a34a"><div class="pm-stat-n">${counts.ready}</div><div class="pm-stat-l">Ready<br>(complete)</div></div>`;
+    t += `<div class="pm-stat" style="--c:#1d4ed8"><div class="pm-stat-n">${PRDS.length}</div><div class="pm-stat-l">Total PRDs<br>required for V1</div></div>`;
+    t += `</div>`;
+
+    // Urgency alert
+    const urgentMissing = PRDS.filter(p => p.needBy.ms==='MS-6' && p.status==='missing');
+    if (urgentMissing.length && (filter==='all'||filter==='MS-6')) {
+      t += `<div class="alert err" style="margin-bottom:16px;border-radius:10px;padding:12px 16px;font-size:12px">`;
+      t += `<span class="alert-icon">🚨</span><div><strong>${urgentMissing.length} PRDs missing and needed by Mar 18 for MS-6:</strong> ${urgentMissing.map(p=>`<em>${p.name}</em>`).join(', ')}. These are blocking MS-6 sprint planning.</div>`;
+      t += `</div>`;
+    }
+
+    // Filter buttons
+    t += `<div class="pm-filters">`;
+    t += `<span style="font-size:11px;font-weight:700;color:#64748b;margin-right:8px">Filter by milestone:</span>`;
+    ['all',...MS_ORDER].forEach(m => {
+      const isActive = m===filter;
+      const col = m==='all' ? '#475569' : MS_COLORS[m];
+      const cnt = m==='all' ? PRDS.length : (msCount[m]||0);
+      t += `<button class="pm-filter-btn ${isActive?'pm-filter-active':''}" style="${isActive?`background:${col};color:white;border-color:${col}`:`border-color:${col};color:${col}`}" onclick="buildPrdMap('${m}')">${m==='all'?'All':m} <span class="pm-filter-cnt">${cnt}</span></button>`;
+    });
+    t += `</div>`;
+
+    // Table
+    t += `<div class="pm-table-wrap">`;
+    t += `<table class="pm-table">`;
+    t += `<thead><tr>`;
+    t += `<th class="pm-th-prd">PRD Document</th>`;
+    t += `<th class="pm-th-stat">Status</th>`;
+    t += `<th class="pm-th-own">Owner</th>`;
+    t += `<th class="pm-th-need">Must Ready By</th>`;
+    MS_ORDER.forEach(m => {
+      t += `<th class="pm-th-ms" style="border-top:3px solid ${MS_COLORS[m]}">${m}<div style="font-size:9px;font-weight:400;opacity:.8">${MS_DATES[m]}</div></th>`;
+    });
+    t += `</tr></thead><tbody>`;
+
+    filtered.forEach((p, idx) => {
+      const sm = statusMeta[p.status];
+      const isUrgent = p.needBy.ms==='MS-6' && (p.status==='missing'||p.status==='wip');
+      const rowBg = idx%2===0 ? 'white' : '#fafbfd';
+      t += `<tr style="background:${rowBg}${isUrgent?';border-left:3px solid #dc2626':''}" ${isUrgent?'class="pm-urgent-row"':''}>`;
+      t += `<td class="pm-td-prd">`;
+      t += `<div class="pm-prd-name">${isUrgent?'🚨 ':''}<strong>${p.name}</strong></div>`;
+      t += `<div class="pm-prd-ref">${p.ref}</div>`;
+      t += `</td>`;
+      t += `<td class="pm-td-stat"><span class="pm-status ${sm.cls}" title="${sm.desc}">${sm.label}</span></td>`;
+      t += `<td class="pm-td-own" style="font-size:11px;color:#475569">${p.owner}</td>`;
+      t += `<td class="pm-td-need">`;
+      t += `<div class="pm-need-ms" style="color:${MS_COLORS[p.needBy.ms]}">${p.needBy.ms}</div>`;
+      t += `<div class="pm-need-date">${p.needBy.date}</div>`;
+      t += `</td>`;
+      MS_ORDER.forEach(m => {
+        const feats = p.ms[m];
+        t += `<td class="pm-td-ms" style="background:${feats?MS_COLORS[m]+'0d':'transparent'}">`;
+        if (feats) {
+          t += `<div class="pm-ms-dot" style="background:${MS_COLORS[m]}"></div>`;
+          feats.forEach(f => { t += `<div class="pm-feat-chip" style="color:${MS_COLORS[m]}">${f}</div>`; });
+        }
+        t += `</td>`;
+      });
+      t += `</tr>`;
+    });
+
+    t += `</tbody></table></div>`;
+
+    // Legend
+    t += `<div class="pm-legend">`;
+    Object.entries(statusMeta).forEach(([k,v]) => {
+      t += `<div class="pm-leg-item"><span class="pm-status ${v.cls}">${v.label}</span><span style="font-size:11px;color:#64748b">${v.desc}</span></div>`;
+    });
+    t += `</div>`;
+
+    document.getElementById('prdmap-content').innerHTML = t;
+  }
+
+  // Allow re-filtering via filter buttons
+  window.buildPrdMap = render;
+  render(initialFilter || 'all');
+}
+
+function toggleMs(id) {
+  const section = document.getElementById(id);
+  const body = section.querySelector('.ms-body');
+  const isCollapsed = section.classList.toggle('ms-collapsed');
+  body.classList.toggle('ms-collapsed', isCollapsed);
+}
+</script>
+</body>
+</html>

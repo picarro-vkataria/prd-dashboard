@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P-Cubed Pro — PRD Status Overview</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* === SHELL LAYOUT === */
+    html,body{height:100%;overflow:hidden}
+    body{display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a2e}
+
+    /* === HEADER === */
+    .header{height:60px;min-height:60px;flex-shrink:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 24px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .header-brand{display:flex;align-items:center;gap:14px}
+    .header-logo{font-size:15px;font-weight:900;background:#e43f5a;color:white;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;letter-spacing:-1px;flex-shrink:0}
+    .header-brand h1{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap}
+    .header-brand .subtitle{font-size:11px;color:#94a3b8;margin-top:2px;white-space:nowrap}
+    .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .badge{display:inline-block;background:#e43f5a;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+    .header-date{font-size:11px;color:#94a3b8;white-space:nowrap}
+
+    /* === BODY SHELL === */
+    .shell{display:flex;flex:1;overflow:hidden}
+
+    /* === SIDEBAR === */
+    .sidebar{width:220px;min-width:220px;background:#0f1c33;display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease,min-width .25s ease;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06)}
+    .sb-section-label{font-size:9px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.8px;padding:16px 16px 6px;white-space:nowrap;overflow:hidden;transition:opacity .2s}
+    .sb-nav{list-style:none;padding:4px 0;flex:1}
+    .sb-item{position:relative}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 14px;color:#94a3b8;text-decoration:none;font-size:12px;font-weight:600;border-radius:8px;margin:1px 8px;transition:all .15s;white-space:nowrap;overflow:hidden}
+    .sb-link:hover{background:rgba(255,255,255,.07);color:#e2e8f0}
+    .sb-item.active>.sb-link{background:rgba(59,130,246,.15);color:#60a5fa}
+    .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+    .sb-label{transition:opacity .15s;overflow:hidden;white-space:nowrap}
+    .sb-sub{list-style:none;margin:2px 8px 6px 44px;overflow:hidden}
+    .sb-sub-btn{display:block;width:100%;text-align:left;padding:5px 10px;font-size:11px;color:#475569;background:none;border:none;border-left:2px solid transparent;cursor:pointer;border-radius:0 6px 6px 0;font-weight:500;transition:all .15s;white-space:nowrap}
+    .sb-sub-btn:hover{color:#94a3b8;background:rgba(255,255,255,.04)}
+    .sb-sub-btn.active{color:#93c5fd;border-left-color:#3b82f6;background:rgba(59,130,246,.08);font-weight:600}
+
+    /* === MAIN CONTENT === */
+    .main{flex:1;overflow-y:auto;background:#f0f2f5;display:flex;flex-direction:column}
+    .main-inner{flex:1;max-width:1400px;margin:0 auto;padding:28px;width:100%}
+
+    /* === INNER TABS (keep existing) === */
+    .inner-tab-nav{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid #e2e8f0}
+    .inner-tab-btn{padding:10px 22px;font-size:12px;font-weight:600;color:#64748b;background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:all .15s;white-space:nowrap}
+    .inner-tab-btn.active{color:#0f3460;border-bottom-color:#0f3460;background:#f8fafc}
+    .inner-tab-btn:hover:not(.active){color:#374151;background:#f8fafc}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    /* ── Stat cards ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border-top: 4px solid var(--color);
+    }
+    .stat-card .num { font-size: 32px; font-weight: 700; color: var(--color); line-height: 1; }
+    .stat-card .label { font-size: 11px; color: #64748b; margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1.3; }
+
+    /* ── Charts row ── */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 20px;
+    }
+    .chart-wrap { position: relative; height: 240px; display: flex; align-items: center; justify-content: center; }
+    .donut-center {
+      position: absolute;
+      text-align: center;
+      pointer-events: none;
+    }
+    .donut-center .big { font-size: 34px; font-weight: 700; color: #1a1a2e; }
+    .donut-center .small { font-size: 11px; color: #94a3b8; font-weight: 500; }
+
+    /* ── Legend ── */
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; justify-content: center; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── Table ── */
+    .table-card { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .table-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .filter-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid #e2e8f0;
+      background: white;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #64748b;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--c); background: var(--c); color: white; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    tbody tr { border-bottom: 1px solid #f8fafc; transition: background 0.1s; }
+    tbody tr:hover { background: #f8fafc; }
+    tbody td { padding: 11px 14px; vertical-align: middle; }
+    .td-num { color: #94a3b8; font-weight: 600; width: 40px; }
+    .td-topic { font-weight: 500; color: #1e293b; }
+    .td-area { color: #64748b; font-size: 12px; }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* status colors */
+    .s-reviewed   { background: #dcfce7; color: #15803d; }
+    .s-ready      { background: #dbeafe; color: #1d4ed8; }
+    .s-draft      { background: #fef9c3; color: #b45309; }
+    .s-notstarted { background: #fee2e2; color: #dc2626; }
+    .s-covered    { background: #f3e8ff; color: #7c3aed; }
+    .s-partial    { background: #ffe4e6; color: #be123c; }
+
+    /* ── Group header rows ── */
+    .group-row td {
+      background: #f8fafc;
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 8px 14px;
+      border-bottom: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* hidden rows for filter */
+    tr.hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">P³</div>
+    <div>
+      <h1>P-Cubed Pro · PRD Status</h1>
+      <div class="subtitle">Project Horizon | 41 PRD Topics · 8 Product Areas</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge">Project Horizon</span>
+    <span class="header-date">Mar 20, 2026 · Confidential</span>
+  </div>
+</div>
+
+<div class="shell">
+
+<nav class="sidebar" id="sidebar">
+  <p class="sb-section-label">Planning Suite</p>
+  <ul class="sb-nav">
+    <li class="sb-item active">
+      <a href="prd-status.html" class="sb-link"><span class="sb-icon">📊</span><span class="sb-label">PRD Status</span></a>
+    </li>
+    <li class="sb-item">
+      <a href="delivery-plan.html" class="sb-link"><span class="sb-icon">🗓</span><span class="sb-label">Delivery Plan</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='delivery-plan.html'">📋 Delivery Plan</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='delivery-plan.html'">🔴 TODO · Next 10 Days</button></li>
+      </ul>
+    </li>
+    <li class="sb-item">
+      <a href="milestone-details.html" class="sb-link"><span class="sb-icon">🔍</span><span class="sb-label">Milestone Deep Plan</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='milestone-details.html'">📋 Milestone Details</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='milestone-details.html'">📅 Gantt Chart</button></li>
+      </ul>
+    </li>
+    <li class="sb-item">
+      <a href="release-ops.html" class="sb-link"><span class="sb-icon">⚙️</span><span class="sb-label">Release Ops</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">📊 Sprint Capacity</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">✅ Go / No-Go</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">👥 RACI Matrix</button></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <!-- ── STAT CARDS ── -->
+  <div class="stat-grid">
+    <div class="stat-card" style="--color:#15803d">
+      <div class="num">19</div>
+      <div class="label">Reviewed<br>with Team</div>
+    </div>
+    <div class="stat-card" style="--color:#1d4ed8">
+      <div class="num">6</div>
+      <div class="label">Ready for<br>Review</div>
+    </div>
+    <div class="stat-card" style="--color:#b45309">
+      <div class="num">2</div>
+      <div class="label">Draft<br>&nbsp;</div>
+    </div>
+    <div class="stat-card" style="--color:#dc2626">
+      <div class="num">12</div>
+      <div class="label">Not<br>Started</div>
+    </div>
+    <div class="stat-card" style="--color:#7c3aed">
+      <div class="num">1</div>
+      <div class="label">Covered<br>Elsewhere</div>
+    </div>
+    <div class="stat-card" style="--color:#be123c">
+      <div class="num">1</div>
+      <div class="label">Partial /<br>Merged</div>
+    </div>
+  </div>
+
+  <!-- ── CHARTS ROW ── -->
+  <div class="charts-row">
+
+    <!-- Donut -->
+    <div class="card">
+      <div class="card-title">PRD Completion Breakdown</div>
+      <div class="chart-wrap">
+        <canvas id="donutChart"></canvas>
+        <div class="donut-center">
+          <div class="big">41</div>
+          <div class="small">Topics Total</div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> Reviewed (19)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div> Ready (6)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div> Draft (2)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div> Not Started (12)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div> Covered (1)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#be123c"></div> Partial (1)</div>
+      </div>
+    </div>
+
+    <!-- Bar by product area -->
+    <div class="card">
+      <div class="card-title">Status by Product Area</div>
+      <div class="chart-wrap" style="height:260px">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── TABLE ── -->
+  <div class="table-card">
+    <div class="table-header-row">
+      <div class="card-title" style="margin-bottom:0">All 41 PRD Topics</div>
+      <div class="filter-btns">
+        <button class="filter-btn active" style="--c:#64748b" onclick="filterTable('all', this)">All</button>
+        <button class="filter-btn" style="--c:#15803d" onclick="filterTable('reviewed', this)">Reviewed</button>
+        <button class="filter-btn" style="--c:#1d4ed8" onclick="filterTable('ready', this)">Ready</button>
+        <button class="filter-btn" style="--c:#b45309" onclick="filterTable('draft', this)">Draft</button>
+        <button class="filter-btn" style="--c:#dc2626" onclick="filterTable('notstarted', this)">Not Started</button>
+      </div>
+    </div>
+
+    <table id="prdTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>PRD Topic</th>
+          <th>Product Area</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- GROUP: Access & Platform -->
+        <tr class="group-row"><td colspan="4">Access &amp; Platform</td></tr>
+        <tr data-status="reviewed">
+          <td class="td-num">1</td>
+          <td class="td-topic">RBAC and Tenancy</td>
+          <td class="td-area">Access &amp; Platform</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="ready">
+          <td class="td-num">2</td>
+          <td class="td-topic">Sign on and Authentication</td>
+          <td class="td-area">Access &amp; Platform</td>
+          <td><span class="status-badge s-ready">Ready for Review</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">3</td>
+          <td class="td-topic">Settings</td>
+          <td class="td-area">Access &amp; Platform</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="ready">
+          <td class="td-num">4</td>
+          <td class="td-topic">Subcontractors &amp; Service</td>
+          <td class="td-area">Access &amp; Platform</td>
+          <td><span class="status-badge s-ready">Ready for Review</span></td>
+        </tr>
+
+        <!-- GROUP: Tenant Onboarding -->
+        <tr class="group-row"><td colspan="4">Tenant Onboarding</td></tr>
+        <tr data-status="covered">
+          <td class="td-num">5</td>
+          <td class="td-topic">Obtaining Customer GIS</td>
+          <td class="td-area">Tenant Onboarding</td>
+          <td><span class="status-badge s-covered">Data Hub — Covered</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">6</td>
+          <td class="td-topic">Migrating Historical P-Cubed Data</td>
+          <td class="td-area">Tenant Onboarding</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">7</td>
+          <td class="td-topic">Driving Campaigns</td>
+          <td class="td-area">Tenant Onboarding</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">8</td>
+          <td class="td-topic">Creating / Editing a Campaign</td>
+          <td class="td-area">Tenant Onboarding</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+
+        <!-- GROUP: Driving & Data Collection -->
+        <tr class="group-row"><td colspan="4">Driving &amp; Data Collection</td></tr>
+        <tr data-status="reviewed">
+          <td class="td-num">9</td>
+          <td class="td-topic">Boundary Management: Driving Assignment</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="ready">
+          <td class="td-num">10</td>
+          <td class="td-topic">Driver View</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-ready">Ready for Review</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">11</td>
+          <td class="td-topic">Driving Sessions with No Assignment</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="partial">
+          <td class="td-num">12</td>
+          <td class="td-topic">Snap to Street</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-partial">Part of Driving Session</span></td>
+        </tr>
+        <tr data-status="ready">
+          <td class="td-num">13</td>
+          <td class="td-topic">Capture Mode</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-ready">Ready for Review</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">14</td>
+          <td class="td-topic">Driving Sessions and Metadata</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">15</td>
+          <td class="td-topic">Observer View (Live)</td>
+          <td class="td-area">Driving &amp; Data Collection</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+
+        <!-- GROUP: Hardware -->
+        <tr class="group-row"><td colspan="4">Hardware &amp; Fleet</td></tr>
+        <tr data-status="ready">
+          <td class="td-num">16</td>
+          <td class="td-topic">Hardware: Fleet Management</td>
+          <td class="td-area">Hardware &amp; Fleet</td>
+          <td><span class="status-badge s-ready">Ready for Review</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">17</td>
+          <td class="td-topic">Hardware: Predictive Maintenance</td>
+          <td class="td-area">Hardware &amp; Fleet</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+
+        <!-- GROUP: Boundary Management -->
+        <tr class="group-row"><td colspan="4">Boundary Management &amp; Results</td></tr>
+        <tr data-status="reviewed">
+          <td class="td-num">18</td>
+          <td class="td-topic">Driving Results: Historical View</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">19</td>
+          <td class="td-topic">Automated Survey QC</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">20</td>
+          <td class="td-topic">Delete Driving Sessions</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">21</td>
+          <td class="td-topic">Boundary Management: Boundary Results (UI)</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">22</td>
+          <td class="td-topic">Boundary Results and Metadata (Technical)</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">23</td>
+          <td class="td-topic">Priority Score 2</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">24</td>
+          <td class="td-topic">Evolution of Highlighted Assets (PS2)</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">25</td>
+          <td class="td-topic">Manual Creation of Reports</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="draft">
+          <td class="td-num">26</td>
+          <td class="td-topic">Automated LISA / Gap Workflow</td>
+          <td class="td-area">Boundary Management</td>
+          <td><span class="status-badge s-draft">Draft</span></td>
+        </tr>
+
+        <!-- GROUP: Investigations -->
+        <tr class="group-row"><td colspan="4">Investigations</td></tr>
+        <tr data-status="reviewed">
+          <td class="td-num">27</td>
+          <td class="td-topic">Boundary Management: Investigation Assignments</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">28</td>
+          <td class="td-topic">Investigation Templates &amp; Configuration</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">29</td>
+          <td class="td-topic">Investigation Sessions and Results</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+        <tr data-status="draft">
+          <td class="td-num">30</td>
+          <td class="td-topic">Investigation Session, Results &amp; Metadata (Technical)</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-draft">Draft</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">31</td>
+          <td class="td-topic">Picarro Mobile App Integration</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">32</td>
+          <td class="td-topic">Handheld Data Management</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">33</td>
+          <td class="td-topic">Handheld Algorithms</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">34</td>
+          <td class="td-topic">Boundary Management: Investigation Results</td>
+          <td class="td-area">Investigations</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+
+        <!-- GROUP: Integrations -->
+        <tr class="group-row"><td colspan="4">Integrations</td></tr>
+        <tr data-status="notstarted">
+          <td class="td-num">35</td>
+          <td class="td-topic">ESRI Integration</td>
+          <td class="td-area">Integrations</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="reviewed">
+          <td class="td-num">36</td>
+          <td class="td-topic">OTA (Operation Transfer Assistant)</td>
+          <td class="td-area">Integrations</td>
+          <td><span class="status-badge s-reviewed">Reviewed with Team</span></td>
+        </tr>
+
+        <!-- GROUP: Intelligence & Analytics -->
+        <tr class="group-row"><td colspan="4">Intelligence &amp; Analytics</td></tr>
+        <tr data-status="ready">
+          <td class="td-num">37</td>
+          <td class="td-topic">Data Explorer</td>
+          <td class="td-area">Intelligence &amp; Analytics</td>
+          <td><span class="status-badge s-ready">Ready for Review</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">38</td>
+          <td class="td-topic">Multi-Campaign Aggregation</td>
+          <td class="td-area">Intelligence &amp; Analytics</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">39</td>
+          <td class="td-topic">Emissions360</td>
+          <td class="td-area">Intelligence &amp; Analytics</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">40</td>
+          <td class="td-topic">Safety360</td>
+          <td class="td-area">Intelligence &amp; Analytics</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+        <tr data-status="notstarted">
+          <td class="td-num">41</td>
+          <td class="td-topic">Product Analytics</td>
+          <td class="td-area">Intelligence &amp; Analytics</td>
+          <td><span class="status-badge s-notstarted">Not Started</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- main-inner -->
+<footer>P-Cubed Pro · Project Horizon · PRD Status as of March 20, 2026 · Confidential — Internal Use Only</footer>
+</div><!-- main -->
+</div><!-- shell -->
+
+<script>
+
+  // ── Donut Chart ──
+  new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Reviewed with Team', 'Ready for Review', 'Draft', 'Not Started', 'Covered', 'Partial'],
+      datasets: [{
+        data: [19, 6, 2, 12, 1, 1],
+        backgroundColor: ['#16a34a','#2563eb','#d97706','#dc2626','#7c3aed','#be123c'],
+        borderWidth: 3,
+        borderColor: '#fff',
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      cutout: '68%',
+      plugins: { legend: { display: false }, tooltip: { callbacks: {
+        label: ctx => ` ${ctx.label}: ${ctx.raw} topics`
+      }}},
+      animation: { animateRotate: true, duration: 800 }
+    }
+  });
+
+  // ── Bar Chart by Area ──
+  const areas = [
+    'Access & Platform',
+    'Tenant Onboarding',
+    'Driving & Data Collection',
+    'Hardware & Fleet',
+    'Boundary Management',
+    'Investigations',
+    'Integrations',
+    'Intelligence & Analytics'
+  ];
+  const reviewedData  = [3, 3, 4, 0, 6, 3, 1, 0];
+  const readyData     = [2, 0, 2, 1, 0, 0, 0, 1];
+  const draftData     = [0, 0, 0, 0, 1, 1, 0, 0];
+  const notStartedData= [0, 0, 0, 1, 2, 4, 1, 5];
+  const otherData     = [0, 1, 1, 0, 0, 0, 0, 0];
+
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: areas,
+      datasets: [
+        { label: 'Reviewed',    data: reviewedData,   backgroundColor: '#16a34a' },
+        { label: 'Ready',       data: readyData,       backgroundColor: '#2563eb' },
+        { label: 'Draft',       data: draftData,       backgroundColor: '#d97706' },
+        { label: 'Not Started', data: notStartedData,  backgroundColor: '#dc2626' },
+        { label: 'Other',       data: otherData,       backgroundColor: '#94a3b8' },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: {
+        position: 'bottom',
+        labels: { font: { size: 11 }, padding: 12, boxWidth: 12 }
+      }},
+      scales: {
+        x: {
+          stacked: true,
+          ticks: { font: { size: 10 }, maxRotation: 30 },
+          grid: { display: false }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          ticks: { stepSize: 1, font: { size: 11 } },
+          grid: { color: '#f1f5f9' }
+        }
+      },
+      animation: { duration: 800 }
+    }
+  });
+
+  // ── Filter ──
+  function filterTable(status, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#prdTable tbody tr').forEach(row => {
+      if (row.classList.contains('group-row')) return;
+      if (status === 'all') {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.toggle('hidden', row.dataset.status !== status);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P-Cubed Pro — Release Operations Planning</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    /* === SHELL LAYOUT === */
+    html,body{height:100%;overflow:hidden}
+    body{display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a2e}
+
+    /* === HEADER === */
+    .header{height:60px;min-height:60px;flex-shrink:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 24px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .header-brand{display:flex;align-items:center;gap:14px}
+    .header-logo{font-size:15px;font-weight:900;background:#e43f5a;color:white;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;letter-spacing:-1px;flex-shrink:0}
+    .header-brand h1{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap}
+    .header-brand .subtitle{font-size:11px;color:#94a3b8;margin-top:2px;white-space:nowrap}
+    .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .badge{display:inline-block;background:#e43f5a;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+    .header-date{font-size:11px;color:#94a3b8;white-space:nowrap}
+
+    /* === BODY SHELL === */
+    .shell{display:flex;flex:1;overflow:hidden}
+
+    /* === SIDEBAR === */
+    .sidebar{width:220px;min-width:220px;background:#0f1c33;display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease,min-width .25s ease;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06)}
+    .sb-section-label{font-size:9px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.8px;padding:16px 16px 6px;white-space:nowrap;overflow:hidden;transition:opacity .2s}
+    .sb-nav{list-style:none;padding:4px 0;flex:1}
+    .sb-item{position:relative}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 14px;color:#94a3b8;text-decoration:none;font-size:12px;font-weight:600;border-radius:8px;margin:1px 8px;transition:all .15s;white-space:nowrap;overflow:hidden}
+    .sb-link:hover{background:rgba(255,255,255,.07);color:#e2e8f0}
+    .sb-item.active>.sb-link{background:rgba(59,130,246,.15);color:#60a5fa}
+    .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+    .sb-label{transition:opacity .15s;overflow:hidden;white-space:nowrap}
+    .sb-sub{list-style:none;margin:2px 8px 6px 44px;overflow:hidden}
+    .sb-sub-btn{display:block;width:100%;text-align:left;padding:5px 10px;font-size:11px;color:#475569;background:none;border:none;border-left:2px solid transparent;cursor:pointer;border-radius:0 6px 6px 0;font-weight:500;transition:all .15s;white-space:nowrap}
+    .sb-sub-btn:hover{color:#94a3b8;background:rgba(255,255,255,.04)}
+    .sb-sub-btn.active{color:#93c5fd;border-left-color:#3b82f6;background:rgba(59,130,246,.08);font-weight:600}
+
+    /* === MAIN CONTENT === */
+    .main{flex:1;overflow-y:auto;background:#f0f2f5;display:flex;flex-direction:column}
+    .main-inner{flex:1;max-width:1400px;margin:0 auto;padding:28px;width:100%}
+
+    /* === INNER TABS === */
+    .inner-tab-nav{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid #e2e8f0}
+    .inner-tab-btn{padding:10px 22px;font-size:12px;font-weight:600;color:#64748b;background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:all .15s;white-space:nowrap}
+    .inner-tab-btn.active{color:#0f3460;border-bottom-color:#0f3460;background:#f8fafc}
+    .inner-tab-btn:hover:not(.active){color:#374151;background:#f8fafc}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    .section-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
+    .card{background:white;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
+    .stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+    .stat-card{background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.07);border-top:4px solid var(--c)}
+    .stat-card .sn{font-size:32px;font-weight:800;color:var(--c);line-height:1}
+    .stat-card .sl{font-size:10px;color:#64748b;margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+    .stat-card .ss{font-size:10px;color:#94a3b8;margin-top:3px}
+    .alert{border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:12px;line-height:1.6;display:flex;align-items:flex-start;gap:10px}
+    .alert.warn{background:#fef9c3;border:1px solid #fde68a;color:#78350f}
+    .alert.info{background:#dbeafe;border:1px solid #bfdbfe;color:#1e3a8a}
+    .alert.danger{background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+    .alert.success{background:#dcfce7;border:1px solid #bbf7d0;color:#14532d}
+    footer{text-align:center;padding:24px;font-size:12px;color:#94a3b8}
+
+    /* ── CAPACITY TAB ── */
+    table.cap{width:100%;border-collapse:collapse;font-size:12px}
+    table.cap thead tr{background:#f8fafc;border-bottom:2px solid #e2e8f0}
+    table.cap thead th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+    table.cap tbody tr{border-bottom:1px solid #f1f5f9;transition:background .1s}
+    table.cap tbody tr:hover{background:#f8fafc}
+    table.cap td{padding:10px 14px;vertical-align:middle}
+    .ms-chip{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700}
+    .risk-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+    .cap-bar{height:8px;border-radius:4px;background:#e2e8f0;overflow:hidden;min-width:80px}
+    .cap-fill{height:100%;border-radius:4px}
+    .holiday-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:6px;background:#fef9c3;color:#b45309;font-weight:600;margin:2px}
+    .net-num{font-size:13px;font-weight:700}
+    .warn-row td{background:#fffbeb!important}
+    .risk-row td{background:#fef2f2!important}
+    .holiday-section{background:white;border-radius:14px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
+    .holiday-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+    .holiday-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;background:#fafbfc}
+    .holiday-item .hdate{font-size:11px;font-weight:700;color:#1e293b;margin-bottom:2px}
+    .holiday-item .hdesc{font-size:10px;color:#64748b}
+    .htype-india{background:#fee2e2;color:#dc2626;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+    .htype-us{background:#dbeafe;color:#1d4ed8;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+
+    /* ── GO/NO-GO TAB ── */
+    .gng-progress{background:white;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:20px}
+    .gng-progress-bar{height:16px;border-radius:8px;background:#e2e8f0;overflow:hidden;margin:12px 0}
+    .gng-progress-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#dc2626,#f59e0b);transition:width .5s}
+    .gng-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+    .gng-section{background:white;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+    .gng-section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #f1f5f9}
+    .gng-section-icon{font-size:20px}
+    .gng-section-title{font-size:13px;font-weight:700;color:#1e293b;flex:1}
+    .gng-section-count{font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;background:#f1f5f9;color:#64748b}
+    .gng-criteria{display:flex;flex-direction:column;gap:8px}
+    .gng-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:8px;background:#f8fafc;border:1px solid #f1f5f9;cursor:pointer;transition:all .15s}
+    .gng-row:hover{border-color:#cbd5e1;background:#f0f9ff}
+    .gng-status{width:20px;height:20px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px;cursor:pointer;user-select:none}
+    .s-not{background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+    .s-prog{background:#fef9c3;color:#b45309;border:2px solid #fde68a}
+    .s-met{background:#dcfce7;color:#15803d;border:2px solid #bbf7d0}
+    .gng-body{flex:1;min-width:0}
+    .gng-criterion{font-size:12px;font-weight:600;color:#1e293b;line-height:1.4;margin-bottom:3px}
+    .gng-target{font-size:11px;color:#64748b;margin-bottom:2px}
+    .gng-owner{font-size:10px;color:#94a3b8;font-weight:600}
+    .gng-full{grid-column:1/-1}
+
+    /* ── RACI TAB ── */
+    .raci-wrap{background:white;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;margin-bottom:20px}
+    .raci-scroll{overflow-x:auto}
+    .raci-table{border-collapse:collapse;min-width:100%;font-size:11px}
+    .raci-table thead tr:first-child th{background:#1e293b;color:#94a3b8;padding:10px 8px;text-align:center;white-space:nowrap;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+    .raci-table thead tr:first-child th.raci-feature-hd{text-align:left;padding-left:14px;min-width:240px;position:sticky;left:0;z-index:5;background:#1e293b}
+    .raci-table thead tr:nth-child(2) th{padding:8px 6px;text-align:center;font-size:10px;font-weight:700;border-bottom:2px solid #e2e8f0;background:#f8fafc}
+    .raci-table thead tr:nth-child(2) th.raci-feature-hd2{text-align:left;padding-left:14px;background:#f8fafc;position:sticky;left:0;z-index:5}
+    .person-hd{display:flex;flex-direction:column;align-items:center;gap:3px}
+    .person-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white}
+    .person-name{font-size:9px;font-weight:700;color:#475569;text-align:center;line-height:1.2;white-space:nowrap}
+    .raci-table tbody tr{border-bottom:1px solid #f1f5f9}
+    .raci-table tbody tr:hover td{background:#f0f9ff!important}
+    .raci-table tbody tr.group-hd td{background:#f8fafc;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;padding:6px 14px;border-top:2px solid #e2e8f0}
+    .raci-feat{padding:9px 14px;font-size:11px;font-weight:600;color:#374151;white-space:nowrap;position:sticky;left:0;background:white;z-index:2;border-right:1px solid #f1f5f9;min-width:240px;max-width:260px}
+    .raci-feat .ms-label{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;margin-right:5px}
+    .raci-cell{padding:8px 6px;text-align:center;min-width:72px}
+    .raci-pill{display:inline-flex;align-items:center;justify-content:center;width:28px;height:22px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.3px}
+    .r-R{background:#dcfce7;color:#15803d}
+    .r-A{background:#1e293b;color:white}
+    .r-C{background:#fef9c3;color:#b45309}
+    .r-I{background:#f1f5f9;color:#94a3b8;font-size:9px}
+    .r-x{color:#e2e8f0;font-size:10px}
+    .raci-legend{display:flex;gap:20px;padding:14px 18px;border-top:1px solid #f1f5f9;background:#fafbfc;flex-wrap:wrap}
+    .raci-legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#475569}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">P³</div>
+    <div>
+      <h1>P-Cubed Pro · Release Operations</h1>
+      <div class="subtitle">Project Horizon | Capacity · Go/No-Go · RACI</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge">Project Horizon</span>
+    <span class="header-date">Mar 20, 2026 · Confidential</span>
+  </div>
+</div>
+
+<div class="shell">
+
+<nav class="sidebar" id="sidebar">
+  <p class="sb-section-label">Planning Suite</p>
+  <ul class="sb-nav">
+    <li class="sb-item">
+      <a href="prd-status.html" class="sb-link"><span class="sb-icon">📊</span><span class="sb-label">PRD Status</span></a>
+    </li>
+    <li class="sb-item">
+      <a href="delivery-plan.html" class="sb-link"><span class="sb-icon">🗓</span><span class="sb-label">Delivery Plan</span></a>
+    </li>
+    <li class="sb-item">
+      <a href="milestone-details.html" class="sb-link"><span class="sb-icon">🔍</span><span class="sb-label">Milestone Deep Plan</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='milestone-details.html'">📋 Milestone Details</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='milestone-details.html'">📅 Gantt Chart</button></li>
+      </ul>
+    </li>
+    <li class="sb-item active">
+      <a href="release-ops.html" class="sb-link"><span class="sb-icon">⚙️</span><span class="sb-label">Release Ops</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn active" id="sbtab-capacity" onclick="switchTab('capacity')">📊 Sprint Capacity</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-gng" onclick="switchTab('gng')">✅ Go / No-Go</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-raci" onclick="switchTab('raci')">👥 RACI Matrix</button></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <div class="inner-tab-nav">
+    <button class="inner-tab-btn active" onclick="switchTab('capacity')">📊 Sprint Capacity Plan</button>
+    <button class="inner-tab-btn" onclick="switchTab('gng')">✅ Go / No-Go Scorecard</button>
+    <button class="inner-tab-btn" onclick="switchTab('raci')">👥 RACI Matrix</button>
+  </div>
+
+  <!-- ══════════════ TAB 1: CAPACITY ══════════════ -->
+  <div id="tab-capacity" class="tab-content active">
+
+    <div class="stat-grid">
+      <div class="stat-card" style="--c:#3b82f6">
+        <div class="sn">14</div>
+        <div class="sl">Total Sprints<br>Spr 17 → Spr 30</div>
+        <div class="ss">Mar 26 → Oct 1, 2026</div>
+      </div>
+      <div class="stat-card" style="--c:#16a34a">
+        <div class="sn">1,170</div>
+        <div class="sl">Gross Dev-Days<br>Available</div>
+        <div class="ss">Before holidays &amp; overhead</div>
+      </div>
+      <div class="stat-card" style="--c:#f59e0b">
+        <div class="sn">67</div>
+        <div class="sl">Dev-Days Lost<br>to Holidays</div>
+        <div class="ss">6 affected sprints</div>
+      </div>
+      <div class="stat-card" style="--c:#dc2626">
+        <div class="sn">~30%</div>
+        <div class="sl">Overhead &amp; Ceremonies<br>Reduction</div>
+        <div class="ss">Standups, planning, reviews, bug fixes</div>
+      </div>
+      <div class="stat-card" style="--c:#7c3aed">
+        <div class="sn">⚠ ~0%</div>
+        <div class="sl">Effective Buffer<br>After Overhead</div>
+        <div class="ss">Plan is tight — needs attention</div>
+      </div>
+    </div>
+
+    <div class="alert danger">
+      <span style="font-size:18px;flex-shrink:0">🚨</span>
+      <div><strong>Capacity Risk — Plan is Thin:</strong> 14 sprints (Sprint 17–30, Mar 26 → Oct 1). Gross capacity ~1,015 dev-days (7 devs × 14 sprints × 10 days, adjusted for Sprint 30 = 7 days). After holidays (~38 days lost across Sprint 18, 19, 21, 27, 28) and ~30% overhead (standups, planning, reviews, unplanned bugs), effective capacity drops to ~685 dev-days. <strong>MS-5 Code Complete was missed (Mar 20)</strong> — carryover into Sprint 17 reduces MS-6 capacity. Recommend: (1) Lock MS-6 scope to Jira-tagged epics only, (2) Start MS-7 story refinement NOW (Sprint 17–18), (3) Add 1 backend developer to parallel RBAC + Investigation streams.</div>
+    </div>
+
+    <div class="section-title">Sprint-by-Sprint Capacity Plan — App Dev Team (7 people)</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="cap">
+        <thead>
+          <tr>
+            <th>Sprint</th>
+            <th>Dates</th>
+            <th>Milestone</th>
+            <th>Normal Days<br><span style="font-weight:400;color:#cbd5e1">(7 devs × 10d)</span></th>
+            <th>Holidays &amp; Impact</th>
+            <th>Net Dev-Days</th>
+            <th>Utilization Bar</th>
+            <th>Risk</th>
+          </tr>
+        </thead>
+        <tbody id="sprint-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Holiday Calendar -->
+    <div class="section-title">Holiday Calendar — Apr to Oct 2026</div>
+    <div class="holiday-section">
+      <div style="font-size:12px;color:#475569;margin-bottom:12px">Holidays affecting delivery team capacity. India team = 13 people (7 app devs, 2 GIS, 4 QA). US team = 4 people (Product, PM).</div>
+      <div class="holiday-grid">
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Apr 14, 2026</div>
+            <div class="hdesc">Dr. Ambedkar Jayanti</div>
+            <div style="margin-top:4px"><span class="htype-india">India — National</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Apr 18, 2026</div>
+            <div class="hdesc">Good Friday</div>
+            <div style="margin-top:4px"><span class="htype-india">India — Bank Holiday</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">May 1, 2026</div>
+            <div class="hdesc">Labour Day / Maharashtra Day</div>
+            <div style="margin-top:4px"><span class="htype-india">India — State Holiday</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">May 25, 2026</div>
+            <div class="hdesc">Memorial Day</div>
+            <div style="margin-top:4px"><span class="htype-us">US — Federal</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Jun 2, 2026 (est.)</div>
+            <div class="hdesc">Eid-ul-Adha (moon-dependent)</div>
+            <div style="margin-top:4px"><span class="htype-india">India — National</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Jul 4, 2026</div>
+            <div class="hdesc">Independence Day</div>
+            <div style="margin-top:4px"><span class="htype-us">US — Federal</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Aug 15, 2026</div>
+            <div class="hdesc">Independence Day</div>
+            <div style="margin-top:4px"><span class="htype-india">India — National</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Sep 2, 2026</div>
+            <div class="hdesc">Ganesh Chaturthi</div>
+            <div style="margin-top:4px"><span class="htype-india">India — National</span></div>
+          </div>
+        </div>
+        <div class="holiday-item">
+          <div>
+            <div class="hdate">Sep 7, 2026</div>
+            <div class="hdesc">Labor Day</div>
+            <div style="margin-top:4px"><span class="htype-us">US — Federal</span></div>
+          </div>
+        </div>
+        <div class="holiday-item" style="border-color:#fde68a;background:#fffbeb">
+          <div>
+            <div class="hdate" style="color:#b45309">⚠ Sep–Oct: Watch</div>
+            <div class="hdesc">Navratri begins ~Sep 28. Dussehra ~Oct 2. Post-launch but sprint 13 awareness needed.</div>
+            <div style="margin-top:4px"><span class="htype-india">India — Regional</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert warn">
+      <span style="font-size:16px;flex-shrink:0">💡</span>
+      <div><strong>Recommendation:</strong> Sprint 18 (Apr 9–23) is the highest-capacity risk with 2 India holidays back-to-back (Dr. Ambedkar + Good Friday) — that's 14 dev-days lost, reducing a 70-day sprint to ~56. Plan lighter sprint goals or shift lower-priority MS-6 work into Sprint 19. Sprint 28 (Aug 27–Sep 10) is next highest risk with Ganesh Chaturthi + US Labor Day during MS-9 hardening — buffer critical hardening work into Sprint 27.</div>
+    </div>
+
+  </div><!-- tab-capacity -->
+
+  <!-- ══════════════ TAB 2: GO/NO-GO ══════════════ -->
+  <div id="tab-gng" class="tab-content">
+
+    <div class="gng-progress card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1e293b">Go / No-Go Launch Scorecard</div>
+          <div style="font-size:12px;color:#64748b;margin-top:2px">Click any criterion to toggle status. Target: all 34 green by Sep 25, 2026 (Go/No-Go Review).</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:28px;font-weight:800;color:#dc2626" id="gng-count">0 / 34</div>
+          <div style="font-size:11px;color:#94a3b8">criteria met</div>
+        </div>
+      </div>
+      <div class="gng-progress-bar">
+        <div class="gng-progress-fill" id="gng-bar" style="width:0%"></div>
+      </div>
+      <div style="display:flex;gap:16px;font-size:11px;color:#64748b;margin-top:6px">
+        <span>⬜ Click once = In Progress</span>
+        <span>🟡 Click twice = Met ✓</span>
+        <span>✅ Click three times = Reset</span>
+      </div>
+    </div>
+
+    <div class="alert info">
+      <span style="font-size:16px;flex-shrink:0">📅</span>
+      <div><strong>Review Gate: Sep 25, 2026.</strong> All 34 criteria must be green for V1 Launch on Oct 1. If 5 or more are red on Sep 25, recommend a 30-day delay to Nov 1. If 1-4 are red with defined mitigation, proceed with executive sign-off.</div>
+    </div>
+
+    <div id="gng-sections"></div>
+
+  </div><!-- tab-gng -->
+
+  <!-- ══════════════ TAB 3: RACI ══════════════ -->
+  <div id="tab-raci" class="tab-content">
+
+    <div class="alert info" style="margin-bottom:16px">
+      <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+      <div>
+        <strong>How to read:</strong>
+        <strong style="background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px;margin:0 4px">R</strong> Responsible — does the work &nbsp;·&nbsp;
+        <strong style="background:#1e293b;color:white;padding:1px 6px;border-radius:4px;margin:0 4px">A</strong> Accountable — owns outcome &nbsp;·&nbsp;
+        <strong style="background:#fef9c3;color:#b45309;padding:1px 6px;border-radius:4px;margin:0 4px">C</strong> Consulted — input needed &nbsp;·&nbsp;
+        <strong style="background:#f1f5f9;color:#94a3b8;padding:1px 6px;border-radius:4px;margin:0 4px">I</strong> Informed — kept updated
+      </div>
+    </div>
+
+    <div class="raci-wrap">
+      <div class="raci-scroll">
+        <table class="raci-table" id="raci-table"></table>
+      </div>
+      <div class="raci-legend">
+        <div class="raci-legend-item"><span class="raci-pill r-R">R</span> Responsible (does the work)</div>
+        <div class="raci-legend-item"><span class="raci-pill r-A">A</span> Accountable (owns the outcome — only one per row ideally)</div>
+        <div class="raci-legend-item"><span class="raci-pill r-C">C</span> Consulted (must be consulted before decisions)</div>
+        <div class="raci-legend-item"><span class="raci-pill r-I">I</span> Informed (receives updates)</div>
+      </div>
+    </div>
+
+  </div><!-- tab-raci -->
+
+</div><!-- main-inner -->
+<footer>P-Cubed Pro · Project Horizon · Release Operations Planning · March 20, 2026 · Confidential</footer>
+</div><!-- main -->
+</div><!-- shell -->
+
+<script>
+// ── Tab switching ────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.sb-sub-btn').forEach(b => b.classList.remove('active'));
+  if (name === 'capacity') document.getElementById('sbtab-capacity').classList.add('active');
+  else if (name === 'gng') document.getElementById('sbtab-gng').classList.add('active');
+  else if (name === 'raci') document.getElementById('sbtab-raci').classList.add('active');
+  if (name === 'raci' && !document.getElementById('raci-table').innerHTML) buildRaci();
+  if (name === 'capacity' && !document.getElementById('sprint-tbody').innerHTML) buildCapacity();
+  if (name === 'gng' && !document.getElementById('gng-sections').innerHTML) buildGng();
+}
+
+// ── CAPACITY ─────────────────────────────────────────────────────────
+// Sprint dates: real Jira PCP Board sprint cadence. Sprint 16 active Mar 12–26.
+// Sprint 17 (Mar 26–Apr 9) is the first forward sprint; 2-week cadence thereafter.
+function buildCapacity() {
+  const sprints = [
+    // Sprint 17: MS-5 QA + MS-6 kickoff (transition sprint)
+    {n:'Sprint 17', ms:'MS-5/6',  dates:'Mar 26 – Apr 9',  days:70, holidays:[], lost:0, planned:60, risk:'green', note:'MS-5 QA + MS-6 kickoff'},
+    // Sprint 18: Apr 9–23 — two India holidays
+    {n:'Sprint 18', ms:'MS-6',    dates:'Apr 9 – 23',       days:70, holidays:['Apr 14 – Dr. Ambedkar Jayanti (India)','Apr 18 – Good Friday (India)'], lost:14, planned:52, risk:'red'},
+    // Sprint 19: Apr 23–May 7 — Labour Day
+    {n:'Sprint 19', ms:'MS-6',    dates:'Apr 23 – May 7',   days:70, holidays:['May 1 – Labour Day / Maharashtra Day (India)'], lost:7, planned:62, risk:'amber'},
+    // Sprint 20: May 7–21 — clean sprint
+    {n:'Sprint 20', ms:'MS-6/7',  dates:'May 7 – 21',       days:70, holidays:[], lost:0, planned:70, risk:'green', note:'MS-6 ends May 15'},
+    // Sprint 21: May 21–Jun 4 — US Memorial Day + Eid (India est.)
+    {n:'Sprint 21', ms:'MS-7',    dates:'May 21 – Jun 4',   days:70, holidays:['May 25 – Memorial Day (US, PM only)','Jun 2 – Eid-ul-Adha (India, est.)'], lost:7, planned:65, risk:'amber'},
+    // Sprint 22: Jun 4–18 — clean sprint
+    {n:'Sprint 22', ms:'MS-7',    dates:'Jun 4 – 18',        days:70, holidays:[], lost:0, planned:70, risk:'green'},
+    // Sprint 23: Jun 18–Jul 2 — clean sprint, MS-7 ends Jun 30
+    {n:'Sprint 23', ms:'MS-7/8',  dates:'Jun 18 – Jul 2',   days:70, holidays:[], lost:0, planned:70, risk:'green', note:'MS-7 ends Jun 30'},
+    // Sprint 24: Jul 2–16 — US Independence Day (PM only)
+    {n:'Sprint 24', ms:'MS-8',    dates:'Jul 2 – 16',        days:70, holidays:['Jul 4 – Independence Day (US, PM only)'], lost:2, planned:70, risk:'green'},
+    // Sprint 25: Jul 16–30 — clean sprint
+    {n:'Sprint 25', ms:'MS-8',    dates:'Jul 16 – 30',       days:70, holidays:[], lost:0, planned:70, risk:'green'},
+    // Sprint 26: Jul 30–Aug 13 — clean sprint, MS-8 ends Aug 15
+    {n:'Sprint 26', ms:'MS-8/9',  dates:'Jul 30 – Aug 13',  days:70, holidays:[], lost:0, planned:68, risk:'green', note:'MS-8 ends Aug 15'},
+    // Sprint 27: Aug 13–27 — India Independence Day
+    {n:'Sprint 27', ms:'MS-9',    dates:'Aug 13 – 27',       days:70, holidays:['Aug 15 – Independence Day (India)'], lost:7, planned:58, risk:'amber'},
+    // Sprint 28: Aug 27–Sep 10 — Ganesh Chaturthi + US Labor Day
+    {n:'Sprint 28', ms:'MS-9',    dates:'Aug 27 – Sep 10',  days:70, holidays:['Sep 2 – Ganesh Chaturthi (India)','Sep 7 – Labor Day (US, PM only)'], lost:9, planned:52, risk:'red'},
+    // Sprint 29: Sep 10–24 — MS-9 ends Sep 15, Prod Readiness begins
+    {n:'Sprint 29', ms:'MS-9/Prod',dates:'Sep 10 – 24',     days:70, holidays:[], lost:0, planned:55, risk:'green', note:'MS-9 ends Sep 15'},
+    // Sprint 30: Sep 24–Oct 1 — Launch sprint (partial, 7 days)
+    {n:'Sprint 30', ms:'Prod',    dates:'Sep 24 – Oct 1',   days:35, holidays:[], lost:0, planned:25, risk:'green', note:'V1 Launch Oct 1'},
+  ];
+
+  const msColors = {'MS-5/6':'#64748b','MS-6':'#3b82f6','MS-6/7':'#3b82f6','MS-7':'#8b5cf6','MS-7/8':'#8b5cf6','MS-8':'#f97316','MS-8/9':'#f97316','MS-9':'#10b981','MS-9/Prod':'#10b981','Prod':'#ef4444'};
+  const riskMap = {green:['#16a34a','🟢'],amber:['#b45309','🟡'],red:['#dc2626','🔴']};
+
+  let rows = '';
+  sprints.forEach(s => {
+    const net = s.days - s.lost;
+    const pct = Math.round((s.planned / net) * 100);
+    const barColor = pct > 90 ? '#dc2626' : pct > 75 ? '#f59e0b' : '#16a34a';
+    const [rc, rdot] = riskMap[s.risk];
+    const rowClass = s.risk==='red' ? 'risk-row' : s.risk==='amber' ? 'warn-row' : '';
+    rows += `<tr class="${rowClass}">
+      <td style="font-weight:700;color:#1e293b">${s.n}</td>
+      <td style="color:#475569;white-space:nowrap">${s.dates}</td>
+      <td><span class="ms-chip" style="background:${msColors[s.ms]}20;color:${msColors[s.ms]}">${s.ms}</span>${s.note ? `<br><span style="font-size:9px;color:#94a3b8">${s.note}</span>` : ''}</td>
+      <td style="font-weight:600;color:#374151">${s.days} days</td>
+      <td>${s.holidays.length ? s.holidays.map(h=>`<span class="holiday-badge">${h}</span>`).join('') : '<span style="color:#94a3b8;font-size:11px">No holidays</span>'}</td>
+      <td><span class="net-num" style="color:${s.risk==='green'?'#16a34a':rc}">${net} days<br><span style="font-size:10px;font-weight:400;color:#94a3b8">−${s.lost} lost</span></span></td>
+      <td style="min-width:120px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="cap-bar" style="flex:1"><div class="cap-fill" style="width:${Math.min(pct,100)}%;background:${barColor}"></div></div>
+          <span style="font-size:10px;font-weight:700;color:${barColor};width:32px">${pct}%</span>
+        </div>
+        <div style="font-size:9px;color:#94a3b8;margin-top:2px">${s.planned} SPs planned</div>
+      </td>
+      <td>${rdot} <span style="font-size:10px;color:${rc};font-weight:600">${s.risk.toUpperCase()}</span></td>
+    </tr>`;
+  });
+  document.getElementById('sprint-tbody').innerHTML = rows;
+}
+buildCapacity();
+
+// ── GO/NO-GO ─────────────────────────────────────────────────────────
+const gngData = [
+  {cat:'Feature Completeness', icon:'📦', cols:2, items:[
+    {c:'All 28 V1 features QA-signed off',                  t:'28 / 28 verified',             o:'Abhisek (QA Lead)'},
+    {c:'0 open P1 bugs; <10 P2 bugs with workaround',       t:'P1=0, P2<10',                  o:'Abhisek (QA Lead)'},
+    {c:'RBAC Phase 0: cross-tenant isolation verified',     t:'0 violations in pen test',      o:'Amin + Sandhya'},
+    {c:'Gaps pipeline satisfies EU Methane Reg 2024/1787',  t:'Compliance sign-off received',  o:'Jacob (Product)'},
+    {c:'Driver View v2: all 41 requirements tested',        t:'41 / 41 test cases pass',       o:'Abhisek (QA Lead)'},
+    {c:'GIS historical migration validated for pilot customer', t:'NiSource data validated',   o:'Dheeraj (GIS)'},
+  ]},
+  {cat:'Quality Gates', icon:'🧪', cols:2, items:[
+    {c:'E2E test suite pass rate ≥ 95%',                    t:'≥ 95% pass rate',               o:'Abhisek (QA Lead)'},
+    {c:'QA automation coverage ≥ 70% for V1 features',     t:'≥ 70% automated',               o:'Abhisek (QA Lead)'},
+    {c:'Zero regression failures in final regression run',  t:'0 regressions',                 o:'Abhisek (QA Lead)'},
+    {c:'WCAG 2.1 AA accessibility verified for all screens',t:'AA compliance confirmed',       o:'Shriya (FE Lead)'},
+    {c:'All REST API contracts validated end-to-end',       t:'100% contract tests pass',      o:'Amin (BE Lead)'},
+  ]},
+  {cat:'Security & Compliance', icon:'🔒', cols:2, items:[
+    {c:'Penetration test completed: 0 critical, 0 high',    t:'Clean pen test report',         o:'Sandhya (Cloud)'},
+    {c:'Cross-tenant data isolation tested — 0 data leaks', t:'0 leaks in testing',            o:'Amin + Sandhya'},
+    {c:'SOC2 control evidence collected and reviewed',       t:'Audit-ready package',           o:'Sandhya (Cloud)'},
+    {c:'GDPR / EU data privacy review for Italgas',         t:'Legal sign-off received',       o:'Arpan (PM)'},
+    {c:'PHMSA Final Rule 2025 compliance verified',         t:'Compliance team sign-off',      o:'Jacob (Product)'},
+    {c:'Security hardening checklist completed',            t:'All items closed',              o:'Sandhya (Cloud)'},
+  ]},
+  {cat:'Performance', icon:'⚡', cols:2, items:[
+    {c:'Load test: 50 concurrent tenants, all APIs < 2s',   t:'p95 response time < 2s',        o:'Sandhya (Cloud)'},
+    {c:'GPS update latency < 500ms at p95',                 t:'p95 < 500ms',                   o:'Amin (BE Lead)'},
+    {c:'Map / boundary render time < 3 seconds',            t:'< 3s load time',                o:'Shriya + Dheeraj'},
+    {c:'Auto-scale test: spike to 100 tenants — no errors', t:'0 errors at 100 tenants',       o:'Sandhya (Cloud)'},
+    {c:'Database: all core queries < 500ms',                t:'< 500ms p95',                   o:'Amin (BE Lead)'},
+  ]},
+  {cat:'Operations & Infrastructure', icon:'⚙️', cols:2, items:[
+    {c:'Production environment fully provisioned & validated',t:'Prod env health check green',  o:'Sandhya / Vipin'},
+    {c:'Monitoring & alerting configured for all critical paths',t:'100% critical paths covered',o:'Vipin (Cloud)'},
+    {c:'Runbook complete, reviewed, and dry-run completed',  t:'Runbook approved by EM',        o:'Sandhya (Cloud)'},
+    {c:'Disaster recovery drill: RTO < 4h, RPO < 1h',       t:'DR drill passed',               o:'Sandhya (Cloud)'},
+    {c:'On-call rotation defined and team confirmed',        t:'Rotation published + ack\'d',   o:'Arpan / Sagar'},
+  ]},
+  {cat:'Customer Readiness', icon:'👥', cols:2, items:[
+    {c:'Shadow mode pilot customer sign-off received',       t:'Written sign-off from pilot',   o:'Arpan (PM)'},
+    {c:'Customer training materials and docs delivered',     t:'Docs live in customer portal',  o:'Jacqueline (Product)'},
+    {c:'Customer support team briefed and ready',            t:'Support team trained + ready',  o:'Arpan (PM)'},
+    {c:'Customer launch communication sent (≥7 days before)',t:'Email sent by Sep 24',          o:'Arpan (PM)'},
+  ]},
+  {cat:'Team Readiness', icon:'🚀', cols:1, items:[
+    {c:'All production access credentials provisioned',      t:'Access verified for all ops',   o:'Sandhya (Cloud)'},
+    {c:'Post-launch 30-day support plan signed off',         t:'Plan signed by EM + PM',        o:'Arpan + Sagar'},
+    {c:'Incident response playbook reviewed and practiced',  t:'Playbook drilled at least once',o:'Sagar (EM)'},
+  ]},
+];
+
+function buildGng() {
+  let html = '';
+  let totalItems = 0;
+  gngData.forEach((sec, si) => {
+    const cols = sec.cols === 2 ? 'gng-cols' : '';
+    html += `<div class="section-title">${sec.icon} ${sec.cat}</div>`;
+    html += `<div class="${cols}" style="margin-bottom:20px">`;
+    if (sec.cols === 2) {
+      // split items into two columns
+      const half = Math.ceil(sec.items.length / 2);
+      [sec.items.slice(0, half), sec.items.slice(half)].forEach(group => {
+        html += `<div class="gng-section"><div class="gng-criteria">`;
+        group.forEach((item, ii) => {
+          const idx = totalItems++;
+          html += `<div class="gng-row" onclick="toggleGng(${idx})" id="gng-row-${idx}">
+            <div class="gng-status s-not" id="gng-s-${idx}">—</div>
+            <div class="gng-body">
+              <div class="gng-criterion">${item.c}</div>
+              <div class="gng-target">🎯 Target: ${item.t}</div>
+              <div class="gng-owner">👤 Owner: ${item.o}</div>
+            </div>
+          </div>`;
+        });
+        html += `</div></div>`;
+      });
+    } else {
+      html += `<div class="gng-section" style="grid-column:1/-1"><div class="gng-criteria">`;
+      sec.items.forEach((item, ii) => {
+        const idx = totalItems++;
+        html += `<div class="gng-row" onclick="toggleGng(${idx})" id="gng-row-${idx}">
+          <div class="gng-status s-not" id="gng-s-${idx}">—</div>
+          <div class="gng-body">
+            <div class="gng-criterion">${item.c}</div>
+            <div class="gng-target">🎯 Target: ${item.t}</div>
+            <div class="gng-owner">👤 Owner: ${item.o}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div></div>`;
+    }
+    html += `</div>`;
+  });
+  document.getElementById('gng-sections').innerHTML = html;
+}
+
+const gngStates = {};
+function toggleGng(idx) {
+  const cur = gngStates[idx] || 0;
+  const next = (cur + 1) % 3;
+  gngStates[idx] = next;
+  const el = document.getElementById('gng-s-' + idx);
+  const row = document.getElementById('gng-row-' + idx);
+  if (next === 0) { el.className='gng-status s-not'; el.textContent='—'; row.style.opacity='1'; }
+  if (next === 1) { el.className='gng-status s-prog'; el.textContent='~'; row.style.opacity='1'; }
+  if (next === 2) { el.className='gng-status s-met'; el.textContent='✓'; row.style.opacity='1'; }
+  updateGngCount();
+}
+
+function updateGngCount() {
+  const met = Object.values(gngStates).filter(v => v === 2).length;
+  const total = 34;
+  const pct = (met / total) * 100;
+  document.getElementById('gng-count').textContent = `${met} / ${total}`;
+  document.getElementById('gng-count').style.color = met===total ? '#16a34a' : met > 20 ? '#f59e0b' : '#dc2626';
+  const bar = document.getElementById('gng-bar');
+  bar.style.width = pct + '%';
+  bar.style.background = met===total ? '#16a34a' : `linear-gradient(90deg,#dc2626,#f59e0b ${pct*1.2}%)`;
+}
+
+// ── RACI ─────────────────────────────────────────────────────────────
+function buildRaci() {
+  const people = [
+    {name:'Arpan',       role:'PM',         color:'#7c3aed', init:'AR'},
+    {name:'Jacqueline',  role:'Product',    color:'#ec4899', init:'JH'},
+    {name:'Jacob',       role:'Product',    color:'#f97316', init:'JC'},
+    {name:'Sagar',       role:'Eng Mgr',   color:'#64748b', init:'SG'},
+    {name:'Amin',        role:'BE Lead',    color:'#3b82f6', init:'AG'},
+    {name:'Shriya',      role:'FE Lead',    color:'#8b5cf6', init:'SS'},
+    {name:'Abhishek J',  role:'AutoFOV',   color:'#06b6d4', init:'AJ'},
+    {name:'Dheeraj',     role:'GIS Lead',  color:'#f59e0b', init:'DG'},
+    {name:'Sandhya',     role:'Cloud',      color:'#ef4444', init:'SP'},
+    {name:'Abhisek S',   role:'QA Lead',   color:'#16a34a', init:'AS'},
+  ];
+
+  // rows: [area, ms-label, Arpan, Jacqueline, Jacob, Sagar, Amin, Shriya, AbhishekJ, Dheeraj, Sandhya, AbhisekQA]
+  const rows = [
+    {g:'Milestone 6'},
+    {n:'RBAC Phase 0 & Multi-Tenancy',         ms:'MS-6', r:['A','C','–','C','R','–','–','–','R','R']},
+    {n:'Tenant Settings — Back End',           ms:'MS-6', r:['I','C','–','C','R','–','–','–','C','R']},
+    {n:'Tenant Settings — Front End',          ms:'MS-6', r:['I','A','–','C','C','R','–','–','–','R']},
+    {n:'Operator Settings — Back End',         ms:'MS-6', r:['I','C','–','C','R','–','–','–','C','R']},
+    {n:'Operator Settings — Front End',        ms:'MS-6', r:['I','A','–','C','C','R','–','–','–','R']},
+    {n:'Campaign Settings — Back End',         ms:'MS-6', r:['I','–','C','C','R','–','–','–','C','R']},
+    {n:'Campaign Settings — Front End',        ms:'MS-6', r:['I','–','A','C','C','R','–','–','–','R']},
+    {n:'Common UI/UX Phase 3',                 ms:'MS-6', r:['I','C','–','C','–','R','–','–','–','R']},
+    {n:'Internationalization',                 ms:'MS-6', r:['A','C','–','C','R','C','–','–','–','R']},
+    {n:'Boundary Mgmt: Campaign & Operator',   ms:'MS-6', r:['I','–','A','C','C','–','–','R','C','R']},
+    {n:'Boundary Mgmt: Driving Sessions',      ms:'MS-6', r:['I','–','A','C','R','–','–','R','C','R']},
+    {n:'Boundary Mgmt: AutoFOV Integration',   ms:'MS-6', r:['I','–','C','C','–','–','R','R','–','R']},
+    {n:'Gaps — Object & Data Pipeline',        ms:'MS-6', r:['I','–','A','C','R','–','–','–','–','R']},
+    {g:'Milestone 7'},
+    {n:'Boundary Results UI & Metadata',       ms:'MS-7', r:['I','–','A','C','–','R','–','R','–','R']},
+    {n:'Manual Report Creation',               ms:'MS-7', r:['A','–','C','C','R','R','–','–','–','R']},
+    {n:'Automated LISA / Gap Workflow',        ms:'MS-7', r:['I','–','A','C','R','–','–','–','–','R']},
+    {n:'Delete / Disaggregate Sessions',       ms:'MS-7', r:['I','–','C','A','R','–','–','–','–','R']},
+    {n:'Investigation Assignments & Templates',ms:'MS-7', r:['I','–','A','C','R','C','–','–','–','R']},
+    {n:'Subcontractor Model Enforcement',      ms:'MS-7', r:['A','C','–','C','R','C','–','–','–','R']},
+    {g:'Milestone 8'},
+    {n:'Driver View v2 (Full — 41 req)',       ms:'MS-8', r:['I','A','–','C','C','R','–','–','–','R']},
+    {n:'Capture Mode',                         ms:'MS-8', r:['I','A','–','C','C','R','–','–','–','R']},
+    {n:'Fleet Management & Configurations',    ms:'MS-8', r:['I','A','–','C','R','–','–','–','–','R']},
+    {n:'Observer View',                        ms:'MS-8', r:['I','A','–','C','–','R','–','–','–','R']},
+    {n:'Investigation Sessions & Results',     ms:'MS-8', r:['I','–','A','C','R','–','–','–','–','R']},
+    {n:'GIS Data Migration (Historical)',      ms:'MS-8', r:['A','–','C','C','–','–','–','R','R','R']},
+    {n:'Security Audit & Hardening',           ms:'MS-8', r:['C','–','–','A','–','–','–','–','R','R']},
+    {g:'Milestone 9 & Production'},
+    {n:'E2E Regression — All V1 Features',     ms:'MS-9', r:['I','–','–','C','–','–','–','–','–','A']},
+    {n:'Performance Benchmarks & Load Test',   ms:'MS-9', r:['I','–','–','A','R','–','–','–','R','R']},
+    {n:'Production Infrastructure & Deploy',   ms:'Prod', r:['A','–','–','C','–','–','–','–','R','C']},
+    {n:'Shadow Mode Pilot & Onboarding',       ms:'Prod', r:['A','C','C','C','–','–','–','–','–','R']},
+    {n:'Go / No-Go Decision',                  ms:'Prod', r:['A','C','C','R','C','C','–','–','C','C']},
+  ];
+
+  const msColors = {'MS-6':'#3b82f6','MS-7':'#8b5cf6','MS-8':'#f97316','MS-9':'#10b981','Prod':'#ef4444'};
+  const cellMap = {'R':'r-R','A':'r-A','C':'r-C','I':'r-I','–':'r-x'};
+  const cellText = {'R':'R','A':'A','C':'C','I':'I','–':'·'};
+
+  let h = `<thead>`;
+  // Row 1: header
+  h += `<tr><th class="raci-feature-hd">Feature / Work Item</th>`;
+  people.forEach(p => {
+    h += `<th><div class="person-hd"><div class="person-avatar" style="background:${p.color}">${p.init}</div><div class="person-name">${p.name}<br><span style="font-weight:400;opacity:.7">${p.role}</span></div></div></th>`;
+  });
+  h += `</tr></thead><tbody>`;
+
+  rows.forEach(row => {
+    if (row.g) {
+      h += `<tr class="group-hd"><td colspan="${people.length+1}">${row.g}</td></tr>`;
+      return;
+    }
+    const msColor = msColors[row.ms] || '#64748b';
+    h += `<tr>`;
+    h += `<td class="raci-feat"><span class="ms-label" style="background:${msColor}20;color:${msColor}">${row.ms}</span>${row.n}</td>`;
+    row.r.forEach((v, i) => {
+      h += `<td class="raci-cell"><span class="raci-pill ${cellMap[v]}">${cellText[v]}</span></td>`;
+    });
+    h += `</tr>`;
+  });
+  h += `</tbody>`;
+  document.getElementById('raci-table').innerHTML = h;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P-Cubed Pro — V1 Delivery Plan</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    /* === SHELL LAYOUT === */
+    html,body{height:100%;overflow:hidden}
+    body{display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a2e}
+
+    /* === HEADER === */
+    .header{height:60px;min-height:60px;flex-shrink:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 24px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .header-brand{display:flex;align-items:center;gap:14px}
+    .header-logo{font-size:15px;font-weight:900;background:#e43f5a;color:white;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;letter-spacing:-1px;flex-shrink:0}
+    .header-brand h1{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap}
+    .header-brand .subtitle{font-size:11px;color:#94a3b8;margin-top:2px;white-space:nowrap}
+    .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .badge{display:inline-block;background:#e43f5a;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+    .header-date{font-size:11px;color:#94a3b8;white-space:nowrap}
+
+    /* === BODY SHELL === */
+    .shell{display:flex;flex:1;overflow:hidden}
+
+    /* === SIDEBAR === */
+    .sidebar{width:220px;min-width:220px;background:#0f1c33;display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease,min-width .25s ease;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06)}
+    .sb-section-label{font-size:9px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.8px;padding:16px 16px 6px;white-space:nowrap;overflow:hidden;transition:opacity .2s}
+    .sb-nav{list-style:none;padding:4px 0;flex:1}
+    .sb-item{position:relative}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 14px;color:#94a3b8;text-decoration:none;font-size:12px;font-weight:600;border-radius:8px;margin:1px 8px;transition:all .15s;white-space:nowrap;overflow:hidden}
+    .sb-link:hover{background:rgba(255,255,255,.07);color:#e2e8f0}
+    .sb-item.active>.sb-link{background:rgba(59,130,246,.15);color:#60a5fa}
+    .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+    .sb-label{transition:opacity .15s;overflow:hidden;white-space:nowrap}
+    .sb-sub{list-style:none;margin:2px 8px 6px 44px;overflow:hidden}
+    .sb-sub-btn{display:block;width:100%;text-align:left;padding:5px 10px;font-size:11px;color:#475569;background:none;border:none;border-left:2px solid transparent;cursor:pointer;border-radius:0 6px 6px 0;font-weight:500;transition:all .15s;white-space:nowrap}
+    .sb-sub-btn:hover{color:#94a3b8;background:rgba(255,255,255,.04)}
+    .sb-sub-btn.active{color:#93c5fd;border-left-color:#3b82f6;background:rgba(59,130,246,.08);font-weight:600}
+
+    /* === MAIN CONTENT === */
+    .main{flex:1;overflow-y:auto;background:#f0f2f5;display:flex;flex-direction:column}
+    .main-inner{flex:1;max-width:1400px;margin:0 auto;padding:28px;width:100%}
+
+    /* === INNER TABS (keep existing) === */
+    .inner-tab-nav{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid #e2e8f0}
+    .inner-tab-btn{padding:10px 22px;font-size:12px;font-weight:600;color:#64748b;background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:all .15s;white-space:nowrap}
+    .inner-tab-btn.active{color:#0f3460;border-bottom-color:#0f3460;background:#f8fafc}
+    .inner-tab-btn:hover:not(.active){color:#374151;background:#f8fafc}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    /* ── LAYOUT ── */
+    .section-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+
+    /* ── STAT CARDS ── */
+    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+    .stat-card{background:white;border-radius:14px;padding:22px 20px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.07);border-top:4px solid var(--c)}
+    .stat-card .num{font-size:38px;font-weight:800;color:var(--c);line-height:1}
+    .stat-card .lbl{font-size:11px;color:#64748b;margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+    .stat-card .sub{font-size:10px;color:#94a3b8;margin-top:4px}
+
+    /* ── CARDS ── */
+    .card{background:white;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:24px}
+    .card-title{font-size:13px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.6px;margin-bottom:20px}
+
+    /* ── EXEC SUMMARY ── */
+    .exec-box{background:linear-gradient(135deg,#0f3460,#1a1a2e);color:white;border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .exec-box h2{font-size:18px;font-weight:700;margin-bottom:12px}
+    .exec-box p{font-size:13px;color:#cbd5e1;line-height:1.7}
+    .exec-box .highlight{color:#60a5fa;font-weight:600}
+
+    /* ── SCOPE GRID ── */
+    .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+    .scope-card{background:white;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+    .scope-card.in{border-top:4px solid #16a34a}
+    .scope-card.out{border-top:4px solid #94a3b8}
+    .scope-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .scope-header .icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+    .scope-header .icon.in-icon{background:#dcfce7}
+    .scope-header .icon.out-icon{background:#f1f5f9}
+    .scope-header h3{font-size:14px;font-weight:700}
+    .scope-header .count{margin-left:auto;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+    .scope-header .count.in{background:#dcfce7;color:#15803d}
+    .scope-header .count.out{background:#f1f5f9;color:#64748b}
+    .scope-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+    .scope-list li{font-size:12px;color:#475569;display:flex;align-items:flex-start;gap:7px;line-height:1.4}
+    .scope-list li::before{flex-shrink:0;margin-top:2px;font-size:10px}
+    .scope-list.in li::before{content:"✓";color:#16a34a;font-weight:700}
+    .scope-list.out li::before{content:"→";color:#94a3b8}
+    .scope-list .tag{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600;margin-left:4px;white-space:nowrap}
+    .tag-excl{background:#fee2e2;color:#dc2626}
+    .tag-post{background:#f1f5f9;color:#64748b}
+    .tag-ns{background:#fef9c3;color:#92400e}
+
+    /* ── MILESTONE TIMELINE ── */
+    .timeline-wrap{margin-bottom:24px}
+    .timeline-scroll{overflow-x:auto;padding-bottom:8px}
+    .timeline{display:flex;gap:0;align-items:flex-start;min-width:1100px;position:relative;padding:8px 0 0}
+
+    /* connecting line */
+    .timeline::before{content:'';position:absolute;top:36px;left:40px;right:40px;height:3px;background:linear-gradient(90deg,#22c55e,#22c55e 18%,#22c55e 36%,#3b82f6 36%,#3b82f6 52%,#8b5cf6 52%,#8b5cf6 68%,#f97316 68%,#f97316 84%,#ef4444 84%);z-index:0;border-radius:2px}
+
+    .ms-card{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;z-index:1;padding:0 8px}
+    .ms-dot{width:20px;height:20px;border-radius:50%;border:3px solid white;box-shadow:0 0 0 3px var(--mc);margin-bottom:12px;flex-shrink:0;background:var(--mc)}
+    .ms-dot.done{background:white;border-color:var(--mc)}
+    .ms-box{background:white;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.09);border-top:3px solid var(--mc);width:100%;font-size:12px}
+    .ms-box .ms-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:8px;letter-spacing:.3px}
+    .ms-box .ms-badge.done{background:#dcfce7;color:#15803d}
+    .ms-box .ms-badge.active{background:#dbeafe;color:#1d4ed8}
+    .ms-box .ms-badge.planned{background:#f1f5f9;color:#475569}
+    .ms-box .ms-name{font-size:13px;font-weight:700;color:#1e293b;margin-bottom:3px;line-height:1.3}
+    .ms-box .ms-dates{font-size:10px;color:#94a3b8;margin-bottom:10px}
+    .ms-box .ms-theme{font-size:11px;color:#475569;font-style:italic;margin-bottom:10px;line-height:1.4;min-height:30px}
+    .ms-box .ms-features{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+    .ms-box .ms-feat{font-size:10px;color:#64748b;display:flex;align-items:flex-start;gap:4px}
+    .ms-box .ms-feat::before{content:"·";color:var(--mc);font-weight:700;flex-shrink:0}
+    .ms-box .ms-sp{font-size:10px;font-weight:600;color:var(--mc);background:var(--mc-light);padding:2px 8px;border-radius:10px;display:inline-block;margin-top:4px}
+    .ms-box .ms-sp.done-sp{color:#15803d;background:#dcfce7}
+
+    /* ── RESOURCE TABLE ── */
+    .resource-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:20px;margin-bottom:24px}
+    table.res{width:100%;border-collapse:collapse;font-size:12px}
+    table.res thead th{text-align:left;padding:9px 12px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #f1f5f9}
+    table.res tbody td{padding:9px 12px;border-bottom:1px solid #f8fafc;vertical-align:middle}
+    table.res tbody tr:hover{background:#f8fafc}
+    .role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+    .alloc-bar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden}
+    .alloc-fill{height:100%;border-radius:3px;background:var(--c)}
+    .chart-wrap{height:220px;position:relative}
+
+    /* ── RISK TABLE ── */
+    table.risk{width:100%;border-collapse:collapse;font-size:12px}
+    table.risk thead th{text-align:left;padding:10px 14px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #f1f5f9}
+    table.risk tbody td{padding:11px 14px;border-bottom:1px solid #f8fafc;vertical-align:top;line-height:1.5}
+    table.risk tbody tr:hover{background:#f8fafc}
+    .risk-pill{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.3px}
+    .r-high{background:#fee2e2;color:#dc2626}
+    .r-med{background:#fef9c3;color:#b45309}
+    .r-low{background:#dcfce7;color:#15803d}
+
+    /* ── FOOTER ── */
+    footer{text-align:center;padding:24px;font-size:12px;color:#94a3b8}
+
+    /* ── TODO TAB ── */
+    #todo-content{display:none}
+    .countdown-bar{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:white;border-radius:14px;padding:20px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .countdown-bar .cd-left h2{font-size:18px;font-weight:700;margin-bottom:4px}
+    .countdown-bar .cd-left p{font-size:12px;color:#fca5a5}
+    .countdown-bar .cd-right{text-align:right}
+    .countdown-bar .cd-days{font-size:48px;font-weight:800;line-height:1}
+    .countdown-bar .cd-label{font-size:11px;color:#fca5a5;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+    .todo-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+    .todo-section{background:white;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+    .todo-section-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #f1f5f9}
+    .todo-section-head .ts-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .todo-section-head h3{font-size:14px;font-weight:700;color:#1e293b;line-height:1.2}
+    .todo-section-head .ts-deadline{margin-left:auto;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap}
+    .todo-items{display:flex;flex-direction:column;gap:10px}
+    .todo-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;transition:background .15s}
+    .todo-item:hover{background:#f0f9ff;border-color:#bae6fd}
+    .todo-item .ti-check{width:18px;height:18px;border-radius:5px;border:2px solid #cbd5e1;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .todo-item .ti-check.done{background:#16a34a;border-color:#16a34a;color:white;font-size:10px}
+    .todo-item .ti-body{flex:1;min-width:0}
+    .todo-item .ti-title{font-size:12px;font-weight:600;color:#1e293b;line-height:1.4;margin-bottom:3px}
+    .todo-item .ti-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .todo-item .ti-owner{font-size:10px;color:#64748b;background:#e2e8f0;padding:1px 7px;border-radius:8px;font-weight:500}
+    .todo-item .ti-due{font-size:10px;color:#94a3b8}
+    .priority-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;letter-spacing:.3px;text-transform:uppercase}
+    .p-crit{background:#fee2e2;color:#dc2626}
+    .p-high{background:#fef9c3;color:#b45309}
+    .p-med{background:#dbeafe;color:#1d4ed8}
+    .todo-progress{margin-bottom:24px}
+    .progress-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+    .progress-label{font-size:11px;font-weight:600;color:#475569;width:180px;flex-shrink:0}
+    .progress-track{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+    .progress-fill{height:100%;border-radius:4px}
+    .progress-pct{font-size:10px;font-weight:700;color:#64748b;width:32px;text-align:right;flex-shrink:0}
+    .blocker-card{background:white;border-radius:14px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:24px;border-left:4px solid #dc2626}
+    .blocker-card h3{font-size:13px;font-weight:700;color:#dc2626;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .blocker-list{display:flex;flex-direction:column;gap:8px}
+    .blocker-item{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:#475569;line-height:1.5}
+    .blocker-item::before{content:"⚠";flex-shrink:0;font-size:13px}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">P³</div>
+    <div>
+      <h1>P-Cubed Pro · V1 Delivery Plan</h1>
+      <div class="subtitle">Project Horizon | 8 Milestones · 28 V1 Features · Target: Oct 1, 2026</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge">Project Horizon</span>
+    <span class="header-date">Mar 20, 2026 · Confidential</span>
+  </div>
+</div>
+
+<div class="shell">
+
+<nav class="sidebar" id="sidebar">
+  <p class="sb-section-label">Planning Suite</p>
+  <ul class="sb-nav">
+    <li class="sb-item">
+      <a href="prd-status.html" class="sb-link"><span class="sb-icon">📊</span><span class="sb-label">PRD Status</span></a>
+    </li>
+    <li class="sb-item active">
+      <a href="delivery-plan.html" class="sb-link"><span class="sb-icon">🗓</span><span class="sb-label">Delivery Plan</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn active" id="sbtab-plan" onclick="showTab('plan')">📋 Delivery Plan</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-todo" onclick="showTab('todo')">🔴 TODO · Next 10 Days</button></li>
+      </ul>
+    </li>
+    <li class="sb-item">
+      <a href="milestone-details.html" class="sb-link"><span class="sb-icon">🔍</span><span class="sb-label">Milestone Deep Plan</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='milestone-details.html'">📋 Milestone Details</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='milestone-details.html'">📅 Gantt Chart</button></li>
+      </ul>
+    </li>
+    <li class="sb-item">
+      <a href="release-ops.html" class="sb-link"><span class="sb-icon">⚙️</span><span class="sb-label">Release Ops</span></a>
+      <ul class="sb-sub">
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">📊 Sprint Capacity</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">✅ Go / No-Go</button></li>
+        <li><button class="sb-sub-btn" onclick="location.href='release-ops.html'">👥 RACI Matrix</button></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <div id="plan-content">
+
+  <!-- EXEC SUMMARY -->
+  <div class="exec-box">
+    <h2>Executive Summary</h2>
+    <p>
+      P-Cubed Pro (Project Horizon) is the <span class="highlight">cloud-native replacement for legacy P-Cubed</span> — a next-generation SaaS platform for natural gas utilities covering boundary-based survey planning, field data collection, automated leak analysis, investigation workflows, and compliance reporting.
+      <br><br>
+      The V1 release targets <span class="highlight">October 1, 2026</span>, delivering <span class="highlight">28 of 41 PRD features</span> across 8 milestones (MS-3 through V1 launch). Three milestones are already complete. The remaining 5 milestones run April 1 – September 30, 2026, covering <span class="highlight">~26 weeks</span> of execution with a team of <span class="highlight">X persons</span> across engineering, GIS, QA, and cloud infrastructure.
+      <br><br>
+      V1 is scoped to deliver the core operational platform — onboarding, campaigns, driving, boundary management, and investigations — <span class="highlight">excluding</span> OTA, Data Explorer, Emissions360, Safety360, and mobile/handheld features, which are targeted for V2.
+    </p>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stat-grid">
+    <div class="stat-card" style="--c:#0f3460">
+      <div class="num">X</div>
+      <div class="lbl">Team Members</div>
+      <div class="sub">Eng · GIS · QA · Cloud · PM</div>
+    </div>
+    <div class="stat-card" style="--c:#7c3aed">
+      <div class="num">8</div>
+      <div class="lbl">Total Milestones</div>
+      <div class="sub">MS-3 complete → V1 Launch</div>
+    </div>
+    <div class="stat-card" style="--c:#16a34a">
+      <div class="num">28</div>
+      <div class="lbl">V1 Features In Scope</div>
+      <div class="sub">of 41 total PRD topics</div>
+    </div>
+    <div class="stat-card" style="--c:#e43f5a">
+      <div class="num">Oct 1</div>
+      <div class="lbl">Target Launch Date</div>
+      <div class="sub">26 weeks from today</div>
+    </div>
+  </div>
+
+  <!-- V1 SCOPE -->
+  <div class="section-title">V1 Release Scope</div>
+  <div class="scope-grid">
+    <!-- IN -->
+    <div class="scope-card in">
+      <div class="scope-header">
+        <div class="icon in-icon">✅</div>
+        <h3 style="color:#15803d">V1 — In Scope</h3>
+        <span class="count in">28 Features</span>
+      </div>
+      <ul class="scope-list in">
+        <li>Sign-on &amp; Authentication (SSO, MFA, Keycloak)</li>
+        <li>RBAC &amp; Multi-Tenancy (Phase 0 + Phase 1)</li>
+        <li>Settings — Tenant, Operator, Campaign, User</li>
+        <li>Subcontractor &amp; Service Model</li>
+        <li>GIS Data Ingestion (via Data Hub)</li>
+        <li>Historical P-Cubed Data Migration</li>
+        <li>Driving Campaigns (Create / Edit / Manage)</li>
+        <li>Boundary Management: Driving Assignments</li>
+        <li>Driver View v2 (web tablet — 41 requirements)</li>
+        <li>Capture Mode &amp; Snap to Street</li>
+        <li>Driving Sessions (assigned + unassigned)</li>
+        <li>Driving Sessions Metadata (technical)</li>
+        <li>Fleet Management &amp; Configurations</li>
+        <li>Observer View (live monitoring — basic)</li>
+        <li>Driving Results: Historical View</li>
+        <li>Automated Survey QC</li>
+        <li>Delete Driving Sessions / Disaggregate / Re-aggregate</li>
+        <li>Boundary Results (UI)</li>
+        <li>Boundary Results &amp; Metadata (technical)</li>
+        <li>Manual Creation of Reports</li>
+        <li>Automated LISA / Gap Workflow (basic)</li>
+        <li>Investigation Assignments</li>
+        <li>Investigation Templates &amp; Configuration</li>
+        <li>Investigation Sessions and Results</li>
+        <li>Investigation Sessions Metadata (technical, partial)</li>
+        <li>Boundary Management: Investigation Results (basic)</li>
+        <li>FOV Settings, PS2 Settings, RFR Config, GIS Summary</li>
+        <li>Internationalization Phase 1</li>
+      </ul>
+    </div>
+    <!-- OUT -->
+    <div class="scope-card out">
+      <div class="scope-header">
+        <div class="icon out-icon">🚫</div>
+        <h3 style="color:#64748b">Post-V1 — Deferred</h3>
+        <span class="count out">13 Features</span>
+      </div>
+      <ul class="scope-list out">
+        <li>OTA — Operation Transfer Assistant <span class="tag tag-excl">Explicit Exclusion</span></li>
+        <li>Data Explorer (network dashboards, trend analysis) <span class="tag tag-excl">Explicit Exclusion</span></li>
+        <li>Emissions360 (emissions quantification &amp; reporting) <span class="tag tag-excl">Explicit Exclusion</span></li>
+        <li>Safety360 (safety analytics) <span class="tag tag-excl">Explicit Exclusion</span></li>
+        <li>Priority Score 2 (PS2) algorithm &amp; projection <span class="tag tag-ns">Not Started</span></li>
+        <li>Evolution of Highlighted Assets (PS2-dependent) <span class="tag tag-ns">Not Started</span></li>
+        <li>Hardware: Predictive Maintenance <span class="tag tag-ns">Not Started</span></li>
+        <li>P-Cubed Mobile App Integration <span class="tag tag-ns">Not Started</span></li>
+        <li>Handheld Data Management &amp; Collection <span class="tag tag-ns">Not Started</span></li>
+        <li>Handheld Algorithms <span class="tag tag-ns">Not Started</span></li>
+        <li>ESRI Integration (live GIS sync) <span class="tag tag-ns">Not Started</span></li>
+        <li>Multi-Campaign Aggregation <span class="tag tag-ns">Not Started</span></li>
+        <li>Product Analytics <span class="tag tag-ns">Not Started</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MILESTONE TIMELINE -->
+  <div class="section-title">Milestone Timeline — MS-3 to V1 Launch</div>
+  <div class="timeline-wrap card" style="padding:28px 20px 24px">
+    <div class="timeline-scroll">
+      <div class="timeline">
+
+        <!-- MS-3: DONE -->
+        <div class="ms-card" style="--mc:#22c55e;--mc-light:#dcfce7">
+          <div class="ms-dot done"></div>
+          <div class="ms-box">
+            <span class="ms-badge done">✓ Complete</span>
+            <div class="ms-name">MS-3: Infrastructure Foundation</div>
+            <div class="ms-dates">Nov 16 – Dec 31, 2025</div>
+            <div class="ms-theme">Build the core backend framework, data pipelines, and dev environment</div>
+            <div class="ms-features">
+              <span class="ms-feat">Driver Session Processing Phase 2</span>
+              <span class="ms-feat">Database Libraries &amp; Schema</span>
+              <span class="ms-feat">Data Ingestion Service Phase 2</span>
+              <span class="ms-feat">GeoServer Auth POC Phase 2</span>
+              <span class="ms-feat">ArgoCD &amp; Helm Charts setup</span>
+              <span class="ms-feat">Network Metrics Phase 1</span>
+            </div>
+            <span class="ms-sp done-sp">DELIVERED</span>
+          </div>
+        </div>
+
+        <!-- MS-4: DONE -->
+        <div class="ms-card" style="--mc:#22c55e;--mc-light:#dcfce7">
+          <div class="ms-dot done"></div>
+          <div class="ms-box">
+            <span class="ms-badge done">✓ Complete</span>
+            <div class="ms-name">MS-4: Auth &amp; Settings Foundation</div>
+            <div class="ms-dates">Jan 15 – Feb 6, 2026</div>
+            <div class="ms-theme">SSO login, tenant settings, AutoFOV Phase 2, dev/QA environments live</div>
+            <div class="ms-features">
+              <span class="ms-feat">Keycloak Authentication (Login)</span>
+              <span class="ms-feat">Tenant Settings FE + BE Phase 1</span>
+              <span class="ms-feat">AutoFOV Phase 2</span>
+              <span class="ms-feat">CDP Core Libs</span>
+              <span class="ms-feat">Dev + QA Environments live</span>
+            </div>
+            <span class="ms-sp done-sp">83–105 SPs · DELIVERED</span>
+          </div>
+        </div>
+
+        <!-- MS-5: AT RISK -->
+        <div class="ms-card" style="--mc:#ef4444;--mc-light:#fee2e2">
+          <div class="ms-dot" style="background:#ef4444"></div>
+          <div class="ms-box">
+            <span class="ms-badge" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5">⚠ At Risk</span>
+            <div class="ms-name">MS-5: GIS Enablement, Algorithm Hardening &amp; Campaign Creation</div>
+            <div class="ms-dates">Feb 16 – Mar 31, 2026 · Code Complete: <b style="color:#dc2626">Mar 20 (missed)</b> · QA: Mar 31 · Demo: Apr 7</div>
+            <div class="ms-theme">Jira live: 2/16 epics Accepted · 10 In-Progress · 2 QA In-Progress · 1 Blocked (PH-636) · ~48% stories done</div>
+            <div class="ms-features">
+              <span class="ms-feat">Tenant Settings FE+BE Ph2 (PH-362, PH-183) — In-Progress</span>
+              <span class="ms-feat">Campaign Settings FE+BE (PH-220, PH-389) — QA In-Progress</span>
+              <span class="ms-feat">Operator Settings FE+BE (PH-207) — In-Progress</span>
+              <span class="ms-feat">AutoFOV Phase 3 (PH-279, PH-463) — QA In-Progress</span>
+              <span class="ms-feat">Operator Map Layers GIS (PH-251) — ✓ Accepted</span>
+              <span class="ms-feat">Driver Session Data Processing Ph3 (PH-222) — In-Progress</span>
+              <span class="ms-feat">Common UI Phase 3 (PH-337) — In-Progress</span>
+              <span class="ms-feat">Infra/SRE (PH-188) — In-Progress</span>
+              <span class="ms-feat">Tenant Summary (PH-181) — ✓ Accepted</span>
+            </div>
+            <span class="ms-sp" style="background:#fee2e2;color:#dc2626">⚠ Code Complete missed Mar 20 · Demo Apr 7 · Source: Jira live</span>
+          </div>
+        </div>
+
+        <!-- MS-6: PLANNING NOT READY -->
+        <div class="ms-card" style="--mc:#f59e0b;--mc-light:#fef9c3">
+          <div class="ms-dot" style="background:#f59e0b"></div>
+          <div class="ms-box">
+            <span class="ms-badge" style="background:#fef9c3;color:#b45309;border:1px solid #fde68a">⚠ Planning — Not Ready</span>
+            <div class="ms-name">MS-6: Pivot to Boundary-First Operations</div>
+            <div class="ms-dates">Apr 1 – May 15, 2026 · Kickoff: TBD (unconfirmed) · 25 Jira epics · 52% in Tech Refinement</div>
+            <div class="ms-theme">Theme (Confluence): Coverage Confidence at Scale — boundary mgmt, RBAC, AutoFOV, Gaps/LISAs pipelines, Operator/Tenant Settings Ph3, Common UI Ph4, i18n</div>
+            <div class="ms-features">
+              <span class="ms-feat">RBAC Phase 0 (PH-430) — Tech Refinement</span>
+              <span class="ms-feat">BM: View Campaign &amp; Operator Boundaries (PH-416) — Tech Refinement</span>
+              <span class="ms-feat">BM: View Driving Sessions + FOV (PH-418) — PM Refinement</span>
+              <span class="ms-feat">BM: AutoFOV Integration (PH-419) — PM Refinement</span>
+              <span class="ms-feat">Auto Data Pipeline: Gaps (PH-385) — Unrefined</span>
+              <span class="ms-feat">Auto Data Pipeline: LISAs (PH-104, PH-118, PH-119) — Unrefined/PM Refinement</span>
+              <span class="ms-feat">Operator Settings: General, Driving Session, GIS Summary (PH-209, PH-184, PH-210)</span>
+              <span class="ms-feat">Tenant Settings: PS2, Representative Flow Rate (PH-185, PH-591)</span>
+              <span class="ms-feat">Internationalization Ph1 (PH-274) · Common UI Ph4 (PH-417) · GIS Data Copy (PH-248)</span>
+              <span class="ms-feat" style="color:#dc2626">⛔ 2 Blocked: PH-423 (Dheeraj — Boundary Search Bar) · PH-278 (Shriya — Toast message)</span>
+            </div>
+            <span class="ms-sp" style="background:#fef9c3;color:#b45309">SPs: all null in Jira · Operator Summary (PH-208) only Closed epic · Source: Jira live</span>
+          </div>
+        </div>
+
+        <!-- MS-7: PLANNED -->
+        <div class="ms-card" style="--mc:#8b5cf6;--mc-light:#ede9fe">
+          <div class="ms-dot"></div>
+          <div class="ms-box">
+            <span class="ms-badge planned">Planned</span>
+            <div class="ms-name">MS-7: Results, Reports &amp; Investigations</div>
+            <div class="ms-dates">May 16 – Jun 30, 2026</div>
+            <div class="ms-theme">Close the boundary loop — results, manual reports, LISA/Gap, investigation assignments</div>
+            <div class="ms-features">
+              <span class="ms-feat">Boundary Results UI + Metadata</span>
+              <span class="ms-feat">Manual Report Creation</span>
+              <span class="ms-feat">Automated LISA / Gap Workflow</span>
+              <span class="ms-feat">Delete / Disaggregate / Re-aggregate</span>
+              <span class="ms-feat">Investigation Assignments &amp; Templates</span>
+              <span class="ms-feat">Subcontractor model (full)</span>
+            </div>
+            <span class="ms-sp">~200–240 SPs</span>
+          </div>
+        </div>
+
+        <!-- MS-8: PLANNED -->
+        <div class="ms-card" style="--mc:#f97316;--mc-light:#ffedd5">
+          <div class="ms-dot"></div>
+          <div class="ms-box">
+            <span class="ms-badge planned">Planned</span>
+            <div class="ms-name">MS-8: Driver View, Field Ops &amp; Fleet</div>
+            <div class="ms-dates">Jul 1 – Aug 15, 2026</div>
+            <div class="ms-theme">Full field experience — Driver View v2 complete, investigations, fleet management, data migration</div>
+            <div class="ms-features">
+              <span class="ms-feat">Driver View v2 (all 41 requirements)</span>
+              <span class="ms-feat">Capture Mode + Fleet Management</span>
+              <span class="ms-feat">Investigation Sessions &amp; Results</span>
+              <span class="ms-feat">BM: Investigation Results (basic)</span>
+              <span class="ms-feat">Historical P-Cubed Data Migration</span>
+              <span class="ms-feat">Security Hardening Phase 1</span>
+            </div>
+            <span class="ms-sp">~220–260 SPs</span>
+          </div>
+        </div>
+
+        <!-- MS-9: PLANNED -->
+        <div class="ms-card" style="--mc:#14b8a6;--mc-light:#ccfbf1">
+          <div class="ms-dot"></div>
+          <div class="ms-box">
+            <span class="ms-badge planned">Planned</span>
+            <div class="ms-name">MS-9: Hardening &amp; Cutover Prep</div>
+            <div class="ms-dates">Aug 16 – Sep 15, 2026</div>
+            <div class="ms-theme">Production-ready — performance, security audit, shadow mode pilot, cutover runbook</div>
+            <div class="ms-features">
+              <span class="ms-feat">End-to-end regression (all V1)</span>
+              <span class="ms-feat">Performance benchmarks (500+ tenants)</span>
+              <span class="ms-feat">Security penetration testing</span>
+              <span class="ms-feat">Shadow mode pilot (1–2 customers)</span>
+              <span class="ms-feat">Cutover runbook finalization</span>
+              <span class="ms-feat">WCAG 2.1 AA accessibility checks</span>
+            </div>
+            <span class="ms-sp">~100–120 SPs (quality focus)</span>
+          </div>
+        </div>
+
+        <!-- PROD READINESS -->
+        <div class="ms-card" style="--mc:#ef4444;--mc-light:#fee2e2">
+          <div class="ms-dot"></div>
+          <div class="ms-box">
+            <span class="ms-badge planned">Final Gate</span>
+            <div class="ms-name">Production Readiness &amp; Launch</div>
+            <div class="ms-dates">Sep 16 – Oct 1, 2026</div>
+            <div class="ms-theme">Go/No-Go, load testing, DR drill, customer training, V1 launch</div>
+            <div class="ms-features">
+              <span class="ms-feat">Prod environment final validation</span>
+              <span class="ms-feat">Load test (50 concurrent tenants)</span>
+              <span class="ms-feat">Disaster recovery drill</span>
+              <span class="ms-feat">Customer &amp; internal training</span>
+              <span class="ms-feat">Go / No-Go Review — Sep 25</span>
+              <span class="ms-feat" style="color:#ef4444;font-weight:600">🚀 V1 LAUNCH — Oct 1, 2026</span>
+            </div>
+            <span class="ms-sp" style="background:#fee2e2;color:#ef4444">TARGET: OCT 1, 2026</span>
+          </div>
+        </div>
+
+      </div><!-- timeline -->
+    </div>
+  </div>
+
+  <!-- RESOURCE PLAN -->
+  <div class="section-title">Resource Allocation Plan</div>
+  <div class="resource-grid">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Team by Function (X Total)</div>
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Count</th>
+            <th>MS-6</th>
+            <th>MS-7</th>
+            <th>MS-8+</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="role-badge" style="background:#dbeafe;color:#1d4ed8">App / Backend</span></td>
+            <td><strong>5</strong></td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#3b82f6;width:90%"></div></div>
+              <span style="font-size:10px;color:#64748b">90%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#3b82f6;width:90%"></div></div>
+              <span style="font-size:10px;color:#64748b">90%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#3b82f6;width:85%"></div></div>
+              <span style="font-size:10px;color:#64748b">85%</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="role-badge" style="background:#ede9fe;color:#7c3aed">Frontend / UI</span></td>
+            <td><strong>2</strong></td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#8b5cf6;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#8b5cf6;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#8b5cf6;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="role-badge" style="background:#dcfce7;color:#15803d">GIS Engineers</span></td>
+            <td><strong>2</strong></td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#16a34a;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#16a34a;width:75%"></div></div>
+              <span style="font-size:10px;color:#64748b">75%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#16a34a;width:75%"></div></div>
+              <span style="font-size:10px;color:#64748b">75%</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="role-badge" style="background:#fef9c3;color:#92400e">QA Engineers</span></td>
+            <td><strong>4</strong></td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#d97706;width:80%"></div></div>
+              <span style="font-size:10px;color:#64748b">80%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#d97706;width:80%"></div></div>
+              <span style="font-size:10px;color:#64748b">80%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#d97706;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="role-badge" style="background:#f1f5f9;color:#475569">Cloud / SRE</span></td>
+            <td><strong>2</strong></td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#64748b;width:50%"></div></div>
+              <span style="font-size:10px;color:#64748b">50%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#64748b;width:50%"></div></div>
+              <span style="font-size:10px;color:#64748b">50%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#64748b;width:75%"></div></div>
+              <span style="font-size:10px;color:#64748b">75%</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="role-badge" style="background:#ffe4e6;color:#be123c">Product / PM</span></td>
+            <td><strong>2</strong></td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#e43f5a;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#e43f5a;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+            <td>
+              <div class="alloc-bar"><div class="alloc-fill" style="--c:#e43f5a;width:100%"></div></div>
+              <span style="font-size:10px;color:#64748b">100%</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;padding:12px;background:#fffbeb;border-radius:8px;border-left:3px solid #d97706">
+        <p style="font-size:11px;color:#92400e;font-weight:600;margin-bottom:4px">⚠ Resource Gaps Identified</p>
+        <p style="font-size:11px;color:#b45309;line-height:1.5">
+          • No dedicated DevOps/SRE FTE — SRE is an external dependency<br>
+          • Driver View tablet optimization may need 1 mobile-focused dev<br>
+          • Recommend +1 backend dev to parallel-track RBAC + Investigations in MS-6/7
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Story Points by Milestone (Projected)</div>
+      <div class="chart-wrap">
+        <canvas id="spChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK REGISTER -->
+  <div class="section-title">Risk Register</div>
+  <div class="card">
+    <table class="risk">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Risk</th>
+          <th>Milestone</th>
+          <th>Probability</th>
+          <th>Impact</th>
+          <th>Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R1</td>
+          <td style="font-weight:600">RBAC/Multi-tenancy complexity delays MS-6 — this is the most cross-cutting feature and touches every service</td>
+          <td style="color:#3b82f6;font-weight:600">MS-6</td>
+          <td><span class="risk-pill r-high">HIGH</span></td>
+          <td><span class="risk-pill r-high">HIGH</span></td>
+          <td>Dedicated RBAC squad; freeze scope to Phase 1 only (no custom roles); start in MS-5 QA window</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R2</td>
+          <td style="font-weight:600">GIS data migration blockers from poor customer data quality (NiSource, Italgas)</td>
+          <td style="color:#3b82f6;font-weight:600">MS-6</td>
+          <td><span class="risk-pill r-high">HIGH</span></td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td>Start migration validation in MS-6 with NiSource pilot data; add data quality gate to onboarding checklist</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R3</td>
+          <td style="font-weight:600">SRE/Prod infrastructure not ready for MS-9 hardening (external team dependency)</td>
+          <td style="color:#14b8a6;font-weight:600">MS-9</td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td><span class="risk-pill r-high">HIGH</span></td>
+          <td>Prod environment kickoff in MS-6; weekly SRE sync; escalation path if blocked past Jul 1</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R4</td>
+          <td style="font-weight:600">Driver View v2 (41 requirements) scope runs over in MS-8 — large, complex, real-time requirements</td>
+          <td style="color:#f97316;font-weight:600">MS-8</td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td><span class="risk-pill r-high">HIGH</span></td>
+          <td>Phase Driver View: core MVP in MS-7, advanced features (Capture Mode, turn-by-turn nav) in MS-8</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R5</td>
+          <td style="font-weight:600">AutoFOV / PEAS algorithm stability — regression on new data or edge cases found late</td>
+          <td style="color:#8b5cf6;font-weight:600">MS-7</td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td>Budget 20% sprint buffer in MS-7 for algorithm regression; establish golden dataset for validation</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R6</td>
+          <td style="font-weight:600">Shadow mode pilot (customer) reveals functional gaps not caught in internal QA</td>
+          <td style="color:#14b8a6;font-weight:600">MS-9</td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td>Start shadow mode no later than Aug 1 (MS-8 midpoint); select low-complexity pilot customer first</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:#64748b">R7</td>
+          <td style="font-weight:600">Team attrition or India public holiday impact on velocity (distributed US + India team)</td>
+          <td style="color:#64748b;font-weight:600">All</td>
+          <td><span class="risk-pill r-low">LOW</span></td>
+          <td><span class="risk-pill r-med">MED</span></td>
+          <td>Cross-train all critical path owners; document key decisions; plan sprints around India holidays</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SUCCESS CRITERIA -->
+  <div class="section-title">V1 Launch Success Criteria</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="padding:16px;background:#f8fafc;border-radius:10px;border-left:3px solid #16a34a">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Operations</div>
+        <div style="font-size:12px;color:#475569;line-height:1.8">
+          ✓ &ge;95% assignment completion rate<br>
+          ✓ &ge;99% QA-verified survey accuracy<br>
+          ✓ &lt;30 sec pre-survey setup time<br>
+          ✓ GPS update latency &lt;500ms<br>
+          ✓ Session completion rate &ge;95%
+        </div>
+      </div>
+      <div style="padding:16px;background:#f8fafc;border-radius:10px;border-left:3px solid #3b82f6">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Adoption</div>
+        <div style="font-size:12px;color:#475569;line-height:1.8">
+          ✓ 100% user adoption within 30 days<br>
+          ✓ &ge;80% tenants using self-service<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;user management within 60 days<br>
+          ✓ &ge;30% support ticket reduction<br>
+          ✓ 25% faster investigation resolution
+        </div>
+      </div>
+      <div style="padding:16px;background:#f8fafc;border-radius:10px;border-left:3px solid #e43f5a">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Security &amp; Scale</div>
+        <div style="font-size:12px;color:#475569;line-height:1.8">
+          ✓ 0 cross-tenant data leaks<br>
+          ✓ 0 cross-subcontractor violations<br>
+          ✓ Passes security penetration test<br>
+          ✓ Handles 500+ concurrent tenants<br>
+          ✓ 5-year historical data migrated
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- plan-content -->
+
+  <!-- ══════════════════════════════════════════════════════ TODO TAB ═══ -->
+  <div id="todo-content">
+
+    <!-- Countdown bar -->
+    <div class="countdown-bar">
+      <div class="cd-left">
+        <h2>MS-6 Readiness Checklist — Next 10 Days</h2>
+        <p>Complete all items by Mar 31 so MS-6 can kick off on Apr 1, 2026. MS-5 Demo is Apr 7.</p>
+      </div>
+      <div class="cd-right">
+        <div class="cd-days">10</div>
+        <div class="cd-label">Days Remaining</div>
+      </div>
+    </div>
+
+    <!-- Hard blockers — REAL from Jira as of 2026-03-21 -->
+    <div class="blocker-card">
+      <h3>⛔ Real Jira Blockers + Critical Gaps (live as of Mar 21, 2026)</h3>
+      <div class="blocker-list">
+        <div class="blocker-item"><b>PH-636 [MS-5 BLOCKED]</b> — Many font sizes in use on Operator General Settings Page · Assignee: B R Arjun · Epic: PH-333 (General Bug Fixes) · Must resolve before MS-5 QA sign-off.</div>
+        <div class="blocker-item"><b>PH-423 [MS-6 BLOCKED]</b> — Campaign Boundary Component: Boundary Search Bar · Assignee: Dheeraj Gambhir · Epic: PH-603 (Campaign Settings Boundaries Ph2) · Blocking MS-6 scope.</div>
+        <div class="blocker-item"><b>PH-278 [MS-6 BLOCKED]</b> — Toast message for Save Changes Confirmation · Assignee: Shriya Singh · Epic: PH-415 (MS-6 Other) · Common UI dependency.</div>
+        <div class="blocker-item"><b>MS-5 Code Complete MISSED</b> — 10/16 epics still In-Progress as of Mar 20 (code complete date per Confluence). Only 2/16 epics Accepted. ~48% stories done. QA deadline Mar 31 is at high risk.</div>
+        <div class="blocker-item"><b>MS-6 Kickoff NOT CONFIRMED</b> — Confluence says kickoff TBD. 25 Jira epics exist but 13 in Tech Refinement (52%), 5 Unrefined (20%). Cannot sprint-plan MS-6 without groomed stories.</div>
+        <div class="blocker-item"><b>RBAC Phase 0 (PH-430)</b> — In Technical Refinement with Jacob Cansler. Design and Plan Jira story (PH-613) is In-Progress with Amin Ghiasi. Must complete before MS-6 dev can start.</div>
+      </div>
+    </div>
+
+    <!-- Progress overview -->
+    <div class="section-title" style="margin-bottom:12px">MS-5 QA Progress Tracker</div>
+    <div class="card todo-progress">
+      <div class="card-title">Epic Status — Live from Jira · Mar 21, 2026</div>
+      <!-- Epic-level status — source: Jira fixVersion="PCP - Milestone 5", 16 epics -->
+      <div class="progress-row">
+        <div class="progress-label">Tenant Summary (PH-181 · Shriya)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:100%;background:#16a34a"></div></div>
+        <div class="progress-pct" style="color:#16a34a">✓ Accepted</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Operator Map Layers GIS (PH-251 · Dheeraj)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:100%;background:#16a34a"></div></div>
+        <div class="progress-pct" style="color:#16a34a">✓ Accepted</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Campaign Settings General (PH-220 · Amin)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:75%;background:#3b82f6"></div></div>
+        <div class="progress-pct">QA In Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">AutoFOV Phase 3 Pipeline (PH-279 · Abhishek J)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:75%;background:#3b82f6"></div></div>
+        <div class="progress-pct">QA In Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Tenant Settings FOV (PH-183 · Amin)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Tenant Flow Phase 2 (PH-362 · Shriya)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Create Operator &amp; Campaign Flow (PH-207 · Amin)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Campaign Settings Boundaries (PH-389 · Dheeraj)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Driver Session Data Processing Ph3 (PH-222 · Sandhya)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Common UI Phase 3 (PH-337 · Jacqueline)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">AutoFOV Dependencies (PH-463 · Jacob C)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Infra &amp; SRE (PH-188 · Amin)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">General Bug Fixes (PH-333 · Jacob C) — 1 BLOCKED</div>
+        <div class="progress-track"><div class="progress-fill" style="width:40%;background:#dc2626"></div></div>
+        <div class="progress-pct" style="color:#dc2626">⛔ Blocked</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">QA Automation &amp; Security (PH-322 · Abhisek S)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:#f59e0b"></div></div>
+        <div class="progress-pct" style="color:#b45309">In-Progress</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">MS5 Other (PH-414 · Jacob C)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:20%;background:#94a3b8"></div></div>
+        <div class="progress-pct" style="color:#64748b">QA Refinement</div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label">Regression Bugs (PH-329 · Abhisek S)</div>
+        <div class="progress-track"><div class="progress-fill" style="width:10%;background:#94a3b8"></div></div>
+        <div class="progress-pct" style="color:#64748b">Ready for Dev</div>
+      </div>
+      <div style="margin-top:14px;padding:10px 14px;background:#fef2f2;border-radius:8px;border:1px solid #fca5a5">
+        <b style="font-size:12px;color:#dc2626">⚠ Overall: 2/16 epics Accepted · ~48% stories done · Code Complete was Mar 20 (missed)</b><br>
+        <span style="font-size:11px;color:#78350f">Story counts: Accepted 41 · QA In-Progress 13 · Ready for QA 9 · In-Progress 9 · Ready for Dev 7 · Closed 6 · Code Review 3 · Blocked 1 · Other 11 — Source: Jira live</span>
+      </div>
+    </div>
+
+    <!-- Two-column TODO lists -->
+    <div class="todo-cols">
+
+      <!-- Column 1: QA Completion -->
+      <div class="todo-section">
+        <div class="todo-section-head">
+          <div class="ts-icon" style="background:#dbeafe">🧪</div>
+          <div>
+            <h3>QA Completion — MS-5</h3>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px">Code complete. QA runs Mar 20–31.</div>
+          </div>
+          <div class="ts-deadline" style="background:#fee2e2;color:#dc2626">Due Mar 31</div>
+        </div>
+        <div class="todo-items">
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for Campaign Settings (FE + BE) — currently in "TECHNICAL REFINEMENT"</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Abhisek (QA Lead)</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Risk: complex edge cases; most likely to slip</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for Driving Session Data Processing Ph3 (PH-222)</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Sandhya Puthanveettil</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Needed for MS-6 Boundary Assignments</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for Vehicle Timeseries Ingestion</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Bhavika</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Data pipeline dependency for MS-6 map layers</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Resolve Security Integration story — define scope or formally defer</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Sandhya / Vipin</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Currently "TBD" — blocker for sign-off</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for Tenant Settings FE/BE Phase 2 and Operator Settings FE/BE</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Abhisek / Bhavika</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Mar 31</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for AutoFOV Phase 3 (PEAS Library Upgrade)</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Abhishek J + QA</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Algorithm regression risk — budget buffer time</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for Map Layers (GIS) and GIS Production Schema Plan (FME)</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Dheeraj / DVN Maheswar</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Schema changes will cascade to MS-6 — must be locked by Mar 31</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Achieve 50% QA automation coverage — MS-5 acceptance criteria</div>
+              <div class="ti-meta">
+                <span class="ti-owner">QA Team (Abhisek lead)</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Must be met before MS-5 sign-off</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete QA for Common UI Phase 3 (PH-337) and Infrastructure/SRE (PH-188)</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Shriya Singh + Aniket Sabharwal (SRE)</span>
+                <span class="priority-pill p-med">Medium</span>
+                <span class="ti-due">Mar 31</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Column 2: MS-6 Kickoff Prep -->
+      <div class="todo-section">
+        <div class="todo-section-head">
+          <div class="ts-icon" style="background:#dcfce7">🚀</div>
+          <div>
+            <h3>MS-6 Kickoff Prep</h3>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px">Must be ready before Apr 1 kickoff.</div>
+          </div>
+          <div class="ts-deadline" style="background:#fef9c3;color:#b45309">Due Apr 1</div>
+        </div>
+        <div class="todo-items">
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Define RBAC Phase 0 scope and create all Jira epics</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Arpan / Amin</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Currently "TBD" in MS-6 doc — highest risk item</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete Figma mockups for Boundary Management (Driving Assignments)</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Jacqueline / Shriya</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Figma status: IN PROGRESS — needed for sprint 1 of MS-6</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Complete PRD + Figma for "Gaps" feature</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Jacqueline / Jacob</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Status: IN PROGRESS — needed for MS-6 scope alignment</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Finalize story point estimates for all MS-6 work items</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Arpan + Engineering leads</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">Engineering roadmap in MS-6 doc is completely empty</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Break down 25 MS-6 epics into sprint-ready stories — 52% still in Tech Refinement</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Arpan + Engineering leads</span>
+                <span class="priority-pill p-crit">Critical</span>
+                <span class="ti-due">25 epics exist in Jira but most need story decomposition before sprint planning</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Set and communicate official MS-6 kickoff date (currently "TBD")</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Arpan / Jacqueline</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Target Apr 1 — confirm with all team leads</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Confirm Operator/Tenant Settings Phase 3 scope for MS-6 (PS2 Settings, Representative Flow Rate, GIS Summary pages)</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Jacqueline / Arpan</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Still listed as "IN PROGRESS" — scope needs lock</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Schedule MS-5 Demo (Apr 7) and MS-5 retrospective</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Arpan</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">Apr 7 — send calendar invites to all stakeholders</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Begin Prod environment planning with SRE — schedule kickoff meeting</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Sandhya / Vipin + SRE</span>
+                <span class="priority-pill p-med">Medium</span>
+                <span class="ti-due">Prod needed by MS-9 (Aug 16) — start now to avoid SRE bottleneck</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="ti-check"></div>
+            <div class="ti-body">
+              <div class="ti-title">Review MS-5 RBAC Phase 1 PRD — confirm it's groomed and Figma-linked before MS-6 dev starts</div>
+              <div class="ti-meta">
+                <span class="ti-owner">Jacqueline / Amin</span>
+                <span class="priority-pill p-high">High</span>
+                <span class="ti-due">No Figma or mockups linked in MS-6 RBAC section</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- end todo-cols -->
+
+    <!-- Key dates summary -->
+    <div class="section-title" style="margin-bottom:12px">Key Dates — March 20 to April 7</div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+        <div style="padding:14px;background:#fef9c3;border-radius:10px;text-align:center;border-top:3px solid #f59e0b">
+          <div style="font-size:18px;font-weight:800;color:#b45309">Mar 20</div>
+          <div style="font-size:11px;color:#78350f;margin-top:4px;font-weight:600">MS-5 Code Complete</div>
+          <div style="font-size:10px;color:#92400e;margin-top:3px">TODAY — QA begins</div>
+        </div>
+        <div style="padding:14px;background:#fee2e2;border-radius:10px;text-align:center;border-top:3px solid #dc2626">
+          <div style="font-size:18px;font-weight:800;color:#dc2626">Mar 27</div>
+          <div style="font-size:11px;color:#7f1d1d;margin-top:4px;font-weight:600">GIS Schema Lock</div>
+          <div style="font-size:10px;color:#991b1b;margin-top:3px">FME plan must be final</div>
+        </div>
+        <div style="padding:14px;background:#fee2e2;border-radius:10px;text-align:center;border-top:3px solid #dc2626">
+          <div style="font-size:18px;font-weight:800;color:#dc2626">Mar 31</div>
+          <div style="font-size:11px;color:#7f1d1d;margin-top:4px;font-weight:600">MS-5 QA Complete</div>
+          <div style="font-size:10px;color:#991b1b;margin-top:3px">0 open P1/P2 bugs required</div>
+        </div>
+        <div style="padding:14px;background:#dcfce7;border-radius:10px;text-align:center;border-top:3px solid #16a34a">
+          <div style="font-size:18px;font-weight:800;color:#16a34a">Apr 1</div>
+          <div style="font-size:11px;color:#14532d;margin-top:4px;font-weight:600">MS-6 Kickoff</div>
+          <div style="font-size:10px;color:#166534;margin-top:3px">RBAC + Boundary Mgmt sprint 1</div>
+        </div>
+        <div style="padding:14px;background:#dbeafe;border-radius:10px;text-align:center;border-top:3px solid #3b82f6">
+          <div style="font-size:18px;font-weight:800;color:#1d4ed8">Apr 7</div>
+          <div style="font-size:11px;color:#1e3a8a;margin-top:4px;font-weight:600">MS-5 Demo</div>
+          <div style="font-size:10px;color:#1e40af;margin-top:3px">Leadership + stakeholder review</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- todo-content -->
+
+</div><!-- main-inner -->
+<footer>P-Cubed Pro · Project Horizon · V1 Delivery Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
+</div><!-- main -->
+</div><!-- shell -->
+
+<script>
+// Tab switching
+function showTab(tab) {
+  var planContent = document.getElementById('plan-content');
+  var todoContent = document.getElementById('todo-content');
+  document.querySelectorAll('.sb-sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sbtab-' + tab).classList.add('active');
+  if (tab === 'todo') {
+    planContent.style.display = 'none';
+    todoContent.style.display = 'block';
+  } else {
+    planContent.style.display = 'block';
+    todoContent.style.display = 'none';
+  }
+}
+
+// Story Points Chart
+new Chart(document.getElementById('spChart'), {
+  type: 'bar',
+  data: {
+    labels: ['MS-3\nDone', 'MS-4\nDone', 'MS-5\nIn QA', 'MS-6\nApr–May', 'MS-7\nMay–Jun', 'MS-8\nJul–Aug', 'MS-9\nAug–Sep', 'Prod Ready\nSep'],
+    datasets: [
+      {
+        label: 'Completed',
+        data: [120, 95, 280, 0, 0, 0, 0, 0],
+        backgroundColor: '#22c55e'
+      },
+      {
+        label: 'In Progress',
+        data: [0, 0, 52, 0, 0, 0, 0, 0],
+        backgroundColor: '#60a5fa'
+      },
+      {
+        label: 'Planned',
+        data: [0, 0, 0, 200, 220, 240, 110, 40],
+        backgroundColor: '#c4b5fd'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12, boxWidth: 12 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw} SPs` } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } }, title: { display: true, text: 'Story Points', font: { size: 11 }, color: '#94a3b8' } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
