@@ -2211,13 +2211,201 @@ function buildADP() {
       </div>
     </div>
 
-    <!-- Version 2 placeholder -->
+    <!-- Version 2 -->
     <div id="adp-v2-content" style="display:none">
-      <div style="background:white;border-radius:14px;padding:40px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)">
-        <div style="font-size:32px;margin-bottom:12px">🔮</div>
-        <div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:8px">Version 2 Plan</div>
-        <div style="font-size:13px;color:#94a3b8">Scope TBD — will include OTA, Data Explorer, Emissions360, Safety360, PS2 and Handheld features post-V1 launch.</div>
+
+      <!-- stat cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px">
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid #7c3aed">
+          <div style="font-size:28px;font-weight:900;color:#7c3aed;line-height:1">13</div>
+          <div style="font-size:13px;font-weight:700;color:#1e293b;margin-top:4px">V2 Features</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:3px">All post-V1 exclusions</div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid #0f3460">
+          <div style="font-size:28px;font-weight:900;color:#0f3460;line-height:1">4</div>
+          <div style="font-size:13px;font-weight:700;color:#1e293b;margin-top:4px">Milestones</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:3px">MS-12 through MS-15</div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid #dc2626">
+          <div style="font-size:28px;font-weight:900;color:#dc2626;line-height:1">8</div>
+          <div style="font-size:13px;font-weight:700;color:#1e293b;margin-top:4px">PRDs Needed</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:3px">Not yet authored</div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid #059669">
+          <div style="font-size:28px;font-weight:900;color:#059669;line-height:1">Q4 2027</div>
+          <div style="font-size:13px;font-weight:700;color:#1e293b;margin-top:4px">V2 Target</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:3px">Commercial launch</div>
+        </div>
       </div>
+
+      <!-- PRD readiness table -->
+      <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:24px">
+        <h3 style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:16px">📋 V2 PRD Readiness — What Exists vs What's Missing</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead><tr style="background:#f8fafc">
+            <th style="padding:8px 12px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Feature</th>
+            <th style="padding:8px 12px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">PRD Status</th>
+            <th style="padding:8px 12px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Owner</th>
+            <th style="padding:8px 12px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Target MS</th>
+            <th style="padding:8px 12px;text-align:left;color:#64748b;font-weight:700;border-bottom:2px solid #e2e8f0">Link</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fffbeb22"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Priority Score 2 (PS2)</td><td style="padding:8px 12px"><span style="color:#d97706;font-weight:600">Draft v0.1</span></td><td style="padding:8px 12px;color:#475569">Jacob Cansler</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-12</span></td><td style="padding:8px 12px"><a href="https://picarro.atlassian.net/wiki/spaces/PH/pages/4234051587" target="_blank" style="font-size:10px;color:#3b82f6;text-decoration:none;border:1px solid #bfdbfe;padding:2px 8px;border-radius:5px">View ↗</a></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fffbeb22"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Data Explorer</td><td style="padding:8px 12px"><span style="color:#d97706;font-weight:600">HLD exists (GG space)</span></td><td style="padding:8px 12px;color:#475569">Jacqueline Hoege</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-12</span></td><td style="padding:8px 12px"><a href="https://picarro.atlassian.net/wiki/spaces/GG/pages/3693215745" target="_blank" style="font-size:10px;color:#3b82f6;text-decoration:none;border:1px solid #bfdbfe;padding:2px 8px;border-radius:5px">View ↗</a></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fffbeb22"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Evolution of Highlighted Assets</td><td style="padding:8px 12px"><span style="color:#d97706;font-weight:600">Referenced in Gaps PRD</span></td><td style="padding:8px 12px;color:#475569">Jacob Cansler</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-12</span></td><td style="padding:8px 12px"><a href="https://picarro.atlassian.net/wiki/spaces/PH/pages/4211179536" target="_blank" style="font-size:10px;color:#3b82f6;text-decoration:none;border:1px solid #bfdbfe;padding:2px 8px;border-radius:5px">View ↗</a></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Hardware: Predictive Maintenance</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-13</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Mobile App Integration</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-13</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Handheld Data Management</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Data model only</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-13</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Handheld Algorithms</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Data model only</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-13</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">ESRI Integration</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-14</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">OTA (Operation Transfer Assistant)</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-14</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Multi-Campaign Aggregation</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-14</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Emissions360</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">Jacqueline Hoege</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-15</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Safety360</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">Jacqueline Hoege</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-15</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+            <tr style="border-bottom:1px solid #f1f5f9;background:#fef2f222"><td style="padding:8px 12px;font-weight:600;color:#1e293b">Product Analytics</td><td style="padding:8px 12px"><span style="color:#dc2626;font-weight:600">Not authored</span></td><td style="padding:8px 12px;color:#475569">TBD</td><td style="padding:8px 12px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700">MS-15</span></td><td style="padding:8px 12px"><span style="font-size:10px;color:#94a3b8">—</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;padding:10px 14px;background:#fef3c7;border-radius:8px;font-size:11px;color:#92400e">
+          ⚠️ <strong>8 of 13 V2 features have no PRD.</strong> Authoring must start by <strong>Q1 2027</strong> (immediately post V1 launch) to avoid blocking MS-12 kickoff.
+        </div>
+      </div>
+
+      <!-- V2 milestones -->
+      <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:24px">
+        <h3 style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:18px">📅 V2 Milestone Plan — MS-12 through Launch (click to expand)</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+
+          <div style="border:1.5px solid #c4b5fd;border-radius:10px;overflow:hidden;background:#f5f3ff">
+            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer">
+              <div style="width:52px;min-width:52px;background:#7c3aed;color:white;border-radius:6px;text-align:center;padding:4px 0;font-size:11px;font-weight:800">MS-12</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1e293b">Intelligence Layer</div><div style="font-size:11px;color:#64748b;margin-top:2px">Jan 2027 – Mar 2027</div></div>
+              <span style="font-size:10px;background:white;border:1px solid #c4b5fd;color:#7c3aed;padding:2px 10px;border-radius:20px;font-weight:700">~200–240 SPs</span>
+              <span style="color:#94a3b8;font-size:14px">▾</span>
+            </div>
+            <div style="display:none;padding:14px 16px 16px;border-top:1px solid #c4b5fd;background:white">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Deliverables</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#7c3aed">▸</span>Priority Score 2 (PS2) — full UI + algorithm (Jira: PH-185)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#7c3aed">▸</span>Evolution of Highlighted Assets (PS2 dependency)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#7c3aed">▸</span>Data Explorer Phase 1 — Network &amp; Investigation views</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#7c3aed">▸</span>KPIs &amp; Trend dashboards</div>
+                </div>
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Dependencies &amp; Risks</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>PS2 PRD must be finalised (Draft v0.1 → v1.0)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>PEAS algorithm stable from V1 hardening</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>PS2 complexity — 1 data science FTE needed</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>Data Explorer requires GIS + dashboard team coordination</div>
+                  <div style="margin-top:10px"><a href="https://picarro.atlassian.net/wiki/spaces/PH/pages/4234051587" target="_blank" style="font-size:10px;color:#3b82f6;text-decoration:none;border:1px solid #bfdbfe;padding:3px 10px;border-radius:6px;background:#eff6ff">PS2 PRD ↗</a>&nbsp;<a href="https://picarro.atlassian.net/wiki/spaces/GG/pages/3693215745" target="_blank" style="font-size:10px;color:#3b82f6;text-decoration:none;border:1px solid #bfdbfe;padding:3px 10px;border-radius:6px;background:#eff6ff">Data Explorer HLD ↗</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="border:1.5px solid #fed7aa;border-radius:10px;overflow:hidden;background:#fff7ed">
+            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer">
+              <div style="width:52px;min-width:52px;background:#f97316;color:white;border-radius:6px;text-align:center;padding:4px 0;font-size:11px;font-weight:800">MS-13</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1e293b">Hardware &amp; Field Operations</div><div style="font-size:11px;color:#64748b;margin-top:2px">Apr 2027 – Jun 2027</div></div>
+              <span style="font-size:10px;background:white;border:1px solid #fed7aa;color:#f97316;padding:2px 10px;border-radius:20px;font-weight:700">~180–220 SPs</span>
+              <span style="color:#94a3b8;font-size:14px">▾</span>
+            </div>
+            <div style="display:none;padding:14px 16px 16px;border-top:1px solid #fed7aa;background:white">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Deliverables</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f97316">▸</span>Mobile App Integration (Driver tablet optimisation)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f97316">▸</span>Handheld Data Management — ingestion + display</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f97316">▸</span>Handheld Algorithms — session processing + FOV</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f97316">▸</span>Hardware: Predictive Maintenance (instrument health)</div>
+                </div>
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Dependencies &amp; Risks</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>Mobile PRD — must be authored Q1 2027</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>Handheld PRD — must be authored Q1 2027</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>No iOS/Android dev on team — hire needed by Q4 2026</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>Hardware integration requires physical device testing lab</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="border:1.5px solid #a5f3fc;border-radius:10px;overflow:hidden;background:#ecfeff">
+            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer">
+              <div style="width:52px;min-width:52px;background:#0891b2;color:white;border-radius:6px;text-align:center;padding:4px 0;font-size:11px;font-weight:800">MS-14</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1e293b">Enterprise Integrations</div><div style="font-size:11px;color:#64748b;margin-top:2px">Jul 2027 – Sep 2027</div></div>
+              <span style="font-size:10px;background:white;border:1px solid #a5f3fc;color:#0891b2;padding:2px 10px;border-radius:20px;font-weight:700">~160–200 SPs</span>
+              <span style="color:#94a3b8;font-size:14px">▾</span>
+            </div>
+            <div style="display:none;padding:14px 16px 16px;border-top:1px solid #a5f3fc;background:white">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Deliverables</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#0891b2">▸</span>ESRI / ArcGIS Integration — data push/pull</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#0891b2">▸</span>OTA (Operation Transfer Assistant) — full workflow</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#0891b2">▸</span>Multi-Campaign Aggregation — cross-campaign results</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#0891b2">▸</span>API gateway for 3rd-party GIS systems</div>
+                </div>
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Dependencies &amp; Risks</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>ESRI commercial licensing agreement (3-month lead)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>OTA PRD — not authored yet</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>OTA is complex — estimated 60+ SPs alone</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>Multi-Campaign may require DB schema migration</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="border:1.5px solid #6ee7b7;border-radius:10px;overflow:hidden;background:#ecfdf5">
+            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer">
+              <div style="width:52px;min-width:52px;background:#059669;color:white;border-radius:6px;text-align:center;padding:4px 0;font-size:11px;font-weight:800">MS-15 🚀</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1e293b">Compliance Analytics &amp; V2 Launch</div><div style="font-size:11px;color:#64748b;margin-top:2px">Oct 2027 – Dec 2027</div></div>
+              <span style="font-size:10px;background:white;border:1px solid #6ee7b7;color:#059669;padding:2px 10px;border-radius:20px;font-weight:700">~120–160 SPs</span>
+              <span style="color:#94a3b8;font-size:14px">▾</span>
+            </div>
+            <div style="display:none;padding:14px 16px 16px;border-top:1px solid #6ee7b7;background:white">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Deliverables</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#059669">▸</span>Emissions360 — emissions calculation &amp; reporting</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#059669">▸</span>Safety360 — safety incident tracking &amp; compliance</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#059669">▸</span>Product Analytics — usage telemetry &amp; dashboards</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#059669">▸</span>End-to-end V2 regression &amp; launch 🚀 Q4 2027</div>
+                </div>
+                <div><div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:8px">Dependencies &amp; Risks</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>Emissions360 PRD — Jacqueline Hoege (not authored)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#8b5cf6">📌</span>Safety360 PRD — Jacqueline Hoege (not authored)</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>Regulatory sign-off (PHMSA, EU) — external timeline risk</div>
+                  <div style="font-size:11px;color:#374151;padding:3px 0;display:flex;gap:6px"><span style="color:#f59e0b">⚠</span>Emissions algorithm needs data science FTE</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Pre-work actions -->
+      <div style="background:linear-gradient(135deg,#fef3c7,#fff7ed);border:1.5px solid #fde68a;border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+        <h3 style="font-size:14px;font-weight:800;color:#92400e;margin-bottom:14px">🚨 Actions Required Before V2 Can Start</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:white;border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+            <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:4px">Author 8 missing PRDs</div>
+            <div style="font-size:10px;color:#dc2626;font-weight:600;margin-bottom:6px">By Q1 2027 · Jacob, Jacqueline, Arpan</div>
+            <div style="font-size:11px;color:#64748b">Handheld, Mobile, OTA, ESRI, Emissions360, Safety360, Multi-Campaign, Predictive Maintenance</div>
+          </div>
+          <div style="background:white;border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+            <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:4px">Hire Mobile Developer</div>
+            <div style="font-size:10px;color:#dc2626;font-weight:600;margin-bottom:6px">By Q4 2026 · Engineering Manager</div>
+            <div style="font-size:11px;color:#64748b">No iOS/Android dev on current team — MS-13 (Handheld/Mobile) is blocked without this hire</div>
+          </div>
+          <div style="background:white;border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+            <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:4px">Finalise PS2 PRD (v0.1 → v1.0)</div>
+            <div style="font-size:10px;color:#dc2626;font-weight:600;margin-bottom:6px">By Jan 2027 · Jacob Cansler</div>
+            <div style="font-size:11px;color:#64748b">Draft exists at PH-185, Figma designs ready — needs engineering review &amp; acceptance sign-off</div>
+          </div>
+          <div style="background:white;border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+            <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:4px">ESRI Commercial Agreement</div>
+            <div style="font-size:10px;color:#dc2626;font-weight:600;margin-bottom:6px">By Q2 2027 · Picarro Business Dev</div>
+            <div style="font-size:11px;color:#64748b">ESRI integration requires active commercial licence — procurement lead time ~3 months</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>`;
 
