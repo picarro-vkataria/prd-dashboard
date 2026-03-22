@@ -319,6 +319,7 @@
         <li><button class="sb-sub-btn" id="sbtab-adpv4" onclick="switchInnerTab('adpv4')">📋 PRD-Gated Roadmap V4</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv5" onclick="switchInnerTab('adpv5')">🗺 Roadmap + Gantt V5</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv6" onclick="switchInnerTab('adpv6')">🏊 Swimlane Roadmap V6</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-adpv7" onclick="switchInnerTab('adpv7')">🎯 Oct 1 Release Plan V7</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -347,6 +348,7 @@
     <button class="inner-tab-btn" id="itab-adpv4" onclick="switchInnerTab('adpv4')" style="background:linear-gradient(135deg,#0f766e,#0c4a6e);color:white;border-color:#0f766e">📋 PRD-Gated Roadmap V4</button>
     <button class="inner-tab-btn" id="itab-adpv5" onclick="switchInnerTab('adpv5')" style="background:linear-gradient(135deg,#b45309,#0f766e);color:white;border-color:#b45309">🗺 Roadmap + Gantt V5</button>
     <button class="inner-tab-btn" id="itab-adpv6" onclick="switchInnerTab('adpv6')" style="background:linear-gradient(135deg,#0891b2,#1d4ed8);color:white;border-color:#0891b2">🏊 Swimlane Roadmap V6</button>
+    <button class="inner-tab-btn" id="itab-adpv7" onclick="switchInnerTab('adpv7')" style="background:linear-gradient(135deg,#dc2626,#7c3aed);color:white;border-color:#dc2626">🎯 Oct 1 Release Plan V7</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -1011,6 +1013,10 @@
     <div id="adpv6-content"></div>
   </div><!-- adpv6-tab -->
 
+  <div id="adpv7-tab" style="display:none">
+    <div id="adpv7-content"></div>
+  </div><!-- adpv7-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -1019,7 +1025,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -1035,6 +1041,7 @@ function switchInnerTab(tab) {
   if (tab==='adpv4' && !document.getElementById('adpv4-content').hasChildNodes()) buildADPv4();
   if (tab==='adpv5' && !document.getElementById('adpv5-content').hasChildNodes()) buildADPv5();
   if (tab==='adpv6' && !document.getElementById('adpv6-content').hasChildNodes()) buildADPv6();
+  if (tab==='adpv7' && !document.getElementById('adpv7-content').hasChildNodes()) buildADPv7();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -2364,6 +2371,437 @@ function buildADPv6() {
     <div class="sl-legend-item"><span style="width:12px;height:12px;border-radius:50%;background:#dc2626;display:inline-block"></span>Compliance gate row</div>
     <div class="sl-legend-item"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;display:inline-block"></span>PRD Gate flag (2 weeks before kickoff)</div>
     <div class="sl-legend-item"><span style="width:2px;height:16px;background:#fbbf24;display:inline-block"></span>&nbsp;Today (Mar 21)</div>
+  </div>`;
+}
+
+
+function buildADPv7() {
+  // ── V1 Release Plan: Oct 1, 2026 Target ────────────────────────────────
+  // 3 months compressed vs original plan (was Dec 31 → now Oct 1)
+  // 4 releases of ~6 weeks each. 17 items deferred to V2.
+
+  const ORIGIN = new Date('2026-03-15');
+  const S = 7; // px per day
+
+  function daysFrom(dateStr) {
+    return Math.round((new Date(dateStr) - ORIGIN) / 86400000);
+  }
+  function px(d) { return d * S; }
+
+  // ─── RELEASE DATA ────────────────────────────────────────────────────────
+  const LANES = [
+    {
+      id:'r1', short:'R1', label:'Release 1', sub:'Foundation + AutoFOV Pipeline',
+      start:'2026-04-01', end:'2026-05-15', sprints:'Sprint 17–19',
+      color:'#3b82f6', light:'#dbeafe', dark:'#1d4ed8', border:'#93c5fd',
+      status:'active',
+      risk:'HIGH',
+      riskNote:'MS5 spillover likely. 52% MS6 epics still in Technical Refinement. AutoFOV (PH-279) must close QA before R1 Sprint 1 begins.',
+      prdGate:{by:'Mar 18', items:[
+        {t:'PRD: RBAC Phase 0/1 — scope finalized', done:false},
+        {t:'PRD: Tenant Settings PS2 + RFR', done:false},
+        {t:'PRD: BM View Campaign v0.5', done:true},
+        {t:'PRD: Driving Sessions & AutoFOV v0.1', done:true},
+        {t:'API contracts: RBAC, AutoFOV, BM endpoints', done:false},
+        {t:'Platform decision: Driver View v2 (lock by Apr 15)', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-01 RBAC & Multi-Tenancy Ph1','P-27 GIS Data Hub EU']},
+        {area:'Admin: Tenant', color:'#7c3aed', items:['A-T-05 Tenant Settings: PS2','A-T-06 Tenant Settings: RFR']},
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-02 Operator Settings: General']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-01 View Campaign (Map)','O-BM-06 View Driving Sessions (panel)','O-BM-12 AutoFOV pipeline','O-BM-13 AutoFOV panel','O-BM-16 Driving Session QA/QC','O-BM-17 Gaps pipeline','O-BM-18 Gaps panel']},
+      ]
+    },
+    {
+      id:'r2', short:'R2', label:'Release 2', sub:'Boundary Data Layer + EU Compliance Gate',
+      start:'2026-05-16', end:'2026-06-30', sprints:'Sprint 20–22',
+      color:'#8b5cf6', light:'#ede9fe', dark:'#6d28d9', border:'#c4b5fd',
+      status:'future',
+      risk:'CRITICAL',
+      riskNote:'LISA TDD not written (PH-104 unrefined, PH-119 PM-only). Abhishek Jain is sole owner of AutoFOV+Gaps+LISA pipeline. LISAs cannot start without TDD approved by May 15.',
+      prdGate:{by:'May 2', items:[
+        {t:'PRD: Operator Settings Driving Session', done:false},
+        {t:'PRD: BM Driving Sessions (map + table + tab)', done:false},
+        {t:'PRD: AutoFOV map overlay + metadata panel', done:false},
+        {t:'TDD: LISA microservice — MUST be approved by May 15', done:false},
+        {t:'PRD: LISAs pipeline + panel + map', done:false},
+        {t:'EU 2024/1787: confirm Gaps + FOV delivery covers regulation', done:false},
+      ]},
+      groups:[
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-04 Operator Settings: Driving Session']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-07 View DS (map)','O-BM-08 View DS (table)','O-BM-09 View DS (tab)','O-BM-14 AutoFOV map overlay','O-BM-15 AutoFOV metadata','O-BM-19 Gaps map','O-BM-22 Highlighted Assets: Gaps','O-BM-24 LISAs pipeline','O-BM-25 LISAs panel','O-BM-26 LISAs map']},
+        {area:'🇪🇺 EU Compliance Gate', color:'#dc2626', items:['✅ EU 2024/1787 LDAR: Gaps + FOV operational — regulation met']},
+      ]
+    },
+    {
+      id:'r3', short:'R3', label:'Release 3', sub:'Staging + Results + Investigation Setup',
+      start:'2026-07-01', end:'2026-08-15', sprints:'Sprint 23–25',
+      color:'#f97316', light:'#ffedd5', dark:'#c2410c', border:'#fdba74',
+      status:'future',
+      risk:'HIGH',
+      riskNote:'18 items in 6 weeks. LISA Boundary Results PRD (v0.1 Mar 20) must be groomed before Jul 1. Shriya owns FE across all 3 admin domains simultaneously.',
+      prdGate:{by:'Jun 17', items:[
+        {t:'PRD: NA/EU Staging environment spec', done:false},
+        {t:'PRD: User Management — finalize scope', done:false},
+        {t:'PRD: Investigation Components & Templates', done:false},
+        {t:'PRD: LISA Boundary Results (v0.1 Mar 20) — groomed + estimated', done:false},
+        {t:'PRD: Boundary Results + Download', done:false},
+        {t:'H-01/02 Car Data: hardware procurement confirmed', done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-14 P-Cubed Pro NA Staging','P-15 P-Cubed Pro EU Staging','P-21 Centralized Logging','P-23 Dynamic User Manual']},
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-03 Operator Settings: Summary','A-O-05 Licensed Features']},
+        {area:'Admin: User', color:'#7c3aed', items:['A-U-01 User Management','A-U-02 User Settings: General']},
+        {area:'Admin: Investigation', color:'#7c3aed', items:['A-I-01 Investigation: Components','A-I-02 Investigation: Templates']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-20 Gaps table','O-BM-27 LISAs table','O-BM-30 LISA PS2 Ranking & Metadata','O-BM-32 Boundary Results','O-BM-33 Download Boundary Results']},
+        {area:'Hardware', color:'#059669', items:['H-01 Car Data Ingestion & Storage','H-02 PSA (in-car) Updates','H-03 Fleet Map: Map View']},
+      ]
+    },
+    {
+      id:'r4', short:'R4', label:'Release 4', sub:'🚨 CRUNCH: Investigations + Reports + V1 Launch',
+      start:'2026-08-16', end:'2026-10-01', sprints:'Sprint 26–28',
+      color:'#dc2626', light:'#fee2e2', dark:'#991b1b', border:'#fca5a5',
+      status:'launch',
+      risk:'CRITICAL',
+      riskNote:'6.5 weeks to deliver 17 items + full E2E QA + pen test + go/no-go. ZERO new features after Sep 15. Every day of R3 slip = one day less QA in R4. PHMSA gate must be met.',
+      prdGate:{by:'Aug 2', items:[
+        {t:'PRD: BM Investigation Assign & Results — reviewed', done:false},
+        {t:'PRD: Manual Report Creation & Artifacts', done:false},
+        {t:'PRD: LISA/Gap Geocode + Snap to Street', done:false},
+        {t:'All E2E regression test cases written', done:false},
+        {t:'Pen test scope defined + vendor engaged', done:false},
+        {t:'Go/No-Go criteria agreed with leadership', done:false},
+      ]},
+      groups:[
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-02 View Campaign Symbology','O-BM-21 Gap Metadata','O-BM-28 LISA Metadata','O-BM-29 Highlighted Assets: LISAs','O-BM-34 Assign LISAs for Investigation','O-BM-35 Assign Gaps for Investigation','O-BM-36 View & Assign Investigations','O-BM-37 Show Investigation Sessions','O-BM-38 Show Investigation Results','O-BM-39 Download Investigation Results']},
+        {area:'Operator', color:'#0f766e', items:['O-04 Manual Report Creation','O-05 Manual Report Artifacts','O-06 Manual Report Labels','O-07 LISA/Gap Geocode','O-08 Snap to Street']},
+        {area:'🚀 Launch', color:'#dc2626', items:['P-10 P-Cubed Pro NA V1 LAUNCH','P-11 P-Cubed Pro EU LAUNCH']},
+        {area:'🇺🇸 PHMSA Gate', color:'#991b1b', items:['✅ PHMSA 2025 ALDP: Investigation framework operational — requirement met']},
+      ]
+    },
+  ];
+
+  // V2 deferred items (not in V1 scope due to Oct 1 constraint)
+  const V2_GROUPS = [
+    {
+      area:'Platform', color:'#1d4ed8',
+      reason:'Not on V1 critical path — can onboard customers without analytics/i18n on Day 1',
+      items:['P-08 Product Analytics','P-18 Historical Data Migration','P-19 Internationalization: Language','P-20 Internationalization: Units']
+    },
+    {
+      area:'Hardware & Field Devices', color:'#059669',
+      reason:'8-12 week hardware procurement lead time + no Jira epics / owner assigned yet. H-01/02/03 (car data BE) stays in V1; UI/management screens and handheld systems move to V2.',
+      items:['H-00 Handheld Data Ingestion & Storage','H-05 Observer View','H-07 Create System: Car','H-08 Create Peripherals: Car','H-09 Manage System: Car','H-12 Sample Line Integrity Metrics','H-13 Anemometer Rotation Metrics']
+    },
+    {
+      area:'Mobile (Driver View + App)', color:'#b45309',
+      reason:'Platform decision (browser/iPad/ChromeOS) still TBD. iOS App Store review = 4-8 weeks. Driver View v2 has no stories, no estimates, no architecture decision. Cannot safely ship by Oct 1.',
+      items:['M-DV-01 Driver View: Basic','M-DV-02 Driver View: Capture Mode','M-App-01 Mobile App: PCP Integration']
+    },
+    {
+      area:'Operator: Field Hardware', color:'#0f766e',
+      reason:'Depends on handheld hardware (H-00) which is deferred. No dependency chain possible without the device.',
+      items:['O-01 Handheld Timeseries']
+    },
+    {
+      area:'Boundary Mgmt: Polish', color:'#0891b2',
+      reason:'Non-blocking polish feature. Boundary Labels are cosmetic — V1 ships without them safely.',
+      items:['O-BM-42 Boundary Labels']
+    },
+    {
+      area:'Data Explorer', color:'#6366f1',
+      reason:'Foundation feature — valuable but not blocking V1 field operations workflows.',
+      items:['I-DE-01 Data Explorer: Network']
+    },
+  ];
+
+  // ── Layout constants ───────────────────────────────────────────────────────
+  const LABEL_W = 170;
+  const ROW_H_BAR = 40;
+  const FEAT_H = 20;
+  const GATE_H = 14;
+  const PAD_BOT = 14;
+
+  LANES.forEach(ln => {
+    ln.sDay = daysFrom(ln.start);
+    ln.eDay = daysFrom(ln.end);
+    ln.gDay = ln.sDay - 14;
+    ln.allFeatures = ln.groups.flatMap(g => g.items.map(it => ({text:it, color:g.color, area:g.area})));
+    ln.laneH = GATE_H + ROW_H_BAR + ln.allFeatures.length * FEAT_H + PAD_BOT;
+  });
+
+  const END_DATE = '2026-10-01';
+  const TOTAL_DAYS = daysFrom(END_DATE) + 3;
+  const TW = px(TOTAL_DAYS);
+  const TODAY_DAY = daysFrom('2026-03-22');
+
+  const MONTHS = [
+    {label:'Mar',    d: daysFrom('2026-03-15'), span:17},
+    {label:'April',  d: daysFrom('2026-04-01'), span:30},
+    {label:'May',    d: daysFrom('2026-05-01'), span:31},
+    {label:'June',   d: daysFrom('2026-06-01'), span:30},
+    {label:'July',   d: daysFrom('2026-07-01'), span:31},
+    {label:'August', d: daysFrom('2026-08-01'), span:31},
+    {label:'Sept',   d: daysFrom('2026-09-01'), span:30},
+    {label:'Oct 1',  d: daysFrom('2026-10-01'), span:3},
+  ];
+
+  var el = document.getElementById('adpv7-content');
+
+  // ── Header banner ───────────────────────────────────────────────────────────
+  el.innerHTML = `
+  <div style="background:linear-gradient(135deg,#7f1d1d,#dc2626,#7c3aed);border-radius:14px;padding:22px 28px;margin-bottom:20px;color:white">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div>
+        <div style="font-size:20px;font-weight:900;margin-bottom:6px">🎯 V1 Release Plan — Oct 1, 2026 Target</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.9);line-height:1.7;max-width:680px">
+          Original plan shipped V1 on <strong>Dec 31, 2026</strong> across 6 milestones.
+          This plan compresses delivery to <strong>Oct 1, 2026</strong> — 3 months earlier — using 4 releases of ~6 weeks each.
+          <strong>17 items deferred to V2</strong> (hardware, mobile, analytics, i18n) to protect the core BM + Investigation + Compliance scope.
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:32px;font-weight:900;letter-spacing:-2px">Oct 1</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.8)">V1 LAUNCH TARGET</div>
+        <div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.7)">190 days from today</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:11px;text-align:center;min-width:100px">
+        <div style="font-size:22px;font-weight:900">4</div>
+        <div style="color:rgba(255,255,255,.8)">Releases</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:11px;text-align:center;min-width:100px">
+        <div style="font-size:22px;font-weight:900">58</div>
+        <div style="color:rgba(255,255,255,.8)">V1 Features</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:11px;text-align:center;min-width:100px">
+        <div style="font-size:22px;font-weight:900">17</div>
+        <div style="color:rgba(255,255,255,.8)">V2 Deferred</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:11px;text-align:center;min-width:100px">
+        <div style="font-size:22px;font-weight:900">2</div>
+        <div style="color:rgba(255,255,255,.8)">Compliance Gates</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 16px;font-size:11px;text-align:center;min-width:100px">
+        <div style="font-size:22px;font-weight:900">24</div>
+        <div style="color:rgba(255,255,255,.8)">PRD Gates To Go</div>
+      </div>
+    </div>
+  </div>`;
+
+  // ── Risk summary row ────────────────────────────────────────────────────────
+  const RISK_DATA = [
+    {r:'R1', label:'Apr 1–May 15', risk:'HIGH',     color:'#f59e0b', bg:'#fef3c7', border:'#fde68a', note:'MS5 spillover + unrefined epics'},
+    {r:'R2', label:'May 16–Jun 30', risk:'CRITICAL', color:'#dc2626', bg:'#fee2e2', border:'#fca5a5', note:'LISA TDD not written — blocks entire pipeline'},
+    {r:'R3', label:'Jul 1–Aug 15',  risk:'HIGH',     color:'#f59e0b', bg:'#fef3c7', border:'#fde68a', note:'18 items + Shriya FE capacity'},
+    {r:'R4', label:'Aug 16–Oct 1',  risk:'CRITICAL', color:'#7f1d1d', bg:'#fef2f2', border:'#fca5a5', note:'17 items + QA + pen test in 6.5 weeks'},
+  ];
+  let riskHtml = `<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">`;
+  RISK_DATA.forEach(d => {
+    riskHtml += `<div style="flex:1;min-width:160px;background:${d.bg};border:1.5px solid ${d.border};border-radius:10px;padding:10px 14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div style="font-weight:900;font-size:14px;color:${d.color}">${d.r}</div>
+        <div style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;background:${d.color};color:white;letter-spacing:.5px">${d.risk}</div>
+      </div>
+      <div style="font-size:10px;color:#374151;font-weight:600">${d.label}</div>
+      <div style="font-size:10px;color:#64748b;margin-top:3px">${d.note}</div>
+    </div>`;
+  });
+  riskHtml += `</div>`;
+  el.innerHTML += riskHtml;
+
+  // ── Swimlane chart ──────────────────────────────────────────────────────────
+  let h = '';
+  h += `<div class="sl-outer">`;
+  h += `<div class="sl-scroll">`;
+
+  // Month header
+  h += `<div class="sl-header-row">`;
+  h += `<div class="sl-lhd">Release</div>`;
+  h += `<div class="sl-months-wrap" style="width:${TW}px">`;
+  MONTHS.forEach(m => {
+    h += `<div class="sl-month" style="left:${px(m.d)}px;width:${m.span*S}px">${m.label}</div>`;
+  });
+  for (let d=0; d<TOTAL_DAYS; d+=7) {
+    h += `<div class="sl-week-line" style="left:${px(d)}px"></div>`;
+  }
+  h += `<div class="sl-today-hd" style="left:${px(TODAY_DAY)}px"><span class="sl-today-hd-label">TODAY</span></div>`;
+  h += `</div></div>`;
+
+  // Swim lanes
+  LANES.forEach(ln => {
+    const barL  = px(ln.sDay);
+    const barW  = px(ln.eDay - ln.sDay + 1);
+    const gateL = px(ln.gDay);
+    const statusLabel = ln.status==='active' ? '⚡ Active' : ln.status==='launch' ? '🚀 V1 Launch' : '⏳ Planned';
+    const statusCls   = ln.status==='active' ? 'sl-pill-active' : ln.status==='launch' ? 'sl-pill-launch' : 'sl-pill-future';
+    const riskColor   = ln.risk==='CRITICAL' ? '#dc2626' : '#f59e0b';
+    const riskBg      = ln.risk==='CRITICAL' ? '#fee2e2' : '#fef3c7';
+
+    h += `<div class="sl-lane" style="height:${ln.laneH}px">`;
+
+    // Left label — add risk badge
+    h += `<div class="sl-lane-lbl" style="border-left:4px solid ${ln.color}">`;
+    h += `<div style="display:flex;align-items:center;gap:6px">`;
+    h += `<div class="sl-lbl-ms" style="color:${ln.dark}">${ln.short}</div>`;
+    h += `<div style="padding:1px 6px;border-radius:4px;font-size:8px;font-weight:700;background:${riskBg};color:${riskColor}">${ln.risk}</div>`;
+    h += `</div>`;
+    h += `<div class="sl-lbl-name">${ln.label}</div>`;
+    h += `<div class="sl-lbl-sub" style="font-size:8px">${ln.sub}</div>`;
+    h += `<div class="sl-lbl-dates" style="color:${ln.dark}">${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} → ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>`;
+    h += `<div class="sl-lbl-sprints">${ln.sprints}</div>`;
+    h += `<div class="sl-status-pill ${statusCls}">${statusLabel}</div>`;
+    h += `</div>`;
+
+    // Track
+    h += `<div class="sl-track" style="width:${TW}px;height:${ln.laneH}px">`;
+
+    // Month bands
+    MONTHS.forEach((m,i) => {
+      h += `<div style="position:absolute;top:0;bottom:0;left:${px(m.d)}px;width:${m.span*S}px;background:${i%2===0?'rgba(0,0,0,.018)':'transparent'}"></div>`;
+    });
+    // Week lines
+    for (let d=0; d<TOTAL_DAYS; d+=7) {
+      h += `<div style="position:absolute;top:0;bottom:0;left:${px(d)}px;width:1px;background:rgba(0,0,0,.04)"></div>`;
+    }
+
+    // MS bar — CRITICAL releases get a pulsing red border
+    const barTop = GATE_H;
+    const barStyle = ln.risk==='CRITICAL' ? `box-shadow:0 0 0 2px ${ln.dark},0 2px 12px rgba(220,38,38,.4)` : '';
+    h += `<div class="sl-ms-bar" style="left:${barL}px;width:${barW}px;top:${barTop}px;height:${ROW_H_BAR}px;background:linear-gradient(135deg,${ln.dark},${ln.color});${barStyle}">`;
+    h += `<span class="sl-bar-label">${ln.short} &nbsp;·&nbsp; ${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})} &nbsp;·&nbsp; ${ln.sprints} &nbsp;·&nbsp; ⚠ ${ln.risk}</span>`;
+    h += `</div>`;
+
+    // Risk tooltip — shown on hover via title approximation (using sl-gate tooltip trick)
+    // Place a small risk flag just ABOVE the bar at the start
+    h += `<div style="position:absolute;top:${barTop-1}px;left:${barL+barW-120}px;z-index:9;background:${riskColor};color:white;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px 4px 0 0;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">⚠ ${ln.riskNote}</div>`;
+
+    // PRD gate flag
+    const gateItems = ln.prdGate.items;
+    const gateDoneCount = gateItems.filter(g=>g.done).length;
+    const allDone = gateDoneCount === gateItems.length;
+    h += `<div class="sl-gate" style="left:${gateL}px;height:${ln.laneH}px">`;
+    h += `<div class="sl-gate-flag" style="background:${allDone?'#16a34a':'#f59e0b'};color:white">`;
+    h += `📋 PRD Gate<br><span style="font-size:9px;font-weight:500">by ${ln.prdGate.by} · ${gateDoneCount}/${gateItems.length} done</span>`;
+    h += `</div>`;
+    h += `<div class="sl-gate-tooltip">`;
+    h += `<div style="font-weight:700;margin-bottom:4px;font-size:11px">PRD Gate — ${ln.label}</div>`;
+    h += `<div style="font-size:10px;color:#dc2626;margin-bottom:8px;font-weight:600">⚠ Risk: ${ln.risk} — ${ln.riskNote}</div>`;
+    gateItems.forEach(g => {
+      h += `<div style="display:flex;align-items:flex-start;gap:5px;margin-bottom:4px;font-size:11px">`;
+      h += `<span style="color:${g.done?'#16a34a':'#94a3b8'};font-weight:700;flex-shrink:0">${g.done?'✓':'○'}</span>`;
+      h += `<span style="color:${g.done?'#064e3b':'#374151'}">${g.t}</span>`;
+      h += `</div>`;
+    });
+    h += `</div></div>`;
+
+    // Feature rows
+    const featTop = GATE_H + ROW_H_BAR + 2;
+    ln.allFeatures.forEach((feat, fi) => {
+      const y = featTop + fi * FEAT_H;
+      const isGate = feat.area.includes('Gate') || feat.area.includes('PHMSA') || feat.area.includes('EU') || feat.area.includes('Launch') || feat.text.startsWith('✅') || feat.text.startsWith('P-10') || feat.text.startsWith('P-11');
+      const txtColor = isGate ? feat.color : feat.color;
+      h += `<div class="sl-feat-row" style="top:${y}px;left:${barL}px;width:${barW}px;${isGate?'background:rgba(220,38,38,.06)':''}">`;
+      h += `<span class="sl-feat-dot" style="background:${feat.color}"></span>`;
+      h += `<span class="sl-feat-text" style="color:${feat.color};${isGate?'font-weight:700':''}">${feat.text}</span>`;
+      h += `</div>`;
+    });
+
+    // TODAY line
+    if (TODAY_DAY >= 0 && TODAY_DAY <= TOTAL_DAYS) {
+      h += `<div class="sl-today-line" style="left:${px(TODAY_DAY)}px;height:${ln.laneH}px"></div>`;
+    }
+
+    h += `</div>`; // sl-track
+    h += `</div>`; // sl-lane
+  });
+
+  // V1 Launch line at Oct 1
+  const launchL = px(daysFrom('2026-10-01'));
+  h += `<div class="sl-launch-row">`;
+  h += `<div class="sl-lhd" style="background:#7f1d1d;color:white;font-weight:800;font-size:12px;line-height:1.3">🚀 V1 LAUNCH<br><span style="font-size:10px">Oct 1, 2026</span></div>`;
+  h += `<div style="width:${TW}px;position:relative;height:44px;background:linear-gradient(90deg,#fef2f2,#fee2e2)">`;
+  h += `<div style="position:absolute;left:${launchL}px;top:0;bottom:0;width:4px;background:#dc2626"></div>`;
+  h += `<div style="position:absolute;left:${launchL+8}px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:900;color:#dc2626;white-space:nowrap">🚀 P-Cubed Pro V1 LAUNCH — Oct 1, 2026 &nbsp;·&nbsp; EU 2024/1787 ✅ &nbsp;·&nbsp; PHMSA 2025 ✅</div>`;
+  h += `</div></div>`;
+
+  h += `</div></div>`; // sl-scroll + sl-outer
+  el.innerHTML += h;
+
+  // ── V2 Deferred section ─────────────────────────────────────────────────────
+  let v2Html = `
+  <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);padding:24px;margin-top:20px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <div style="font-size:24px">📦</div>
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#1e293b">V2 Deferred Items — 17 features post Oct 1</div>
+        <div style="font-size:12px;color:#64748b;margin-top:2px">These items are excluded from V1 scope to protect the Oct 1 launch date. Each has a clear strategic rationale.</div>
+      </div>
+    </div>
+    <div style="background:#fef9c3;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:#78350f">
+      <strong>⚠ Tradeoff:</strong> Deferring hardware, mobile, i18n, and analytics removes 17 items from V1 but eliminates the highest-risk workstreams (no Jira epics, no owners, hardware procurement lead time, App Store delays). V1 delivers the complete BM + Investigation + Compliance workflow — the core value proposition.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px">`;
+
+  V2_GROUPS.forEach(g => {
+    v2Html += `<div style="border-radius:10px;border:1.5px solid ${g.color}25;padding:14px 16px;background:${g.color}08">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="width:10px;height:10px;border-radius:50%;background:${g.color};flex-shrink:0"></div>
+        <div style="font-size:12px;font-weight:700;color:#1e293b">${g.area}</div>
+        <div style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:${g.color}15;color:${g.color}">${g.items.length} items</div>
+      </div>
+      <div style="font-size:10px;color:#64748b;font-style:italic;margin-bottom:8px;line-height:1.5">${g.reason}</div>`;
+    g.items.forEach(it => {
+      v2Html += `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px;color:#374151">
+        <span style="color:${g.color};font-size:10px;flex-shrink:0">📦</span>
+        <span>${it}</span>
+      </div>`;
+    });
+    v2Html += `</div>`;
+  });
+  v2Html += `</div></div>`;
+  el.innerHTML += v2Html;
+
+  // ── Sprint breakdown for R4 (most at-risk) ──────────────────────────────────
+  el.innerHTML += `
+  <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);padding:24px;margin-top:16px;border-top:4px solid #dc2626">
+    <div style="font-size:14px;font-weight:800;color:#991b1b;margin-bottom:4px">🚨 R4 Sprint Breakdown — The Critical 6.5 Weeks</div>
+    <div style="font-size:11px;color:#64748b;margin-bottom:16px">Every sprint in R4 is load-bearing. A 1-week slip in any sprint means QA time is cut, not the feature list.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div style="background:#fee2e2;border-radius:10px;padding:14px">
+        <div style="font-weight:800;color:#991b1b;margin-bottom:4px">Sprint 26 — Aug 16–31</div>
+        <div style="font-size:10px;color:#78350f;font-weight:600;margin-bottom:8px">FEATURE COMPLETE DEADLINE</div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">
+          • O-BM-02 Campaign Symbology<br>
+          • O-BM-21/28/29 Metadata + Highlighted LISAs<br>
+          • O-BM-34/35 Assign LISAs + Gaps for Investigation<br>
+          • O-04/05/06 Manual Reports (3 of 5)
+        </div>
+      </div>
+      <div style="background:#fee2e2;border-radius:10px;padding:14px">
+        <div style="font-weight:800;color:#991b1b;margin-bottom:4px">Sprint 27 — Sep 1–15</div>
+        <div style="font-size:10px;color:#78350f;font-weight:600;margin-bottom:8px">CODE FREEZE after Sep 15</div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">
+          • O-BM-36/37/38/39 Investigation View + Results + Download<br>
+          • O-07 LISA/Gap Geocode<br>
+          • O-08 Snap to Street<br>
+          • P-10/11 Launch infra verified
+        </div>
+      </div>
+      <div style="background:#fef2f2;border-radius:10px;padding:14px;border:2px dashed #dc2626">
+        <div style="font-weight:800;color:#991b1b;margin-bottom:4px">Sprint 28 — Sep 16 – Oct 1</div>
+        <div style="font-size:10px;color:#dc2626;font-weight:700;margin-bottom:8px">🔒 ZERO NEW FEATURES</div>
+        <div style="font-size:11px;color:#374151;line-height:1.6">
+          • Full E2E regression (all 58 V1 features)<br>
+          • Pen test + security sign-off<br>
+          • Go/No-Go review with leadership<br>
+          • EU 2024/1787 certification<br>
+          • PHMSA ALDP documentation<br>
+          • 🚀 LAUNCH: Oct 1
+        </div>
+      </div>
+    </div>
   </div>`;
 }
 
