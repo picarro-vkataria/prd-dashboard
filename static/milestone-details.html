@@ -27,14 +27,14 @@
     /* === SIDEBAR === */
     .sidebar{width:220px;min-width:220px;background:#0f1c33;display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease,min-width .25s ease;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06)}
     .sb-section-label{font-size:9px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.8px;padding:16px 16px 6px;white-space:nowrap;overflow:hidden;transition:opacity .2s}
-    .sb-nav{list-style:none;padding:4px 0;flex:1}
+    .sb-nav{list-style:none;padding:4px 0;flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
     .sb-item{position:relative}
     .sb-link{display:flex;align-items:center;gap:10px;padding:9px 14px;color:#94a3b8;text-decoration:none;font-size:12px;font-weight:600;border-radius:8px;margin:1px 8px;transition:all .15s;white-space:nowrap;overflow:hidden}
     .sb-link:hover{background:rgba(255,255,255,.07);color:#e2e8f0}
     .sb-item.active>.sb-link{background:rgba(59,130,246,.15);color:#60a5fa}
     .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
     .sb-label{transition:opacity .15s;overflow:hidden;white-space:nowrap}
-    .sb-sub{list-style:none;margin:2px 8px 6px 44px;overflow:hidden}
+    .sb-sub{list-style:none;margin:2px 8px 6px 44px;overflow:visible}
     .sb-sub-btn{display:block;width:100%;text-align:left;padding:5px 10px;font-size:11px;color:#475569;background:none;border:none;border-left:2px solid transparent;cursor:pointer;border-radius:0 6px 6px 0;font-weight:500;transition:all .15s;white-space:nowrap}
     .sb-sub-btn:hover{color:#94a3b8;background:rgba(255,255,255,.04)}
     .sb-sub-btn.active{color:#93c5fd;border-left-color:#3b82f6;background:rgba(59,130,246,.08);font-weight:600}
@@ -44,7 +44,7 @@
     .main-inner{flex:1;max-width:1400px;margin:0 auto;padding:28px;width:100%}
 
     /* === INNER TABS === */
-    .inner-tab-nav{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid #e2e8f0}
+    .inner-tab-nav{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid #e2e8f0;overflow-x:auto;overflow-y:visible;scrollbar-width:thin;padding-bottom:2px}
     .inner-tab-btn{padding:10px 22px;font-size:12px;font-weight:600;color:#64748b;background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:all .15s;white-space:nowrap}
     .inner-tab-btn.active{color:#0f3460;border-bottom-color:#0f3460;background:#f8fafc}
     .inner-tab-btn:hover:not(.active){color:#374151;background:#f8fafc}
