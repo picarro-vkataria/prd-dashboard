@@ -3766,6 +3766,942 @@ function buildADPv10() {
   var el = document.getElementById('adpv10-content');
   if (!el) return;
 
+  /* ── outer shell with view switcher ──────────────────────────────────── */
+  el.innerHTML =
+    '<div style="font-family:\'Segoe UI\',system-ui,sans-serif">'
+  + '<div style="display:flex;align-items:center;gap:10px;padding:14px 20px;background:#0f172a;border-radius:14px 14px 0 0;flex-wrap:wrap">'
+      + '<div style="font-size:15px;font-weight:800;color:white;flex:1">🔀 Journey Release Plan V10</div>'
+      + '<button id="v10-btn-mm"   onclick="v10Show(\'mm\')"   style="padding:8px 20px;border-radius:20px;border:2px solid #7c3aed;font-size:12px;font-weight:700;cursor:pointer;background:#7c3aed;color:white">🗺 Mental Model &amp; User Flow</button>'
+      + '<button id="v10-btn-plan" onclick="v10Show(\'plan\')" style="padding:8px 20px;border-radius:20px;border:2px solid #475569;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#94a3b8">📋 Journey Release Plan</button>'
+  + '</div>'
+  + '<div id="v10-mm-view"   style="display:block">'
+      + '<iframe id="v10-mm-frame" style="width:100%;height:900px;border:none;border-radius:0 0 14px 14px;display:block"></iframe>'
+  + '</div>'
+  + '<div id="v10-plan-view" style="display:none"></div>'
+  + '</div>';
+
+  /* ── load mental model into iframe via srcdoc ─────────────────────────── */
+  var frame = document.getElementById('v10-mm-frame');
+  frame.srcdoc = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P-Cubed Pro — Mental Model & User Flow</title>
+<style>
+  :root {
+    --survey: #0369a1;  --survey-l: #e0f2fe;
+    --pipe:   #7c3aed;  --pipe-l:   #ede9fe;
+    --fov:    #0891b2;  --fov-l:    #cffafe;
+    --lisa:   #15803d;  --lisa-l:   #dcfce7;
+    --inv:    #b45309;  --inv-l:    #fef3c7;
+    --result: #dc2626;  --result-l: #fee2e2;
+    --grey:   #64748b;  --grey-l:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; color: #1e293b; }
+
+  /* ── page layout ── */
+  .page { max-width: 1300px; margin: 0 auto; padding: 36px 40px; }
+
+  /* ── section headers ── */
+  .sec-title {
+    font-size: 13px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1.5px; color: #64748b; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-title::before { content: ''; flex: none; width: 32px; height: 3px; border-radius: 2px; background: currentColor; }
+
+  /* ── page title ── */
+  .page-header {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    border-radius: 16px; padding: 28px 36px; margin-bottom: 36px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .page-header h1 { font-size: 26px; font-weight: 800; color: white; margin-bottom: 6px; }
+  .page-header p  { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.6; max-width: 600px; }
+  .header-badge {
+    background: rgba(255,255,255,.1); border-radius: 10px;
+    padding: 14px 20px; text-align: center; flex-shrink: 0;
+  }
+  .header-badge .big { font-size: 32px; font-weight: 800; color: white; }
+  .header-badge .sub { font-size: 11px; color: rgba(255,255,255,.65); margin-top: 2px; }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 1 — SYSTEM PIPELINE
+  ════════════════════════════════════════════════════════════ */
+  .pipeline-wrap {
+    background: white; border-radius: 14px; padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 36px;
+    border: 1px solid #e2e8f0; overflow-x: auto;
+  }
+  .pipeline {
+    display: flex; align-items: stretch; gap: 0;
+    min-width: 900px;
+  }
+  .pipe-node {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1; position: relative;
+  }
+  .pipe-node-inner {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 18px 12px; border-radius: 12px; width: 100%;
+    text-align: center; border: 2px solid transparent;
+    transition: transform .15s;
+  }
+  .pipe-node-inner:hover { transform: translateY(-2px); }
+  .pipe-icon { font-size: 28px; margin-bottom: 8px; }
+  .pipe-label { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .pipe-sub   { font-size: 11px; opacity: .75; line-height: 1.4; }
+  .pipe-arrow {
+    display: flex; align-items: center; padding: 0 4px; flex-shrink: 0;
+    font-size: 20px; color: #94a3b8; align-self: center;
+  }
+  .pipe-split {
+    display: flex; flex-direction: column; gap: 8px; flex: 1; align-self: stretch; justify-content: center;
+  }
+  .pipe-split-item {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 12px 10px; border-radius: 10px; text-align: center;
+    border: 2px solid transparent;
+  }
+  .pipe-split-icon { font-size: 20px; margin-bottom: 4px; }
+  .pipe-split-label { font-size: 12px; font-weight: 700; }
+  .pipe-split-sub   { font-size: 10px; opacity: .7; }
+
+  /* colours per layer */
+  .c-survey { background: var(--survey-l); border-color: #7dd3fc !important; color: var(--survey); }
+  .c-pipe   { background: var(--pipe-l);   border-color: #c4b5fd !important; color: var(--pipe); }
+  .c-fov    { background: var(--fov-l);    border-color: #67e8f9 !important; color: var(--fov); }
+  .c-lisa   { background: var(--lisa-l);   border-color: #86efac !important; color: var(--lisa); }
+  .c-inv    { background: var(--inv-l);    border-color: #fcd34d !important; color: var(--inv); }
+  .c-result { background: var(--result-l); border-color: #fca5a5 !important; color: var(--result); }
+  .c-fe     { background: #f5f3ff;         border-color: #a78bfa !important; color: #5b21b6; }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 2 — ACTOR SWIMLANES
+  ════════════════════════════════════════════════════════════ */
+  .swimlane-wrap {
+    background: white; border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 36px;
+    border: 1px solid #e2e8f0; overflow: hidden;
+  }
+  .sw-header-row {
+    display: grid; grid-template-columns: 140px repeat(5,1fr);
+    background: #0f172a;
+  }
+  .sw-col-hd {
+    padding: 14px 12px; text-align: center;
+    font-size: 11px; font-weight: 700; color: rgba(255,255,255,.85);
+    text-transform: uppercase; letter-spacing: .5px;
+    border-right: 1px solid rgba(255,255,255,.1);
+  }
+  .sw-col-hd:last-child { border-right: none; }
+  .sw-row {
+    display: grid; grid-template-columns: 140px repeat(5,1fr);
+    border-top: 1px solid #f1f5f9;
+  }
+  .sw-row:nth-child(even) { background: #fafafa; }
+  .sw-actor {
+    padding: 16px 12px; font-size: 12px; font-weight: 700;
+    color: #475569; border-right: 2px solid #e2e8f0;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .sw-actor-icon { font-size: 18px; flex-shrink: 0; }
+  .sw-cell {
+    padding: 12px 10px; border-right: 1px solid #f1f5f9; min-height: 80px;
+  }
+  .sw-cell:last-child { border-right: none; }
+  .sw-step {
+    display: inline-flex; flex-direction: column; padding: 8px 10px;
+    border-radius: 8px; font-size: 11px; margin: 2px;
+    border: 1.5px solid transparent; width: 100%;
+  }
+  .sw-step-title { font-weight: 700; margin-bottom: 2px; }
+  .sw-step-sub   { font-size: 10px; opacity: .8; line-height: 1.4; }
+  .sw-arrow-cell {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #94a3b8; padding: 0;
+    grid-column: 1 / -1; border-top: 1px dashed #e2e8f0;
+    padding: 6px 0; background: #f8fafc;
+    font-size: 11px; font-weight: 600; color: #94a3b8; gap: 6px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 3 — 5 USER JOURNEYS
+  ════════════════════════════════════════════════════════════ */
+  .journeys-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 36px;
+  }
+  .journey-card {
+    background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 1px solid #e2e8f0;
+    display: flex; flex-direction: column;
+  }
+  .jc-header {
+    padding: 16px 18px; display: flex; align-items: center; gap: 12px;
+  }
+  .jc-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,.25); color: white;
+    font-size: 14px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .jc-title { font-size: 14px; font-weight: 800; color: white; }
+  .jc-actor { font-size: 11px; color: rgba(255,255,255,.8); margin-top: 1px; }
+  .jc-body { padding: 16px 18px; flex: 1; }
+  .jc-trigger {
+    font-size: 11px; font-weight: 700; color: #64748b;
+    text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;
+  }
+  .jc-trigger-text {
+    font-size: 12px; color: #374151; font-style: italic; margin-bottom: 12px;
+    padding: 8px 10px; background: #f8fafc; border-radius: 6px;
+    border-left: 3px solid #e2e8f0;
+  }
+  .jc-steps { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+  .jc-step {
+    display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #374151;
+  }
+  .jc-step-num {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+    font-size: 9px; font-weight: 800; color: white;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .jc-outcome {
+    padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 4 — JOURNEY→FEATURE MAP
+  ════════════════════════════════════════════════════════════ */
+  .feature-map {
+    background: white; border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 36px;
+    border: 1px solid #e2e8f0; overflow: hidden;
+  }
+  .fm-header {
+    background: #0f172a; padding: 16px 24px;
+    font-size: 15px; font-weight: 800; color: white;
+  }
+  .fm-header span { font-size: 12px; font-weight: 400; color: #94a3b8; margin-left: 8px; }
+  .fm-row {
+    display: grid; grid-template-columns: 220px 120px 1fr;
+    border-top: 1px solid #f1f5f9; align-items: stretch;
+  }
+  .fm-journey {
+    padding: 14px 16px; border-right: 2px solid #e2e8f0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .fm-jname { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .fm-actor  { font-size: 11px; color: #64748b; }
+  .fm-release {
+    padding: 14px 12px; border-right: 1px solid #f1f5f9;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .r-badge {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 800;
+  }
+  .fm-features {
+    padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+  }
+  .ft {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; border: 1.5px solid;
+  }
+  .ft-code { font-size: 9px; font-weight: 800; opacity: .7; }
+
+  /* ════════════════════════════════════════════════════════════
+     DEPENDENCY NOTE
+  ════════════════════════════════════════════════════════════ */
+  .dep-box {
+    background: #fff7ed; border: 2px solid #f97316; border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 36px;
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 14px;
+  }
+  .dep-item { display: flex; flex-direction: column; gap: 4px; }
+  .dep-from { font-size: 11px; font-weight: 800; color: #c2410c; }
+  .dep-arrow { font-size: 11px; color: #9a3412; }
+  .dep-to   { font-size: 13px; font-weight: 700; color: #1e293b; }
+  .dep-note { font-size: 11px; color: #64748b; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Page Header ─────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h1>P-Cubed Pro — Mental Model &amp; User Flow</h1>
+      <p>The complete system: survey data flows in → H3 cells → AutoFOV → LISAs + Gaps → front-end display → investigations → boundary results download. Use this to group planning items by logical flow.</p>
+    </div>
+    <div class="header-badge">
+      <div class="big">5</div>
+      <div class="sub">User Journeys</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SECTION 1 — SYSTEM PIPELINE
+  ══════════════════════════════════════════════════════════════════════ -->
+  <div class="sec-title" style="color:#7c3aed">Section 1 — System Pipeline (How data moves)</div>
+  <div class="pipeline-wrap">
+    <div class="pipeline">
+
+      <!-- Survey -->
+      <div class="pipe-node">
+        <div class="pipe-node-inner c-survey">
+          <div class="pipe-icon">🚗</div>
+          <div class="pipe-label">Survey Vehicle</div>
+          <div class="pipe-sub">Drives boundary routes. Collects methane + GPS data.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- Ingest -->
+      <div class="pipe-node">
+        <div class="pipe-node-inner c-survey">
+          <div class="pipe-icon">☁️</div>
+          <div class="pipe-label">Cloud Ingest</div>
+          <div class="pipe-sub">Raw survey data uploaded &amp; stored. Triggers processing.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- Survey Processing -->
+      <div class="pipe-node">
+        <div class="pipe-node-inner c-pipe">
+          <div class="pipe-icon">⚙️</div>
+          <div class="pipe-label">Survey Processing</div>
+          <div class="pipe-sub">Generates <strong>H3 cells</strong> from route geometry.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- AutoFOV -->
+      <div class="pipe-node">
+        <div class="pipe-node-inner c-fov">
+          <div class="pipe-icon">📡</div>
+          <div class="pipe-label">AutoFOV μService</div>
+          <div class="pipe-sub">Processes H3 cells → computes <strong>Field of View</strong> per boundary. PH-279.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- LISA + Gaps -->
+      <div class="pipe-node" style="flex:1.2">
+        <div class="pipe-split">
+          <div class="pipe-split-item c-lisa">
+            <div class="pipe-split-icon">🗺️</div>
+            <div class="pipe-split-label">LISA μService</div>
+            <div class="pipe-split-sub">Uses FOV → computes LISA boundaries + PS2 scores. PH-104/119.</div>
+          </div>
+          <div class="pipe-split-item c-lisa" style="background:#fef9c3;border-color:#fde047!important;color:#713f12">
+            <div class="pipe-split-icon">🔍</div>
+            <div class="pipe-split-label">Gaps μService</div>
+            <div class="pipe-split-sub">Uses FOV → identifies coverage gaps + assets. PH-385.</div>
+          </div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- DB -->
+      <div class="pipe-node">
+        <div class="pipe-node-inner" style="background:#f1f5f9;border-color:#cbd5e1!important;color:#334155">
+          <div class="pipe-icon">🗄️</div>
+          <div class="pipe-label">DB Storage</div>
+          <div class="pipe-sub">FOV results, LISA boundaries, PS2 scores, Gap polygons, Assets.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- BFF -->
+      <div class="pipe-node">
+        <div class="pipe-node-inner c-fe">
+          <div class="pipe-icon">⚡</div>
+          <div class="pipe-label">BFF / API Layer</div>
+          <div class="pipe-sub">Serves boundaries, sessions, FOV, LISAs, Gaps to UI.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- Frontend -->
+      <div class="pipe-node" style="flex:1.3">
+        <div class="pipe-split">
+          <div class="pipe-split-item c-fe">
+            <div class="pipe-split-icon">🖥️</div>
+            <div class="pipe-split-label">Settings UI</div>
+            <div class="pipe-split-sub">Tenant / Operator / User config</div>
+          </div>
+          <div class="pipe-split-item c-fov">
+            <div class="pipe-split-icon">🗺️</div>
+            <div class="pipe-split-label">FOV + DS Display</div>
+            <div class="pipe-split-sub">Coverage map, sessions, overlay</div>
+          </div>
+          <div class="pipe-split-item c-lisa">
+            <div class="pipe-split-icon">📊</div>
+            <div class="pipe-split-label">LISA + Gaps Display</div>
+            <div class="pipe-split-sub">Maps, tables, PS2 ranking, assets</div>
+          </div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+
+      <!-- Investigation -->
+      <div class="pipe-node" style="flex:1.3">
+        <div class="pipe-split">
+          <div class="pipe-split-item c-inv">
+            <div class="pipe-split-icon">📋</div>
+            <div class="pipe-split-label">Investigation Workflow</div>
+            <div class="pipe-split-sub">Templates → Dispatch → Field → Complete</div>
+          </div>
+          <div class="pipe-split-item c-result">
+            <div class="pipe-split-icon">📥</div>
+            <div class="pipe-split-label">Boundary Results</div>
+            <div class="pipe-split-sub">Mark final → download report</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- pipeline -->
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SECTION 2 — ACTOR SWIMLANES
+  ══════════════════════════════════════════════════════════════════════ -->
+  <div class="sec-title" style="color:#0891b2">Section 2 — Who does what (Actor Swimlanes)</div>
+  <div class="swimlane-wrap">
+    <div class="sw-header-row">
+      <div class="sw-col-hd">Actor</div>
+      <div class="sw-col-hd">Phase 1<br><span style="opacity:.6;font-weight:400">Survey &amp; Ingest</span></div>
+      <div class="sw-col-hd">Phase 2<br><span style="opacity:.6;font-weight:400">Pipeline Runs</span></div>
+      <div class="sw-col-hd">Phase 3<br><span style="opacity:.6;font-weight:400">Coverage Review</span></div>
+      <div class="sw-col-hd">Phase 4<br><span style="opacity:.6;font-weight:400">Investigation Dispatch</span></div>
+      <div class="sw-col-hd">Phase 5<br><span style="opacity:.6;font-weight:400">Close &amp; Report</span></div>
+    </div>
+
+    <!-- Survey Crew -->
+    <div class="sw-row">
+      <div class="sw-actor"><span class="sw-actor-icon">🚗</span><div>Survey<br>Crew</div></div>
+      <div class="sw-cell">
+        <div class="sw-step c-survey">
+          <div class="sw-step-title">Drive boundary routes</div>
+          <div class="sw-step-sub">Collects methane + GPS per schedule</div>
+        </div>
+      </div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell">
+        <div class="sw-step c-inv">
+          <div class="sw-step-title">Execute investigation drive</div>
+          <div class="sw-step-sub">Re-surveys assigned LISA/Gap area</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System/Pipeline -->
+    <div class="sw-row">
+      <div class="sw-actor"><span class="sw-actor-icon">⚙️</span><div>System<br>Pipeline</div></div>
+      <div class="sw-cell">
+        <div class="sw-step c-survey">
+          <div class="sw-step-title">Ingest raw survey data</div>
+          <div class="sw-step-sub">Store in cloud</div>
+        </div>
+      </div>
+      <div class="sw-cell">
+        <div class="sw-step c-pipe" style="margin-bottom:6px">
+          <div class="sw-step-title">Generate H3 cells</div>
+          <div class="sw-step-sub">Survey processing</div>
+        </div>
+        <div class="sw-step c-fov" style="margin-bottom:6px">
+          <div class="sw-step-title">AutoFOV computes coverage</div>
+          <div class="sw-step-sub">PH-279 — FOV per boundary</div>
+        </div>
+        <div class="sw-step c-lisa">
+          <div class="sw-step-title">LISA + Gaps computed</div>
+          <div class="sw-step-sub">PH-104/119, PH-385</div>
+        </div>
+      </div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell">
+        <div class="sw-step c-result">
+          <div class="sw-step-title">Generate boundary results</div>
+          <div class="sw-step-sub">Aggregate investigation outcomes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Operator -->
+    <div class="sw-row">
+      <div class="sw-actor"><span class="sw-actor-icon">👷</span><div>Operator</div></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell">
+        <div class="sw-step c-fov" style="margin-bottom:6px">
+          <div class="sw-step-title">View FOV coverage %</div>
+          <div class="sw-step-sub">Select boundary → see driving sessions + FOV overlay</div>
+        </div>
+        <div class="sw-step c-lisa">
+          <div class="sw-step-title">View LISA + Gap results</div>
+          <div class="sw-step-sub">See PS2 scores, ranked priorities, asset lists</div>
+        </div>
+      </div>
+      <div class="sw-cell">
+        <div class="sw-step c-inv">
+          <div class="sw-step-title">Review investigations</div>
+          <div class="sw-step-sub">Monitor progress, view sessions</div>
+        </div>
+      </div>
+      <div class="sw-cell">
+        <div class="sw-step c-result">
+          <div class="sw-step-title">Download boundary results</div>
+          <div class="sw-step-sub">Final report for compliance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tenant Supervisor -->
+    <div class="sw-row">
+      <div class="sw-actor"><span class="sw-actor-icon">👔</span><div>Tenant<br>Supervisor</div></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell">
+        <div class="sw-step c-lisa">
+          <div class="sw-step-title">Prioritise LISAs by PS2</div>
+          <div class="sw-step-sub">Identify top boundaries to investigate</div>
+        </div>
+      </div>
+      <div class="sw-cell">
+        <div class="sw-step c-inv" style="margin-bottom:6px">
+          <div class="sw-step-title">Create investigation</div>
+          <div class="sw-step-sub">Select LISA/Gap → choose template</div>
+        </div>
+        <div class="sw-step c-inv">
+          <div class="sw-step-title">Dispatch investigator</div>
+          <div class="sw-step-sub">Assign to tenant investigator</div>
+        </div>
+      </div>
+      <div class="sw-cell">
+        <div class="sw-step c-result">
+          <div class="sw-step-title">Mark investigations final</div>
+          <div class="sw-step-sub">Sign off on completed cases</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tenant Investigator -->
+    <div class="sw-row">
+      <div class="sw-actor"><span class="sw-actor-icon">🔎</span><div>Tenant<br>Investigator</div></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell"></div>
+      <div class="sw-cell">
+        <div class="sw-step c-inv">
+          <div class="sw-step-title">Receive assignment</div>
+          <div class="sw-step-sub">See investigation details + template</div>
+        </div>
+      </div>
+      <div class="sw-cell">
+        <div class="sw-step c-inv" style="margin-bottom:6px">
+          <div class="sw-step-title">Execute investigation</div>
+          <div class="sw-step-sub">Field work per template steps</div>
+        </div>
+        <div class="sw-step c-result">
+          <div class="sw-step-title">Submit results</div>
+          <div class="sw-step-sub">Record findings, close case</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- swimlane-wrap -->
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SECTION 3 — 5 USER JOURNEYS
+  ══════════════════════════════════════════════════════════════════════ -->
+  <div class="sec-title" style="color:#15803d">Section 3 — The 5 User Journeys</div>
+  <div class="journeys-grid">
+
+    <!-- J1 -->
+    <div class="journey-card">
+      <div class="jc-header" style="background:linear-gradient(135deg,#0369a1,#0891b2)">
+        <div class="jc-num">1</div>
+        <div>
+          <div class="jc-title">Survey &amp; Data Ingest</div>
+          <div class="jc-actor">🚗 Survey Crew + ⚙️ System</div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-trigger">Trigger</div>
+        <div class="jc-trigger-text">Survey schedule runs. Crew drives boundary routes.</div>
+        <div class="jc-steps">
+          <div class="jc-step"><div class="jc-step-num" style="background:#0369a1">1</div><div>Survey vehicle collects methane + GPS data along route</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#0369a1">2</div><div>Raw data uploaded and ingested to cloud</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#0369a1">3</div><div>Survey processing generates H3 cells from geometry</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#0369a1">4</div><div>AutoFOV microservice computes FOV per boundary (PH-279)</div></div>
+        </div>
+        <div class="jc-outcome" style="background:#e0f2fe;color:#0369a1">
+          ✅ FOV coverage data ready in DB — pipeline complete
+        </div>
+      </div>
+    </div>
+
+    <!-- J2 -->
+    <div class="journey-card">
+      <div class="jc-header" style="background:linear-gradient(135deg,#0891b2,#0e7490)">
+        <div class="jc-num">2</div>
+        <div>
+          <div class="jc-title">See My Coverage</div>
+          <div class="jc-actor">👷 Operator</div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-trigger">Trigger</div>
+        <div class="jc-trigger-text">Operator wants to know: "How well is boundary IN-0824 covered?"</div>
+        <div class="jc-steps">
+          <div class="jc-step"><div class="jc-step-num" style="background:#0891b2">1</div><div>Log in (RBAC — operator role)</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#0891b2">2</div><div>Select boundary from campaign map</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#0891b2">3</div><div>View driving sessions overlaid on boundary</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#0891b2">4</div><div>See AutoFOV overlay — coverage % and field-of-view polygon</div></div>
+        </div>
+        <div class="jc-outcome" style="background:#cffafe;color:#0e7490">
+          ✅ "IN-0824 is 87% covered by 3 driving sessions"
+        </div>
+      </div>
+    </div>
+
+    <!-- J3 -->
+    <div class="journey-card">
+      <div class="jc-header" style="background:linear-gradient(135deg,#15803d,#166534)">
+        <div class="jc-num">3</div>
+        <div>
+          <div class="jc-title">Find Gaps &amp; LISAs</div>
+          <div class="jc-actor">👷 Operator / 👔 Supervisor</div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-trigger">Trigger</div>
+        <div class="jc-trigger-text">Where is coverage missing? Which boundaries need investigation?</div>
+        <div class="jc-steps">
+          <div class="jc-step"><div class="jc-step-num" style="background:#15803d">1</div><div>View gap polygons on boundary map</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#15803d">2</div><div>Click gap → see pipeline assets inside it</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#15803d">3</div><div>View LISA boundaries with PS2 scores</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#15803d">4</div><div>Rank LISAs by PS2 → identify top priorities</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#15803d">5</div><div>Export gap / LISA asset list for field crew</div></div>
+        </div>
+        <div class="jc-outcome" style="background:#dcfce7;color:#166534">
+          ✅ "3 gaps found. TX-0291 LISA PS2=0.87 — highest priority."
+        </div>
+      </div>
+    </div>
+
+    <!-- J4 -->
+    <div class="journey-card">
+      <div class="jc-header" style="background:linear-gradient(135deg,#b45309,#92400e)">
+        <div class="jc-num">4</div>
+        <div>
+          <div class="jc-title">Dispatch Investigation</div>
+          <div class="jc-actor">👔 Tenant Supervisor</div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-trigger">Trigger</div>
+        <div class="jc-trigger-text">Supervisor sees high-PS2 LISA and needs to assign investigation.</div>
+        <div class="jc-steps">
+          <div class="jc-step"><div class="jc-step-num" style="background:#b45309">1</div><div>Select LISA/Gap boundary to investigate</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#b45309">2</div><div>Choose tenant investigation template</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#b45309">3</div><div>Assign to a tenant investigator</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#b45309">4</div><div>Investigator receives assignment + template steps</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#b45309">5</div><div>Survey crew re-drives the investigation area</div></div>
+        </div>
+        <div class="jc-outcome" style="background:#fef3c7;color:#92400e">
+          ✅ "Investigation INV-4421 created → assigned to Jane Smith"
+        </div>
+      </div>
+    </div>
+
+    <!-- J5 -->
+    <div class="journey-card">
+      <div class="jc-header" style="background:linear-gradient(135deg,#dc2626,#991b1b)">
+        <div class="jc-num">5</div>
+        <div>
+          <div class="jc-title">Close &amp; Report</div>
+          <div class="jc-actor">🔎 Investigator / 👔 Supervisor</div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-trigger">Trigger</div>
+        <div class="jc-trigger-text">Field investigation complete. Compliance report needed.</div>
+        <div class="jc-steps">
+          <div class="jc-step"><div class="jc-step-num" style="background:#dc2626">1</div><div>Investigator submits field results</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#dc2626">2</div><div>Supervisor reviews results + marks investigation final</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#dc2626">3</div><div>Boundary results generated (all investigations aggregated)</div></div>
+          <div class="jc-step"><div class="jc-step-num" style="background:#dc2626">4</div><div>Download boundary results report (PHMSA / EU LDAR)</div></div>
+        </div>
+        <div class="jc-outcome" style="background:#fee2e2;color:#991b1b">
+          ✅ "INV-4421 closed. Boundary results downloaded for PHMSA filing."
+        </div>
+      </div>
+    </div>
+
+    <!-- Critical dependency note as 6th card -->
+    <div class="journey-card" style="border:2px dashed #f97316;background:#fff7ed">
+      <div class="jc-header" style="background:linear-gradient(135deg,#f97316,#ea580c)">
+        <div class="jc-num" style="background:rgba(255,255,255,.3)">⚡</div>
+        <div>
+          <div class="jc-title">Critical Dependencies</div>
+          <div class="jc-actor">Must be true for each journey to start</div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+          <div style="padding:8px 10px;border-radius:8px;background:#fef3c7;border-left:3px solid #f59e0b;font-size:12px">
+            <strong style="color:#92400e">J2 needs:</strong> PH-279 AutoFOV in QA or Accepted
+          </div>
+          <div style="padding:8px 10px;border-radius:8px;background:#fef3c7;border-left:3px solid #f59e0b;font-size:12px">
+            <strong style="color:#92400e">J3 Gaps needs:</strong> J2 complete (Gaps pipeline uses AutoFOV output)
+          </div>
+          <div style="padding:8px 10px;border-radius:8px;background:#fce7f3;border-left:3px solid #ec4899;font-size:12px">
+            <strong style="color:#9d174d">J3 LISAs needs:</strong> LISA TDD approved (PH-104 currently unrefined — 🚨)
+          </div>
+          <div style="padding:8px 10px;border-radius:8px;background:#ede9fe;border-left:3px solid #8b5cf6;font-size:12px">
+            <strong style="color:#5b21b6">J4 needs:</strong> J3 complete (can't investigate what you haven't found)
+          </div>
+          <div style="padding:8px 10px;border-radius:8px;background:#ede9fe;border-left:3px solid #8b5cf6;font-size:12px">
+            <strong style="color:#5b21b6">J5 needs:</strong> J4 complete (can't close what hasn't been dispatched)
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- journeys-grid -->
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SECTION 4 — JOURNEY → FEATURE MAP
+  ══════════════════════════════════════════════════════════════════════ -->
+  <div class="sec-title" style="color:#b45309">Section 4 — Journey → Feature Grouping (use this for planning)</div>
+  <div class="feature-map">
+    <div class="fm-header">Journey → Feature Map <span>Groups all planning items by which user journey they enable</span></div>
+
+    <!-- headers -->
+    <div class="fm-row" style="background:#f8fafc;border-top:none">
+      <div style="padding:10px 16px;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;border-right:2px solid #e2e8f0">Journey</div>
+      <div style="padding:10px 12px;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;border-right:1px solid #f1f5f9;text-align:center">Release</div>
+      <div style="padding:10px 16px;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Features that belong to this journey</div>
+    </div>
+
+    <!-- J1 -->
+    <div class="fm-row">
+      <div class="fm-journey" style="border-left:4px solid #0369a1">
+        <div class="fm-jname" style="color:#0369a1">J1 — Survey &amp; Ingest</div>
+        <div class="fm-actor">🚗 Crew + ⚙️ System</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#e0f2fe;color:#0369a1">Pre-R1</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#e0f2fe;border-color:#7dd3fc;color:#0369a1"><span class="ft-code">H-01</span>Car Data Ingestion</div>
+        <div class="ft" style="background:#e0f2fe;border-color:#7dd3fc;color:#0369a1"><span class="ft-code">H-02</span>PSA Updates</div>
+        <div class="ft" style="background:#e0f2fe;border-color:#7dd3fc;color:#0369a1"><span class="ft-code">O-BM-12</span>AutoFOV Pipeline</div>
+        <div class="ft" style="background:#e0f2fe;border-color:#7dd3fc;color:#0369a1"><span class="ft-code">O-BM-16</span>DS QA/QC</div>
+        <span style="font-size:11px;color:#94a3b8;font-style:italic">Backend only — no UI needed for journey to succeed</span>
+      </div>
+    </div>
+
+    <!-- J2 -->
+    <div class="fm-row">
+      <div class="fm-journey" style="border-left:4px solid #0891b2">
+        <div class="fm-jname" style="color:#0891b2">J2 — See My Coverage</div>
+        <div class="fm-actor">👷 Operator</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#cffafe;color:#0e7490">R1</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">P-01</span>RBAC Phase 1</div>
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">O-BM-01</span>Campaign Map</div>
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">O-BM-06/07/08</span>DS Panel/Map/Table</div>
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">O-BM-13</span>AutoFOV Panel</div>
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">O-BM-14</span>FOV Map Overlay</div>
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">O-BM-15</span>FOV Metadata</div>
+        <div class="ft" style="background:#cffafe;border-color:#67e8f9;color:#0e7490"><span class="ft-code">A-O-04</span>Operator Settings: DS</div>
+        <div class="ft" style="background:#f3f4f6;border-color:#d1d5db;color:#374151"><span class="ft-code">H-03</span>Fleet Map View</div>
+      </div>
+    </div>
+
+    <!-- J3a Gaps -->
+    <div class="fm-row">
+      <div class="fm-journey" style="border-left:4px solid #15803d">
+        <div class="fm-jname" style="color:#15803d">J3a — Find My Gaps</div>
+        <div class="fm-actor">👷 Operator (AutoGaps pilot)</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#dcfce7;color:#166534">R2</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-BM-17</span>Gaps Pipeline</div>
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-BM-18</span>Gaps Panel</div>
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-BM-19</span>Gaps Map</div>
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-BM-20</span>Gaps Table</div>
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-BM-22</span>Highlighted Assets: Gaps</div>
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-07</span>Geocode</div>
+        <div class="ft" style="background:#dcfce7;border-color:#86efac;color:#166534"><span class="ft-code">O-08</span>Snap to Street</div>
+        <div class="ft" style="background:#fef9c3;border-color:#fde047;color:#713f12"><span class="ft-code">🇪🇺</span>EU 2024/1787 gate ✅</div>
+      </div>
+    </div>
+
+    <!-- J3b LISAs -->
+    <div class="fm-row">
+      <div class="fm-journey" style="border-left:4px solid #7c3aed">
+        <div class="fm-jname" style="color:#7c3aed">J3b — Prioritise LISAs</div>
+        <div class="fm-actor">👔 Supervisor</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#ede9fe;color:#6d28d9">R3</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-24</span>LISAs Pipeline</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-25</span>LISAs Panel</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-26</span>LISAs Map</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-27</span>LISAs Table</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-28</span>LISA Metadata</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-29</span>Highlighted Assets: LISAs</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-30</span>PS2 Ranking</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">O-BM-32/33</span>Boundary Results + Download</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">A-I-01/02</span>Investigation Templates</div>
+        <div class="ft" style="background:#ede9fe;border-color:#c4b5fd;color:#6d28d9"><span class="ft-code">A-O-02</span>Operator Settings: General</div>
+        <div style="width:100%;height:0"></div>
+        <span style="font-size:11px;color:#c2410c;font-weight:600">⚠️ Gate: LISA TDD must be approved before this journey can start</span>
+      </div>
+    </div>
+
+    <!-- J4 -->
+    <div class="fm-row">
+      <div class="fm-journey" style="border-left:4px solid #b45309">
+        <div class="fm-jname" style="color:#b45309">J4 — Dispatch Investigation</div>
+        <div class="fm-actor">👔 Supervisor + 🔎 Investigator</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#fef3c7;color:#92400e">R4</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#fef3c7;border-color:#fcd34d;color:#92400e"><span class="ft-code">O-BM-34</span>Assign LISAs for Investigation</div>
+        <div class="ft" style="background:#fef3c7;border-color:#fcd34d;color:#92400e"><span class="ft-code">O-BM-35</span>Assign Gaps for Investigation</div>
+        <div class="ft" style="background:#fef3c7;border-color:#fcd34d;color:#92400e"><span class="ft-code">O-BM-36</span>View &amp; Assign Investigations</div>
+        <div class="ft" style="background:#fef3c7;border-color:#fcd34d;color:#92400e"><span class="ft-code">O-BM-37</span>Investigation Sessions</div>
+        <div class="ft" style="background:#fef3c7;border-color:#fcd34d;color:#92400e"><span class="ft-code">A-U-01/02</span>User Management</div>
+        <div class="ft" style="background:#fef3c7;border-color:#fcd34d;color:#92400e"><span class="ft-code">A-T-05/06</span>Tenant Settings PS2/RFR</div>
+      </div>
+    </div>
+
+    <!-- J5 -->
+    <div class="fm-row">
+      <div class="fm-journey" style="border-left:4px solid #dc2626">
+        <div class="fm-jname" style="color:#dc2626">J5 — Close &amp; Report</div>
+        <div class="fm-actor">🔎 Investigator + 👔 Supervisor</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#fee2e2;color:#991b1b">R4</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b"><span class="ft-code">O-BM-38</span>Investigation Results</div>
+        <div class="ft" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b"><span class="ft-code">O-BM-39</span>Download Investigation Results</div>
+        <div class="ft" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b"><span class="ft-code">O-04/05/06</span>Manual Reports</div>
+        <div class="ft" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b"><span class="ft-code">P-14/15</span>NA + EU Staging</div>
+        <div class="ft" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b"><span class="ft-code">P-10/11</span>V1 Launch 🚀</div>
+        <div class="ft" style="background:#fef9c3;border-color:#fde047;color:#713f12"><span class="ft-code">🇺🇸</span>PHMSA 2025 gate ✅</div>
+      </div>
+    </div>
+
+    <!-- Settings / platform (cross-cutting) -->
+    <div class="fm-row" style="background:#f8fafc">
+      <div class="fm-journey" style="border-left:4px solid #64748b">
+        <div class="fm-jname" style="color:#475569">Platform &amp; Settings</div>
+        <div class="fm-actor">🔧 Cross-cutting (ships with journey that needs them)</div>
+      </div>
+      <div class="fm-release">
+        <div class="r-badge" style="background:#f1f5f9;color:#475569">R1–R4</div>
+      </div>
+      <div class="fm-features">
+        <div class="ft" style="background:#f1f5f9;border-color:#cbd5e1;color:#475569"><span class="ft-code">P-01</span>RBAC → ships R1 (needed to log in)</div>
+        <div class="ft" style="background:#f1f5f9;border-color:#cbd5e1;color:#475569"><span class="ft-code">P-21</span>Logging → ships R3 (before results)</div>
+        <div class="ft" style="background:#f1f5f9;border-color:#cbd5e1;color:#475569"><span class="ft-code">A-O-05</span>Licensed Features → ships R3</div>
+        <div class="ft" style="background:#f1f5f9;border-color:#cbd5e1;color:#475569"><span class="ft-code">P-27</span>GIS Data Hub EU → ships R2 (EU gate)</div>
+        <div class="ft" style="background:#f1f5f9;border-color:#cbd5e1;color:#475569"><span class="ft-code">P-23</span>Dynamic User Manual → ships R3</div>
+        <div style="width:100%;height:0"></div>
+        <span style="font-size:11px;color:#64748b;font-style:italic">Rule: settings ship alongside the journey that first requires them — not as a standalone R1 block</span>
+      </div>
+    </div>
+
+  </div><!-- feature-map -->
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SECTION 5 — ONE-LINER SUMMARY
+  ══════════════════════════════════════════════════════════════════════ -->
+  <div class="sec-title" style="color:#dc2626">Section 5 — The One-Liner for Each Release</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px">
+    <div style="background:white;border-radius:12px;border:2px solid #67e8f9;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+      <div style="font-size:22px;font-weight:800;color:#0891b2;margin-bottom:6px">R1</div>
+      <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:8px">"See My Coverage"</div>
+      <div style="font-size:12px;color:#64748b;line-height:1.6">Operator can select a boundary, see driving sessions, and understand FOV coverage end-to-end.</div>
+      <div style="margin-top:12px;padding:8px;background:#e0f2fe;border-radius:6px;font-size:11px;font-weight:600;color:#0369a1">Journeys: J1 pipeline + J2 display</div>
+    </div>
+    <div style="background:white;border-radius:12px;border:2px solid #86efac;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+      <div style="font-size:22px;font-weight:800;color:#15803d;margin-bottom:6px">R2</div>
+      <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:8px">"Find My Gaps"</div>
+      <div style="font-size:12px;color:#64748b;line-height:1.6">Operator sees gap polygons, views assets inside them, and exports a list for field dispatch. EU LDAR gate met.</div>
+      <div style="margin-top:12px;padding:8px;background:#dcfce7;border-radius:6px;font-size:11px;font-weight:600;color:#166534">Journey: J3a (AutoGaps pilot)</div>
+    </div>
+    <div style="background:white;border-radius:12px;border:2px solid #c4b5fd;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+      <div style="font-size:22px;font-weight:800;color:#7c3aed;margin-bottom:6px">R3</div>
+      <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:8px">"Prioritise LISAs"</div>
+      <div style="font-size:12px;color:#64748b;line-height:1.6">Supervisor sees all LISA boundaries with PS2 scores, ranks priorities, and creates the first investigation.</div>
+      <div style="margin-top:12px;padding:8px;background:#ede9fe;border-radius:6px;font-size:11px;font-weight:600;color:#6d28d9">Journey: J3b (requires LISA TDD ⚠️)</div>
+    </div>
+    <div style="background:white;border-radius:12px;border:2px solid #fca5a5;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+      <div style="font-size:22px;font-weight:800;color:#dc2626;margin-bottom:6px">R4</div>
+      <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:8px">"Close the Loop"</div>
+      <div style="font-size:12px;color:#64748b;line-height:1.6">Full investigation workflow closes, boundary results download, PHMSA gate met, V1 launches.</div>
+      <div style="margin-top:12px;padding:8px;background:#fee2e2;border-radius:6px;font-size:11px;font-weight:600;color:#991b1b">Journeys: J4 + J5 🚀 Launch</div>
+    </div>
+  </div>
+
+</div><!-- page -->
+</body>
+</html>
+`;
+
+  /* ── view switcher logic ─────────────────────────────────────────────── */
+  window.v10Show = function(view) {
+    var mmV   = document.getElementById('v10-mm-view');
+    var planV = document.getElementById('v10-plan-view');
+    var mmB   = document.getElementById('v10-btn-mm');
+    var planB = document.getElementById('v10-btn-plan');
+    if (view === 'mm') {
+      mmV.style.display   = 'block';
+      planV.style.display = 'none';
+      mmB.style.background   = '#7c3aed'; mmB.style.color   = 'white'; mmB.style.borderColor   = '#7c3aed';
+      planB.style.background = 'transparent'; planB.style.color = '#94a3b8'; planB.style.borderColor = '#475569';
+    } else {
+      mmV.style.display   = 'none';
+      planV.style.display = 'block';
+      planB.style.background = '#0891b2'; planB.style.color = 'white'; planB.style.borderColor = '#0891b2';
+      mmB.style.background   = 'transparent'; mmB.style.color = '#94a3b8'; mmB.style.borderColor = '#475569';
+      /* lazy-build the plan content only once */
+      var planEl = document.getElementById('v10-plan-view');
+      if (!planEl.hasChildNodes()) { v10BuildPlan(planEl); }
+    }
+  };
+
+  /* ── journey release plan builder (original V10 content) ─────────────── */
+  function v10BuildPlan(el) {
+
+  var el = document.getElementById('adpv10-content');
+  if (!el) return;
+
   /* ── palette ─────────────────────────────────────────────────────────────── */
   var C = {
     r1j:'#0891b2', r1jl:'#cffafe', r1jd:'#0e7490',   // Journey R1 teal
@@ -4158,8 +5094,8 @@ function buildADPv10() {
 
   h += '</div></div>';
   h += '</div>'; /* max-width wrapper */
-
-  el.innerHTML = h;
+    el.innerHTML = h;
+  }
 }
 
 </script>
