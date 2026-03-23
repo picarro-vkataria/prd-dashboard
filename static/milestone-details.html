@@ -5171,103 +5171,124 @@ function buildADPv11() {
       {label:'R4', start:'2026-08-16', end:'2026-10-01', color:'#dc262620'},
     ];
 
-    /* journey lanes */
+    /* journey lanes — all 58 features, correct release positions, bar:n groups chips */
+    /* bar:0 = first bar, bar:1 = second bar, bar:2 = third bar */
     var LANES = [
       {
         id:'j1', icon:'🚗', label:'J1', name:'Survey & Ingest',
-        sub:'Pipeline runs throughout all releases (5 features)',
+        sub:'Pipeline throughout all releases — 5 features',
         color:'#0369a1', light:'#e0f2fe', height:130,
-        bars:[{start:'2026-04-01',end:'2026-10-01',label:'AutoFOV + Hardware pipeline — all releases'}],
+        bars:[{start:'2026-04-01',end:'2026-10-01',label:'R1→R4 — AutoFOV pipeline + Hardware (5 features)'}],
         dots:[
-          {at:'2026-04-01', code:'O-BM-12', text:'AutoFOV Pipeline'},
-          {at:'2026-04-15', code:'O-BM-16', text:'DS QA/QC'},
-          {at:'2026-07-01', code:'H-01',    text:'Car Data Ingest'},
-          {at:'2026-07-15', code:'H-02',    text:'PSA Updates'},
-          {at:'2026-08-01', code:'H-03',    text:'Fleet Map View'},
+          {bar:0, code:'O-BM-12', text:'AutoFOV Pipeline'},       /* R1 */
+          {bar:0, code:'O-BM-16', text:'DS QA/QC'},               /* R1 */
+          {bar:0, code:'H-01',    text:'Car Data Ingestion'},      /* R3 */
+          {bar:0, code:'H-02',    text:'PSA (in-car) Updates'},    /* R3 */
+          {bar:0, code:'H-03',    text:'Fleet Map: Map View'},     /* R3 */
         ]
       },
       {
         id:'j2', icon:'🗺️', label:'J2', name:'See My Coverage',
-        sub:'Operator sees boundary FOV end-to-end (11 features)',
+        sub:'Operator sees boundary FOV end-to-end — 11 features',
         color:'#0891b2', light:'#cffafe', height:155,
         bars:[
-          {start:'2026-04-01',end:'2026-05-15',label:'R1 — Core Coverage (7 features)', color:'#0891b2'},
-          {start:'2026-05-16',end:'2026-06-30',label:'R2 — DS + AutoFOV views (4 features)', color:'#0369a1'},
+          {start:'2026-04-01',end:'2026-05-15',label:'R1 — Core Coverage (5 features)', color:'#0891b2'},
+          {start:'2026-05-16',end:'2026-06-30',label:'R2 — DS + AutoFOV views (6 features)', color:'#0369a1'},
         ],
         dots:[
-          {at:'2026-04-01', code:'P-01',    text:'RBAC & Multi-Tenancy'},
-          {at:'2026-04-08', code:'A-O-02',  text:'Operator Settings'},
-          {at:'2026-04-15', code:'O-BM-01', text:'Campaign Map'},
-          {at:'2026-04-22', code:'O-BM-06', text:'DS Panel'},
-          {at:'2026-04-29', code:'O-BM-13', text:'AutoFOV Panel'},
-          {at:'2026-05-16', code:'O-BM-07', text:'DS Map'},
-          {at:'2026-05-23', code:'O-BM-08', text:'DS Table'},
-          {at:'2026-05-30', code:'O-BM-09', text:'DS Tab'},
-          {at:'2026-06-01', code:'O-BM-14', text:'FOV Overlay'},
-          {at:'2026-06-08', code:'O-BM-15', text:'FOV Metadata'},
-          {at:'2026-06-15', code:'A-O-04',  text:'DS Settings'},
+          /* R1 bar */
+          {bar:0, code:'P-01',    text:'RBAC & Multi-Tenancy'},
+          {bar:0, code:'A-O-02',  text:'Operator Settings: General'},
+          {bar:0, code:'O-BM-01', text:'View Campaign (Map)'},
+          {bar:0, code:'O-BM-06', text:'Driving Sessions Panel'},
+          {bar:0, code:'O-BM-13', text:'AutoFOV Panel'},
+          /* R2 bar */
+          {bar:1, code:'O-BM-07', text:'View DS (Map)'},
+          {bar:1, code:'O-BM-08', text:'View DS (Table)'},
+          {bar:1, code:'O-BM-09', text:'View DS (Tab)'},
+          {bar:1, code:'O-BM-14', text:'AutoFOV Map Overlay'},
+          {bar:1, code:'O-BM-15', text:'AutoFOV Metadata'},
+          {bar:1, code:'A-O-04',  text:'Operator Settings: DS'},
         ]
       },
       {
         id:'j3', icon:'🔍', label:'J3', name:'Gaps → LISAs',
-        sub:'Find coverage gaps (R2) then prioritise LISAs (R3) — 20 features',
-        color:'#16a34a', light:'#dcfce7', height:180,
+        sub:'Find gaps (R1-R4) + prioritise LISAs (R2-R4) — 20 features',
+        color:'#16a34a', light:'#dcfce7', height:215,
         bars:[
-          {start:'2026-05-16',end:'2026-06-30',label:'R2 — Find My Gaps (9 features)', color:'#16a34a'},
-          {start:'2026-07-01',end:'2026-08-15',label:'R3 — Prioritise LISAs (11 features)', color:'#7c3aed'},
+          {start:'2026-04-01',end:'2026-10-01',label:'J3a — Find My Gaps: 9 features (R1→R4)', color:'#16a34a'},
+          {start:'2026-05-16',end:'2026-10-01',label:'J3b — Prioritise LISAs: 11 features (R2→R4)', color:'#7c3aed'},
         ],
         dots:[
-          {at:'2026-05-16', code:'O-BM-17', text:'Gaps Pipeline',      color:'#16a34a'},
-          {at:'2026-05-23', code:'O-BM-18', text:'Gaps Microservice',  color:'#16a34a'},
-          {at:'2026-05-30', code:'O-BM-19', text:'Gaps Map',           color:'#16a34a'},
-          {at:'2026-06-01', code:'O-BM-20', text:'Gaps Table',         color:'#16a34a'},
-          {at:'2026-06-08', code:'O-BM-21', text:'Gaps Metadata',      color:'#16a34a'},
-          {at:'2026-06-15', code:'O-BM-22', text:'Assets: Gaps',       color:'#16a34a'},
-          {at:'2026-07-01', code:'O-BM-24', text:'LISAs Pipeline',     color:'#7c3aed'},
-          {at:'2026-07-08', code:'O-BM-25', text:'LISA Microservice',  color:'#7c3aed'},
-          {at:'2026-07-15', code:'O-BM-26', text:'LISAs Map',          color:'#7c3aed'},
-          {at:'2026-07-22', code:'O-BM-27', text:'LISAs Table',        color:'#7c3aed'},
-          {at:'2026-07-29', code:'O-BM-28', text:'LISA Metadata',      color:'#7c3aed'},
-          {at:'2026-08-01', code:'O-BM-29', text:'Assets: LISAs',      color:'#7c3aed'},
-          {at:'2026-08-05', code:'O-BM-30', text:'PS2 Ranking',        color:'#7c3aed'},
+          /* J3a — Gaps (bar:0) */
+          {bar:0, code:'P-27',    text:'GIS Data Hub EU',        color:'#16a34a'}, /* R1 */
+          {bar:0, code:'O-BM-17', text:'Gaps Pipeline',          color:'#16a34a'}, /* R1 */
+          {bar:0, code:'O-BM-18', text:'Gaps Panel',             color:'#16a34a'}, /* R1 */
+          {bar:0, code:'O-BM-19', text:'Gaps Map',               color:'#16a34a'}, /* R2 */
+          {bar:0, code:'O-BM-22', text:'Highlighted Assets: Gaps',color:'#16a34a'}, /* R2 */
+          {bar:0, code:'O-BM-20', text:'Gaps Table',             color:'#16a34a'}, /* R3 */
+          {bar:0, code:'O-BM-21', text:'Gap Metadata',           color:'#16a34a'}, /* R4 */
+          {bar:0, code:'O-07',    text:'LISA/Gap Geocode',       color:'#16a34a'}, /* R4 */
+          {bar:0, code:'O-08',    text:'Snap to Street',         color:'#16a34a'}, /* R4 */
+          /* J3b — LISAs (bar:1) */
+          {bar:1, code:'O-BM-24', text:'LISAs Pipeline',         color:'#7c3aed'}, /* R2 */
+          {bar:1, code:'O-BM-25', text:'LISAs Panel',            color:'#7c3aed'}, /* R2 */
+          {bar:1, code:'O-BM-26', text:'LISAs Map',              color:'#7c3aed'}, /* R2 */
+          {bar:1, code:'O-BM-27', text:'LISAs Table',            color:'#7c3aed'}, /* R3 */
+          {bar:1, code:'O-BM-30', text:'LISA PS2 Ranking',       color:'#7c3aed'}, /* R3 */
+          {bar:1, code:'O-BM-32', text:'Boundary Results',       color:'#7c3aed'}, /* R3 */
+          {bar:1, code:'O-BM-33', text:'Download Boundary Results',color:'#7c3aed'}, /* R3 */
+          {bar:1, code:'A-I-01',  text:'Investigation: Components',color:'#7c3aed'}, /* R3 */
+          {bar:1, code:'A-I-02',  text:'Investigation: Templates', color:'#7c3aed'}, /* R3 */
+          {bar:1, code:'O-BM-28', text:'LISA Metadata',          color:'#7c3aed'}, /* R4 */
+          {bar:1, code:'O-BM-29', text:'Highlighted Assets: LISAs',color:'#7c3aed'}, /* R4 */
         ]
       },
       {
         id:'j4', icon:'📋', label:'J4', name:'Dispatch Investigation',
-        sub:'Supervisor assigns LISAs/Gaps to field investigators (9 features)',
-        color:'#b45309', light:'#fef3c7', height:175,
-        bars:[{start:'2026-08-16',end:'2026-10-01',label:'R4 — Dispatch Investigation (9 features)'}],
+        sub:'Config R1 · User Mgmt R3 · Dispatch R4 — 9 features',
+        color:'#b45309', light:'#fef3c7', height:200,
+        bars:[
+          {start:'2026-04-01',end:'2026-05-15',label:'R1 — Tenant Config (2 features)',   color:'#92400e'},
+          {start:'2026-07-01',end:'2026-08-15',label:'R3 — User Management (2 features)', color:'#d97706'},
+          {start:'2026-08-16',end:'2026-10-01',label:'R4 — Dispatch Investigation (5 features)', color:'#b45309'},
+        ],
         dots:[
-          {at:'2026-08-16', code:'O-BM-02', text:'Campaign Symbology'},
-          {at:'2026-08-23', code:'O-BM-34', text:'Assign LISAs'},
-          {at:'2026-08-30', code:'O-BM-35', text:'Assign Gaps'},
-          {at:'2026-09-01', code:'O-BM-36', text:'Investigation Dashboard'},
-          {at:'2026-09-08', code:'O-BM-37', text:'Investigation Sessions'},
-          {at:'2026-09-08', code:'A-U-01',  text:'User Management'},
-          {at:'2026-09-15', code:'A-U-02',  text:'User Roles'},
-          {at:'2026-09-15', code:'A-T-05',  text:'Investigation Templates'},
-          {at:'2026-09-22', code:'A-T-06',  text:'Template Builder'},
+          {bar:0, code:'A-T-05',  text:'Tenant Settings: PS2'},      /* R1 */
+          {bar:0, code:'A-T-06',  text:'Tenant Settings: RFR'},      /* R1 */
+          {bar:1, code:'A-U-01',  text:'User Management'},           /* R3 */
+          {bar:1, code:'A-U-02',  text:'User Settings: General'},    /* R3 */
+          {bar:2, code:'O-BM-02', text:'View Campaign Symbology'},   /* R4 */
+          {bar:2, code:'O-BM-34', text:'Assign LISAs for Investigation'}, /* R4 */
+          {bar:2, code:'O-BM-35', text:'Assign Gaps for Investigation'},  /* R4 */
+          {bar:2, code:'O-BM-36', text:'View & Assign Investigations'},   /* R4 */
+          {bar:2, code:'O-BM-37', text:'Show Investigation Sessions'},    /* R4 */
         ]
       },
       {
         id:'j5', icon:'✅', label:'J5', name:'Close & Report',
-        sub:'Results in, reports downloaded, V1 launches (13 features)',
-        color:'#dc2626', light:'#fee2e2', height:200,
-        bars:[{start:'2026-08-16',end:'2026-10-01',label:'R4 — Close & Report + V1 Launch (13 features)'}],
+        sub:'Staging R3 · Results + V1 Launch R4 — 13 features',
+        color:'#dc2626', light:'#fee2e2', height:185,
+        bars:[
+          {start:'2026-07-01',end:'2026-08-15',label:'R3 — Pre-launch Prep (6 features)', color:'#b91c1c'},
+          {start:'2026-08-16',end:'2026-10-01',label:'R4 — Close & V1 Launch (7 features)', color:'#dc2626'},
+        ],
         dots:[
-          {at:'2026-08-16', code:'O-BM-38', text:'Investigation Results'},
-          {at:'2026-08-23', code:'O-BM-39', text:'Download Results'},
-          {at:'2026-08-30', code:'O-04',    text:'Manual Reports'},
-          {at:'2026-09-01', code:'O-05',    text:'Geocode Addresses'},
-          {at:'2026-09-08', code:'O-06',    text:'Snap to Street'},
-          {at:'2026-09-08', code:'P-11',    text:'P-Cubed Pro EU GA'},
-          {at:'2026-09-15', code:'P-14',    text:'NA Staging'},
-          {at:'2026-09-15', code:'P-15',    text:'EU Staging'},
-          {at:'2026-09-22', code:'P-21',    text:'Centralised Logging'},
-          {at:'2026-09-22', code:'P-23',    text:'Performance Baseline'},
-          {at:'2026-09-22', code:'A-O-03',  text:'Operator Summary'},
-          {at:'2026-09-29', code:'A-O-05',  text:'Licensed Features'},
-          {at:'2026-09-29', code:'P-10',    text:'🚀 NA Launch'},
+          /* R3 bar */
+          {bar:0, code:'P-14',    text:'P-Cubed Pro NA Staging'},    /* R3 */
+          {bar:0, code:'P-15',    text:'P-Cubed Pro EU Staging'},    /* R3 */
+          {bar:0, code:'P-21',    text:'Centralized Logging'},       /* R3 */
+          {bar:0, code:'P-23',    text:'Dynamic User Manual'},       /* R3 */
+          {bar:0, code:'A-O-03',  text:'Operator Settings: Summary'},/* R3 */
+          {bar:0, code:'A-O-05',  text:'Licensed Features'},        /* R3 */
+          /* R4 bar */
+          {bar:1, code:'O-BM-38', text:'Show Investigation Results'},/* R4 */
+          {bar:1, code:'O-BM-39', text:'Download Investigation Results'}, /* R4 */
+          {bar:1, code:'O-04',    text:'Manual Report Creation'},   /* R4 */
+          {bar:1, code:'O-05',    text:'Manual Report Artifacts'},  /* R4 */
+          {bar:1, code:'O-06',    text:'Manual Report Labels'},     /* R4 */
+          {bar:1, code:'P-11',    text:'P-Cubed Pro EU Launch'},    /* R4 */
+          {bar:1, code:'P-10',    text:'🚀 P-Cubed Pro NA V1 Launch'}, /* R4 */
         ]
       },
     ];
@@ -5330,38 +5351,21 @@ function buildADPv11() {
           +  '<span class="sl-bar-label">'+b.label+'</span>'
           + '</div>';
       }
-      /* feature chips — grouped by release period, flex-wrap below bar */
-      /* Build groups: each bar period gets its own chip strip */
-      var chipTop = (L.bars.length > 1) ? 52 : 52;
-      /* For lanes with 2 bars: 2 chip strips (one per bar), placed at bar's x */
-      if (L.bars.length > 1) {
-        for (var bci=0; bci<L.bars.length; bci++) {
-          var bcb=L.bars[bci], bcc=bcb.color||L.color;
-          var bcx=px(df(bcb.start)), bcw=px(df(bcb.end)-df(bcb.start));
-          /* gather dots that fall in this bar's period */
-          var bcdots=[];
-          for (var dci=0; dci<L.dots.length; dci++) {
-            var dcd=L.dots[dci];
-            if (new Date(dcd.at)>=new Date(bcb.start) && new Date(dcd.at)<new Date(bcb.end)) bcdots.push(dcd);
-          }
-          if (bcdots.length===0) continue;
-          var stripTop = (bci===0) ? 52 : 52;
-          /* second bar strip needs vertical offset so strips don't overlap */
-          if (bci===1) stripTop = 52;
-          h += '<div style="position:absolute;left:'+(bcx+4)+'px;top:'+stripTop+'px;display:flex;flex-wrap:wrap;gap:3px;max-width:'+(bcw-8)+'px">';
-          for (var dci2=0; dci2<bcdots.length; dci2++) {
-            var dc2=bcdots[dci2].color||bcc;
-            h += '<div style="font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:10px;background:'+dc2+';color:white;white-space:nowrap;cursor:default" title="'+bcdots[dci2].text+'">'+bcdots[dci2].code+'</div>';
-          }
-          h += '</div>';
+      /* feature chips — one flex-wrap strip per bar, grouped by dot.bar index */
+      /* vertical offset: 52px base + 32px per bar index */
+      for (var bci=0; bci<L.bars.length; bci++) {
+        var bcb=L.bars[bci], bcc=bcb.color||L.color;
+        var bcx=px(df(bcb.start)), bcw=px(df(bcb.end)-df(bcb.start));
+        var stripTop = 52 + bci*32;
+        var bcdots=[];
+        for (var dci=0; dci<L.dots.length; dci++) {
+          if ((L.dots[dci].bar||0) === bci) bcdots.push(L.dots[dci]);
         }
-      } else {
-        /* single bar: one chip strip spanning from bar start */
-        var sbx=px(df(L.bars[0].start)), sbw=px(df(L.bars[0].end)-df(L.bars[0].start));
-        h += '<div style="position:absolute;left:'+(sbx+4)+'px;top:52px;display:flex;flex-wrap:wrap;gap:3px;max-width:'+(sbw-8)+'px">';
-        for (var dsi=0; dsi<L.dots.length; dsi++) {
-          var dsd=L.dots[dsi], dsc=dsd.color||L.color;
-          h += '<div style="font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:10px;background:'+dsc+';color:white;white-space:nowrap;cursor:default" title="'+dsd.text+'">'+dsd.code+'</div>';
+        if (bcdots.length===0) continue;
+        h += '<div style="position:absolute;left:'+(bcx+4)+'px;top:'+stripTop+'px;display:flex;flex-wrap:wrap;gap:3px;max-width:'+(bcw-8)+'px">';
+        for (var dci2=0; dci2<bcdots.length; dci2++) {
+          var dc2=bcdots[dci2].color||bcc;
+          h += '<div style="font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:10px;background:'+dc2+';color:white;white-space:nowrap;cursor:default" title="'+bcdots[dci2].text+'">'+bcdots[dci2].code+'</div>';
         }
         h += '</div>';
       }
