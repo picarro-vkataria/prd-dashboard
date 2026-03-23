@@ -5165,10 +5165,10 @@ function buildADPv11() {
 
     /* release ranges (for background shading) */
     var RELS = [
-      {label:'R1', start:'2026-04-01', end:'2026-05-15', color:'#3b82f620'},
-      {label:'R2', start:'2026-05-16', end:'2026-06-30', color:'#8b5cf620'},
-      {label:'R3', start:'2026-07-01', end:'2026-08-15', color:'#f9731620'},
-      {label:'R4', start:'2026-08-16', end:'2026-10-01', color:'#dc262620'},
+      {label:'R1', start:'2026-04-01', end:'2026-05-15', color:'#bfdbfe', hdr:'#2563eb'},
+      {label:'R2', start:'2026-05-16', end:'2026-06-30', color:'#ddd6fe', hdr:'#7c3aed'},
+      {label:'R3', start:'2026-07-01', end:'2026-08-15', color:'#fed7aa', hdr:'#ea580c'},
+      {label:'R4', start:'2026-08-16', end:'2026-10-01', color:'#fecaca', hdr:'#dc2626'},
     ];
 
     /* journey lanes — all 58 features, correct release positions, bar:n groups chips */
@@ -5293,17 +5293,45 @@ function buildADPv11() {
       },
     ];
 
-    /* build header */
-    var h = '<div class="sl-outer"><div class="sl-scroll">';
+    /* ── journey summary strip ──────────────────────────────────────────── */
+    var JOURNEY_SUMMARY = [
+      {icon:'🚗', label:'J1', name:'Survey & Ingest', color:'#0369a1', bg:'#e0f2fe',
+       what:'Survey car drives routes; GPS + sensor data auto-ingests into the cloud and AutoFOV pipeline processes coverage without manual intervention.'},
+      {icon:'🗺️', label:'J2', name:'See My Coverage', color:'#0891b2', bg:'#cffafe',
+       what:'Operator opens the app and immediately sees the campaign boundary, all driving session tracks, and the AutoFOV field-of-view overlay on an interactive map.'},
+      {icon:'🔍', label:'J3', name:'Gaps → LISAs', color:'#16a34a', bg:'#dcfce7',
+       what:'Operator identifies uncovered road segments as Gaps, then automatically ranks them into LISAs by PS2 score — so the highest-priority leaks get investigated first.'},
+      {icon:'📋', label:'J4', name:'Dispatch Investigation', color:'#b45309', bg:'#fef3c7',
+       what:'Supervisor assigns specific LISAs and Gaps to field investigators, tracks investigation status in a dashboard, and manages user roles and tenant configuration.'},
+      {icon:'✅', label:'J5', name:'Close & Report', color:'#dc2626', bg:'#fee2e2',
+       what:'Field investigator closes findings, operator downloads boundary results and manual reports, and the product launches to NA + EU customers at V1.'},
+    ];
+    var h = '<div style="margin-bottom:16px">';
+    h += '<div style="font-size:12px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">What users can do — by Journey</div>';
+    h += '<div style="display:flex;gap:10px;flex-wrap:wrap">';
+    for (var si=0; si<JOURNEY_SUMMARY.length; si++) {
+      var s=JOURNEY_SUMMARY[si];
+      h += '<div style="flex:1;min-width:180px;max-width:260px;background:'+s.bg+';border-left:4px solid '+s.color+';border-radius:0 10px 10px 0;padding:10px 12px">'
+        +  '<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">'
+        +    '<span style="font-size:16px">'+s.icon+'</span>'
+        +    '<span style="font-size:11px;font-weight:900;color:'+s.color+'">'+s.label+' '+s.name+'</span>'
+        +  '</div>'
+        +  '<div style="font-size:11px;color:#374151;line-height:1.5">'+s.what+'</div>'
+        + '</div>';
+    }
+    h += '</div></div>';
+
+    /* build swimlane */
+    h += '<div class="sl-outer"><div class="sl-scroll">';
     h += '<div class="sl-header-row">';
     h += '<div class="sl-lhd" style="width:200px;min-width:200px">Journey</div>';
     h += '<div style="position:relative;height:40px;flex:1;min-width:'+TW+'px">';
-    /* release shade labels */
+    /* release shade labels in header */
     for (var ri=0; ri<RELS.length; ri++) {
       var rr=RELS[ri];
       var rx=px(df(rr.start)), rw=px(df(rr.end)-df(rr.start));
-      h += '<div style="position:absolute;left:'+rx+'px;width:'+rw+'px;top:0;bottom:0;background:'+rr.color+';display:flex;align-items:center;justify-content:center">'
-        +  '<span style="font-size:11px;font-weight:800;color:white;opacity:.9">'+rr.label+'</span>'
+      h += '<div style="position:absolute;left:'+rx+'px;width:'+rw+'px;top:0;bottom:0;background:'+rr.hdr+';display:flex;align-items:center;justify-content:center">'
+        +  '<span style="font-size:12px;font-weight:900;color:white;letter-spacing:.5px">'+rr.label+'</span>'
         + '</div>';
     }
     /* month markers */
@@ -5331,11 +5359,11 @@ function buildADPv11() {
         + '</div>';
       /* track */
       h += '<div class="sl-track" style="position:relative;flex:1;min-width:'+TW+'px;min-height:'+L.height+'px">';
-      /* release bg shading */
+      /* release bg shading — light tint per release band */
       for (var ri2=0; ri2<RELS.length; ri2++) {
         var rr2=RELS[ri2];
         var rx2=px(df(rr2.start)), rw2=px(df(rr2.end)-df(rr2.start));
-        h += '<div style="position:absolute;left:'+rx2+'px;width:'+rw2+'px;top:0;bottom:0;background:'+rr2.color+'"></div>';
+        h += '<div style="position:absolute;left:'+rx2+'px;width:'+rw2+'px;top:0;bottom:0;background:'+rr2.color+';opacity:0.35"></div>';
       }
       /* week lines */
       for (var w=0; w<TOTAL_DAYS; w+=7) {
