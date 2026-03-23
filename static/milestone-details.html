@@ -3127,6 +3127,163 @@ function buildADPv8() {
       </div>`).join('')}
     </div>
   </div>`;
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GANTT — same swimlane style as V7, placed at bottom of V8
+  // ═══════════════════════════════════════════════════════════════════════════
+  el.innerHTML += `<div style="margin-top:28px">
+    <div style="font-size:15px;font-weight:800;color:#1e293b;margin-bottom:4px">📅 Release Timeline — Gantt View</div>
+    <div style="font-size:11px;color:#64748b;margin-bottom:16px">When each release runs and what domain groups ship in it. PRD gate flags shown 2 weeks before each kickoff.</div>
+  </div>`;
+
+  const ORIGIN2 = new Date('2026-03-15');
+  const S2 = 7;
+  function dF(ds){ return Math.round((new Date(ds)-ORIGIN2)/86400000); }
+  function px2(d){ return d*S2; }
+
+  const GLANES = [
+    { id:'r1', short:'R1', label:'Release 1', sub:'Foundation + AutoFOV Pipeline',
+      start:'2026-04-01', end:'2026-05-15', sprints:'Sprint 17–19',
+      color:'#3b82f6', light:'#dbeafe', dark:'#1d4ed8',
+      status:'active', risk:'HIGH',
+      prdGate:{by:'Mar 18', items:[
+        {t:'RBAC Phase 0/1 — scope finalized',done:false},
+        {t:'BM View Campaign v0.5',done:true},
+        {t:'Driving Sessions & AutoFOV v0.1',done:true},
+        {t:'API contracts: RBAC + BM endpoints',done:false},
+        {t:'Platform decision: Driver View v2',done:false},
+      ]},
+      groups:[
+        {area:'Platform & RBAC', color:'#1d4ed8', items:['P-01 RBAC & Multi-Tenancy Ph1','P-27 GIS Data Hub EU']},
+        {area:'Admin: Tenant + Operator', color:'#7c3aed', items:['A-T-05 Tenant Settings: PS2','A-T-06 Tenant Settings: RFR','A-O-02 Operator Settings: General']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-01 View Campaign (Map)','O-BM-06 Driving Sessions panel','O-BM-12 AutoFOV pipeline','O-BM-13 AutoFOV panel','O-BM-16 Session QA/QC','O-BM-17 Gaps pipeline','O-BM-18 Gaps panel']},
+      ]
+    },
+    { id:'r2', short:'R2', label:'Release 2', sub:'Boundary Data Layer + EU Gate',
+      start:'2026-05-16', end:'2026-06-30', sprints:'Sprint 20–22',
+      color:'#8b5cf6', light:'#ede9fe', dark:'#6d28d9',
+      status:'future', risk:'CRITICAL',
+      prdGate:{by:'May 2', items:[
+        {t:'PRD: Operator Settings Driving Session',done:false},
+        {t:'PRD: BM Driving Sessions (map+table+tab)',done:false},
+        {t:'TDD: LISA microservice — approved by May 15',done:false},
+        {t:'PRD: LISAs pipeline + panel + map',done:false},
+        {t:'EU 2024/1787 coverage confirmation',done:false},
+      ]},
+      groups:[
+        {area:'Admin: Operator', color:'#7c3aed', items:['A-O-04 Operator Settings: Driving Session']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-07 DS map','O-BM-08 DS table','O-BM-09 DS tab','O-BM-14 AutoFOV map','O-BM-15 AutoFOV metadata','O-BM-19 Gaps map','O-BM-22 Highlighted Assets: Gaps','O-BM-24 LISAs pipeline','O-BM-25 LISAs panel','O-BM-26 LISAs map']},
+        {area:'🇪🇺 EU Compliance Gate', color:'#dc2626', items:['✅ EU 2024/1787: Gaps + FOV operational']},
+      ]
+    },
+    { id:'r3', short:'R3', label:'Release 3', sub:'Staging + Results + Investigation Setup',
+      start:'2026-07-01', end:'2026-08-15', sprints:'Sprint 23–25',
+      color:'#f97316', light:'#ffedd5', dark:'#c2410c',
+      status:'future', risk:'HIGH',
+      prdGate:{by:'Jun 17', items:[
+        {t:'PRD: NA/EU Staging environment spec',done:false},
+        {t:'PRD: User Management finalize',done:false},
+        {t:'PRD: Investigation Components & Templates',done:false},
+        {t:'PRD: LISA Boundary Results (v0.1) groomed',done:false},
+        {t:'H-01/02 Car Data: hardware procurement',done:false},
+      ]},
+      groups:[
+        {area:'Platform', color:'#1d4ed8', items:['P-14 NA Staging','P-15 EU Staging','P-21 Centralized Logging','P-23 Dynamic User Manual']},
+        {area:'Admin: User + Inv', color:'#7c3aed', items:['A-O-03 Operator Summary','A-O-05 Licensed Features','A-U-01 User Management','A-U-02 User Settings','A-I-01 Inv Components','A-I-02 Inv Templates']},
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-20 Gaps table','O-BM-27 LISAs table','O-BM-30 LISA PS2 Ranking','O-BM-32 Boundary Results','O-BM-33 Download Results']},
+        {area:'Hardware', color:'#059669', items:['H-01 Car Data Ingestion','H-02 PSA Updates','H-03 Fleet Map: Map View']},
+      ]
+    },
+    { id:'r4', short:'R4', label:'Release 4', sub:'🚨 Investigations + Reports + V1 Launch',
+      start:'2026-08-16', end:'2026-10-01', sprints:'Sprint 26–28',
+      color:'#dc2626', light:'#fee2e2', dark:'#991b1b',
+      status:'launch', risk:'CRITICAL',
+      prdGate:{by:'Aug 2', items:[
+        {t:'PRD: BM Investigation Assign & Results',done:false},
+        {t:'PRD: Manual Report Creation & Artifacts',done:false},
+        {t:'PRD: LISA/Gap Geocode + Snap to Street',done:false},
+        {t:'E2E regression test cases written',done:false},
+        {t:'Go/No-Go criteria agreed with leadership',done:false},
+      ]},
+      groups:[
+        {area:'Boundary Mgmt', color:'#0891b2', items:['O-BM-02 Campaign Symbology','O-BM-21 Gap Metadata','O-BM-28 LISA Metadata','O-BM-29 Highlighted Assets: LISAs','O-BM-34 Assign LISAs for Inv','O-BM-35 Assign Gaps for Inv','O-BM-36 View & Assign Investigations','O-BM-37 Inv Sessions','O-BM-38 Inv Results','O-BM-39 Download Inv Results']},
+        {area:'Reports & Field', color:'#0f766e', items:['O-04 Manual Report Creation','O-05 Manual Report Artifacts','O-06 Report Labels','O-07 LISA/Gap Geocode','O-08 Snap to Street']},
+        {area:'🚀 V1 Launch', color:'#dc2626', items:['P-10 P-Cubed Pro NA LAUNCH','P-11 P-Cubed Pro EU LAUNCH']},
+        {area:'🇺🇸 PHMSA Gate', color:'#991b1b', items:['✅ PHMSA 2025: Investigation framework operational']},
+      ]
+    },
+  ];
+
+  const ROW_H_BAR2=40, FEAT_H2=20, GATE_H2=14, PAD_BOT2=14;
+  GLANES.forEach(ln=>{
+    ln.sDay=dF(ln.start); ln.eDay=dF(ln.end); ln.gDay=ln.sDay-14;
+    ln.allFeatures=ln.groups.flatMap(g=>g.items.map(it=>({text:it,color:g.color,area:g.area})));
+    ln.laneH=GATE_H2+ROW_H_BAR2+ln.allFeatures.length*FEAT_H2+PAD_BOT2;
+  });
+  const TOTAL_DAYS2=dF('2026-10-01')+3, TW2=px2(TOTAL_DAYS2), TODAY2=dF('2026-03-22');
+  const MONTHS2=[
+    {label:'Mar',d:dF('2026-03-15'),span:17},{label:'April',d:dF('2026-04-01'),span:30},
+    {label:'May',d:dF('2026-05-01'),span:31},{label:'June',d:dF('2026-06-01'),span:30},
+    {label:'July',d:dF('2026-07-01'),span:31},{label:'August',d:dF('2026-08-01'),span:31},
+    {label:'Sept',d:dF('2026-09-01'),span:30},{label:'Oct 1',d:dF('2026-10-01'),span:3},
+  ];
+
+  let g='';
+  g+=`<div class="sl-outer"><div class="sl-scroll">`;
+  g+=`<div class="sl-header-row"><div class="sl-lhd">Release</div><div class="sl-months-wrap" style="width:${TW2}px">`;
+  MONTHS2.forEach(m=>{g+=`<div class="sl-month" style="left:${px2(m.d)}px;width:${m.span*S2}px">${m.label}</div>`;});
+  for(let d=0;d<TOTAL_DAYS2;d+=7){g+=`<div class="sl-week-line" style="left:${px2(d)}px"></div>`;}
+  g+=`<div class="sl-today-hd" style="left:${px2(TODAY2)}px"><span class="sl-today-hd-label">TODAY</span></div>`;
+  g+=`</div></div>`;
+
+  GLANES.forEach(ln=>{
+    const barL=px2(ln.sDay),barW=px2(ln.eDay-ln.sDay+1),gateL=px2(ln.gDay);
+    const sLabel=ln.status==='active'?'⚡ Active':ln.status==='launch'?'🚀 V1 Launch':'⏳ Planned';
+    const sCls=ln.status==='active'?'sl-pill-active':ln.status==='launch'?'sl-pill-launch':'sl-pill-future';
+    const riskColor=ln.risk==='CRITICAL'?'#dc2626':'#b45309';
+    const riskBg=ln.risk==='CRITICAL'?'#fee2e2':'#fef3c7';
+
+    g+=`<div class="sl-lane" style="height:${ln.laneH}px">`;
+    g+=`<div class="sl-lane-lbl" style="border-left:4px solid ${ln.color}">`;
+    g+=`<div style="display:flex;align-items:center;gap:5px"><div class="sl-lbl-ms" style="color:${ln.dark}">${ln.short}</div>`;
+    g+=`<div style="padding:1px 5px;border-radius:4px;font-size:8px;font-weight:700;background:${riskBg};color:${riskColor}">${ln.risk}</div></div>`;
+    g+=`<div class="sl-lbl-name">${ln.label}</div><div class="sl-lbl-sub" style="font-size:8px">${ln.sub}</div>`;
+    g+=`<div class="sl-lbl-dates" style="color:${ln.dark}">${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} → ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>`;
+    g+=`<div class="sl-lbl-sprints">${ln.sprints}</div><div class="sl-status-pill ${sCls}">${sLabel}</div></div>`;
+
+    g+=`<div class="sl-track" style="width:${TW2}px;height:${ln.laneH}px">`;
+    MONTHS2.forEach((m,i)=>{g+=`<div style="position:absolute;top:0;bottom:0;left:${px2(m.d)}px;width:${m.span*S2}px;background:${i%2===0?'rgba(0,0,0,.018)':'transparent'}"></div>`;});
+    for(let d=0;d<TOTAL_DAYS2;d+=7){g+=`<div style="position:absolute;top:0;bottom:0;left:${px2(d)}px;width:1px;background:rgba(0,0,0,.04)"></div>`;}
+
+    g+=`<div class="sl-ms-bar" style="left:${barL}px;width:${barW}px;top:${GATE_H2}px;height:${ROW_H_BAR2}px;background:linear-gradient(135deg,${ln.dark},${ln.color});${ln.risk==='CRITICAL'?'box-shadow:0 0 0 2px '+ln.dark+',0 2px 12px rgba(220,38,38,.3)':''}">`;
+    g+=`<span class="sl-bar-label">${ln.short} · ${new Date(ln.start).toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${new Date(ln.end).toLocaleDateString('en-US',{month:'short',day:'numeric'})} · ${ln.sprints} · ⚠ ${ln.risk}</span></div>`;
+
+    const gi=ln.prdGate.items, gDone=gi.filter(x=>x.done).length;
+    g+=`<div class="sl-gate" style="left:${gateL}px;height:${ln.laneH}px">`;
+    g+=`<div class="sl-gate-flag" style="background:${gDone===gi.length?'#16a34a':'#f59e0b'};color:white">📋 PRD Gate<br><span style="font-size:9px;font-weight:500">by ${ln.prdGate.by} · ${gDone}/${gi.length}</span></div>`;
+    g+=`<div class="sl-gate-tooltip"><div style="font-weight:700;margin-bottom:6px;font-size:11px">PRD Gate — ${ln.label}</div>`;
+    gi.forEach(x=>{g+=`<div style="display:flex;gap:5px;margin-bottom:4px;font-size:11px"><span style="color:${x.done?'#16a34a':'#94a3b8'};font-weight:700">${x.done?'✓':'○'}</span><span>${x.t}</span></div>`;});
+    g+=`</div></div>`;
+
+    const featTop=GATE_H2+ROW_H_BAR2+2;
+    ln.allFeatures.forEach((f,fi)=>{
+      const y=featTop+fi*FEAT_H2;
+      const isGate=f.text.startsWith('✅')||f.area.includes('Gate')||f.area.includes('Launch')||f.area.includes('PHMSA');
+      g+=`<div class="sl-feat-row" style="top:${y}px;left:${barL}px;width:${barW}px;${isGate?'background:rgba(220,38,38,.06)':''}">`;
+      g+=`<span class="sl-feat-dot" style="background:${f.color}"></span>`;
+      g+=`<span class="sl-feat-text" style="color:${f.color};${isGate?'font-weight:700':''}">${f.text}</span></div>`;
+    });
+    if(TODAY2>=0&&TODAY2<=TOTAL_DAYS2){g+=`<div class="sl-today-line" style="left:${px2(TODAY2)}px;height:${ln.laneH}px"></div>`;}
+    g+=`</div></div>`;
+  });
+
+  const launchL=px2(dF('2026-10-01'));
+  g+=`<div class="sl-launch-row"><div class="sl-lhd" style="background:#7f1d1d;color:white;font-weight:800;font-size:12px;line-height:1.3">🚀 V1 LAUNCH<br><span style="font-size:10px">Oct 1, 2026</span></div>`;
+  g+=`<div style="width:${TW2}px;position:relative;height:40px;background:linear-gradient(90deg,#fef2f2,#fee2e2)">`;
+  g+=`<div style="position:absolute;left:${launchL}px;top:0;bottom:0;width:4px;background:#dc2626"></div>`;
+  g+=`<div style="position:absolute;left:${launchL+8}px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:900;color:#dc2626;white-space:nowrap">🚀 P-Cubed Pro V1 — Oct 1, 2026 · EU ✅ · PHMSA ✅</div>`;
+  g+=`</div></div></div></div>`;
+  el.innerHTML += g;
 }
 
 </script>
