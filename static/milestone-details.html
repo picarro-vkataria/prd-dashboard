@@ -320,6 +320,7 @@
         <li><button class="sb-sub-btn" id="sbtab-adpv5" onclick="switchInnerTab('adpv5')">🗺 Roadmap + Gantt V5</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv6" onclick="switchInnerTab('adpv6')">🏊 Swimlane Roadmap V6</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv7" onclick="switchInnerTab('adpv7')">🎯 Oct 1 Release Plan V7</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-adpv8" onclick="switchInnerTab('adpv8')">👁 User Journey View V8</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -349,6 +350,7 @@
     <button class="inner-tab-btn" id="itab-adpv5" onclick="switchInnerTab('adpv5')" style="background:linear-gradient(135deg,#b45309,#0f766e);color:white;border-color:#b45309">🗺 Roadmap + Gantt V5</button>
     <button class="inner-tab-btn" id="itab-adpv6" onclick="switchInnerTab('adpv6')" style="background:linear-gradient(135deg,#0891b2,#1d4ed8);color:white;border-color:#0891b2">🏊 Swimlane Roadmap V6</button>
     <button class="inner-tab-btn" id="itab-adpv7" onclick="switchInnerTab('adpv7')" style="background:linear-gradient(135deg,#dc2626,#7c3aed);color:white;border-color:#dc2626">🎯 Oct 1 Release Plan V7</button>
+    <button class="inner-tab-btn" id="itab-adpv8" onclick="switchInnerTab('adpv8')" style="background:linear-gradient(135deg,#0f766e,#1d4ed8);color:white;border-color:#0f766e">👁 User Journey View V8</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -1017,6 +1019,10 @@
     <div id="adpv7-content"></div>
   </div><!-- adpv7-tab -->
 
+  <div id="adpv8-tab" style="display:none">
+    <div id="adpv8-content"></div>
+  </div><!-- adpv8-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -1025,7 +1031,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -1042,6 +1048,7 @@ function switchInnerTab(tab) {
   if (tab==='adpv5' && !document.getElementById('adpv5-content').hasChildNodes()) buildADPv5();
   if (tab==='adpv6' && !document.getElementById('adpv6-content').hasChildNodes()) buildADPv6();
   if (tab==='adpv7' && !document.getElementById('adpv7-content').hasChildNodes()) buildADPv7();
+  if (tab==='adpv8' && !document.getElementById('adpv8-content').hasChildNodes()) buildADPv8();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -2801,6 +2808,323 @@ function buildADPv7() {
           • 🚀 LAUNCH: Oct 1
         </div>
       </div>
+    </div>
+  </div>`;
+}
+
+
+function buildADPv8() {
+  var el = document.getElementById('adpv8-content');
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function role(label, color) {
+    return `<span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;background:${color}20;color:${color};border:1px solid ${color}40;margin-right:4px">${label}</span>`;
+  }
+  function screen(icon, title, desc, roles) {
+    return `<div style="background:white;border-radius:10px;border:1px solid #e2e8f0;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="font-size:22px;flex-shrink:0;line-height:1">${icon}</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:3px">${title}</div>
+          <div style="font-size:11px;color:#64748b;line-height:1.5;margin-bottom:6px">${desc}</div>
+          <div>${roles}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  function mockup(lines, color, height) {
+    // Renders a lightweight UI mockup placeholder
+    let rows = lines.map((l,i) => {
+      const w = l.w || 80; const h2 = l.h || 10;
+      const c = l.c || (i===0 ? color : '#e2e8f0');
+      const indent = l.indent ? 'margin-left:12px' : '';
+      return `<div style="height:${h2}px;width:${w}%;background:${c};border-radius:3px;margin-bottom:5px;${indent}opacity:${l.op||1}"></div>`;
+    }).join('');
+    return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;height:${height||120}px;overflow:hidden;position:relative">
+      <div style="position:absolute;top:8px;left:8px;right:8px;display:flex;gap:4px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#fee2e2"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#fef3c7"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#dcfce7"></div>
+      </div>
+      <div style="margin-top:20px">${rows}</div>
+    </div>`;
+  }
+  function badge(text, color, bg) {
+    return `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:${bg};color:${color};margin-right:6px;margin-bottom:4px">${text}</span>`;
+  }
+  function releaseCard(rNum, dates, sprints, color, dark, light, risk, riskColor, riskBg, title, cumulative, totalV1, compliance, screens_html, journeys, newItems) {
+    const pct = Math.round(cumulative/totalV1*100);
+    return `
+    <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1);margin-bottom:32px">
+
+      <!-- Release Header -->
+      <div style="background:linear-gradient(135deg,${dark},${color});padding:22px 28px;color:white">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+              <div style="font-size:28px;font-weight:900;letter-spacing:-1px">${rNum}</div>
+              <div>
+                <div style="font-size:16px;font-weight:800">${title}</div>
+                <div style="font-size:11px;color:rgba(255,255,255,.8)">${dates} · ${sprints}</div>
+              </div>
+              <div style="padding:3px 10px;border-radius:20px;font-size:9px;font-weight:700;background:${riskBg};color:${riskColor};border:1.5px solid ${riskColor}">${risk}</div>
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,.85)">
+              <strong>${newItems} new features</strong> · ${cumulative} total features shipped · ${pct}% of V1 complete
+            </div>
+          </div>
+          <!-- Progress ring -->
+          <div style="text-align:center;flex-shrink:0">
+            <div style="position:relative;width:64px;height:64px;margin:0 auto">
+              <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="6"/>
+                <circle cx="32" cy="32" r="26" fill="none" stroke="white" stroke-width="6"
+                  stroke-dasharray="${Math.round(2*3.14159*26*pct/100)} ${Math.round(2*3.14159*26*(1-pct/100))}"
+                  stroke-linecap="round"/>
+              </svg>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;font-weight:900;color:white">${pct}%</div>
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.7);margin-top:4px">V1 complete</div>
+          </div>
+        </div>
+        ${compliance ? `<div style="margin-top:12px;background:rgba(255,255,255,.15);border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600">${compliance}</div>` : ''}
+      </div>
+
+      <!-- Body: two columns -->
+      <div style="background:#f8fafc;padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+        <!-- Left: Screens unlocked -->
+        <div>
+          <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px">Screens Unlocked This Release</div>
+          ${screens_html}
+        </div>
+
+        <!-- Right: User journeys -->
+        <div>
+          <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px">User Can Now Do...</div>
+          ${journeys}
+        </div>
+
+      </div>
+    </div>`;
+  }
+
+  const TOTAL_V1 = 58;
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HEADER
+  // ═══════════════════════════════════════════════════════════════════════════
+  el.innerHTML = `
+  <div style="background:linear-gradient(135deg,#0f766e,#1d4ed8);border-radius:14px;padding:22px 28px;margin-bottom:24px;color:white">
+    <div style="font-size:18px;font-weight:900;margin-bottom:6px">👁 User Journey View — V8</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.9);line-height:1.7;max-width:800px">
+      Based on the <strong>Oct 1, 2026 release plan (V7)</strong>. Each card answers: <em>"What does a real user SEE and DO at the end of this release?"</em>
+      — not feature codes, but actual screens, flows, and outcomes. Four releases, each building on the last.
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 16px;font-size:11px">
+        <div style="font-weight:700">🗺 Operator</div><div style="color:rgba(255,255,255,.75);font-size:10px">Views campaign + boundary data</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 16px;font-size:11px">
+        <div style="font-weight:700">⚙️ Tenant Admin</div><div style="color:rgba(255,255,255,.75);font-size:10px">Manages users, settings, investigations</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 16px;font-size:11px">
+        <div style="font-weight:700">🔬 Field Analyst</div><div style="color:rgba(255,255,255,.75);font-size:10px">Reviews LISAs, gaps, runs reports</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 16px;font-size:11px">
+        <div style="font-weight:700">🔐 Super Admin</div><div style="color:rgba(255,255,255,.75);font-size:10px">RBAC, tenant provisioning, settings</div>
+      </div>
+    </div>
+  </div>`;
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // R1 — Foundation
+  // ═══════════════════════════════════════════════════════════════════════════
+  const r1_screens = [
+    screen('🔐','Role-Based Login & Dashboard','Users log in and land on a dashboard scoped to their role — Operator, Tenant Admin, or Super Admin. Menu items and data are filtered by permission.',
+      role('🔐 Super Admin','#7c3aed') + role('⚙️ Tenant Admin','#0891b2') + role('🗺 Operator','#059669')),
+    screen('🗺','Campaign Map — AutoFOV + Gaps Overlay','The main map view shows the active survey campaign boundary with AutoFOV coverage zones and Gaps pipeline status visualized as colored overlays.',
+      role('🗺 Operator','#059669') + role('🔬 Field Analyst','#f59e0b')),
+    screen('🚗','Driving Sessions Panel','A side panel lists all driving sessions for the campaign — date, driver, vehicle, and completion status. Click a session to highlight its track on the map.',
+      role('🗺 Operator','#059669') + role('🔬 Field Analyst','#f59e0b')),
+    screen('⚙️','Tenant & Operator Settings','PS2 scoring threshold, RFR (Repeat False Reading) parameters, and Operator General settings are accessible. Admins configure them before the campaign begins.',
+      role('⚙️ Tenant Admin','#0891b2') + role('🔐 Super Admin','#7c3aed')),
+  ];
+
+  const r1_journeys = `
+    <div style="space-y:8px">
+      ${[
+        {icon:'🔐', j:'Log in → land on role-scoped dashboard → see only their permitted campaigns and data'},
+        {icon:'🗺', j:'Open a campaign → see the full boundary on a map with AutoFOV coverage and Gaps pipeline overlaid'},
+        {icon:'🚗', j:'Click a campaign → open Driving Sessions panel → see which sessions are complete vs pending QA/QC'},
+        {icon:'📊', j:'Driving Session QA/QC: flag sessions that fail coverage thresholds'},
+        {icon:'⚙️', j:'Tenant Admin: set PS2 scoring threshold and RFR settings before surveys begin'},
+        {icon:'🔑', j:'Super Admin: provision a new operator tenant with correct RBAC permissions'},
+        {icon:'🌍', j:'GIS Data Hub EU: operators in EU region see their data scoped to their tenant boundary'},
+      ].map(x => `<div style="display:flex;gap:10px;padding:10px 12px;background:white;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:8px;font-size:11px;color:#374151;line-height:1.5">
+        <span style="font-size:16px;flex-shrink:0">${x.icon}</span>
+        <span>${x.j}</span>
+      </div>`).join('')}
+    </div>`;
+
+  el.innerHTML += releaseCard('R1','Apr 1 – May 15','Sprint 17–19','#3b82f6','#1d4ed8','#dbeafe',
+    'HIGH RISK','#b45309','#fef3c7',
+    'Foundation: Login, Campaign Map, AutoFOV + Gaps Pipeline',
+    12, TOTAL_V1, null,
+    r1_screens.join(''), r1_journeys, 12);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // R2 — Boundary Data Layer
+  // ═══════════════════════════════════════════════════════════════════════════
+  const r2_screens = [
+    screen('🗺','Driving Sessions: Full Map + Table + Tab','Three views of driving sessions: (1) map with GPS tracks highlighted, (2) sortable/filterable table with date/driver/vehicle/status, (3) tab on the campaign detail panel.',
+      role('🗺 Operator','#059669') + role('🔬 Field Analyst','#f59e0b')),
+    screen('📡','AutoFOV Map Overlay + Metadata Panel','AutoFOV boundaries shown as colored polygons on the map. Click any zone to open a metadata panel: survey date, vehicle, coverage %, confidence score.',
+      role('🗺 Operator','#059669') + role('🔬 Field Analyst','#f59e0b')),
+    screen('🕳','Gaps Map + Highlighted Assets','Gaps shown on the map as highlighted segments. Assets within a gap zone are highlighted in orange. Operators can see which infrastructure needs follow-up.',
+      role('🗺 Operator','#059669') + role('🔬 Field Analyst','#f59e0b')),
+    screen('⚡','LISAs: Pipeline Status + Panel + Map','LISAs (Leak Indication Survey Areas) are now fully visible: pipeline shows processing status, panel lists LISAs with PS2 scores, map shows LISA zones as polygon overlays.',
+      role('🔬 Field Analyst','#f59e0b') + role('🗺 Operator','#059669')),
+    screen('🇪🇺','EU 2024/1787 Compliance Unlocked','Gaps operational + FOV display active = EU methane regulation 2024/1787 LDAR requirements met. EU customers can now be onboarded and their data certified.',
+      role('⚙️ Tenant Admin','#0891b2') + role('🔐 Super Admin','#7c3aed')),
+  ];
+
+  const r2_journeys = `
+    <div>
+      ${[
+        {icon:'🗺', j:'Open a campaign → switch between Map / Table / Tab view of all Driving Sessions — filter by date, driver, or QA status'},
+        {icon:'📡', j:'Click any AutoFOV zone → see coverage %, survey date, and confidence score in side panel'},
+        {icon:'🕳', j:'See Gaps on the map → identify which pipeline assets are within gap zones → prioritize re-survey'},
+        {icon:'⚡', j:'Review LISA list with PS2 ranking → understand which leak indications are highest priority'},
+        {icon:'🔗', j:'Full pipeline view: Survey → Driving Session → AutoFOV → Gaps → LISAs — the entire boundary data chain is visible end-to-end'},
+        {icon:'🇪🇺', j:'EU Tenant Admin: confirm EU 2024/1787 LDAR compliance is met — gaps and FOV data operational, ready for regulator submission'},
+        {icon:'🏢', j:'Operator: compare LISA density across campaigns — PS2 scores visible to prioritize field investigations'},
+      ].map(x => `<div style="display:flex;gap:10px;padding:10px 12px;background:white;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:8px;font-size:11px;color:#374151;line-height:1.5">
+        <span style="font-size:16px;flex-shrink:0">${x.icon}</span>
+        <span>${x.j}</span>
+      </div>`).join('')}
+    </div>`;
+
+  el.innerHTML += releaseCard('R2','May 16 – Jun 30','Sprint 20–22','#8b5cf6','#6d28d9','#ede9fe',
+    'CRITICAL RISK','#dc2626','#fee2e2',
+    'Boundary Data Layer: DS Views, AutoFOV, Gaps, LISAs — EU Compliance Gate',
+    23, TOTAL_V1,
+    '🇪🇺 EU 2024/1787 Gate: Gaps + FOV operational → EU customers can be onboarded and data certified',
+    r2_screens.join(''), r2_journeys, 11);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // R3 — Staging + Results + Investigation Setup
+  // ═══════════════════════════════════════════════════════════════════════════
+  const r3_screens = [
+    screen('🌐','NA + EU Staging Environments','Full staging environments are live in both NA and EU regions. QA teams can test against production-parity data before V1 launch. Centralized logging available.',
+      role('⚙️ Tenant Admin','#0891b2') + role('🔐 Super Admin','#7c3aed')),
+    screen('👥','User Management Portal','Admins can invite new users, assign roles, deactivate accounts, and view user activity. Settings include notification preferences and display units.',
+      role('⚙️ Tenant Admin','#0891b2') + role('🔐 Super Admin','#7c3aed')),
+    screen('📋','Investigation Templates & Components','Pre-built investigation templates configurable per tenant. Investigation components (checklists, data fields, severity ratings) are ready to attach to LISAs and Gaps.',
+      role('⚙️ Tenant Admin','#0891b2') + role('🔬 Field Analyst','#f59e0b')),
+    screen('📊','Gaps + LISAs Tables with PS2 Ranking','Full tabular view of all Gaps and LISAs with sortable columns: PS2 score, GPS coordinates, survey date, status, highlighted assets count. LISA PS2 ranking shows highest-priority items first.',
+      role('🔬 Field Analyst','#f59e0b') + role('🗺 Operator','#059669')),
+    screen('📥','Boundary Results: Download Center','All boundary data — AutoFOV zones, Gaps, LISAs — downloadable as structured reports. Field teams can export data for offline analysis or regulator submission.',
+      role('🔬 Field Analyst','#f59e0b') + role('⚙️ Tenant Admin','#0891b2')),
+    screen('🚗','Fleet Map + Car Data Ingestion','Car positions shown on a live fleet map. Car data is ingested and stored — PSA (in-car system) updates delivered. Operations managers see which vehicles are active.',
+      role('🗺 Operator','#059669') + role('⚙️ Tenant Admin','#0891b2')),
+  ];
+
+  const r3_journeys = `
+    <div>
+      ${[
+        {icon:'🌐', j:'QA engineer: log into NA Staging → run full regression on boundary management flows against production-parity data'},
+        {icon:'👥', j:'Tenant Admin: invite a new field analyst → assign Operator role → they receive email invite and can log in immediately'},
+        {icon:'📋', j:'Admin: create an investigation template for "High PS2 LISA follow-up" → configure checklists and required fields'},
+        {icon:'📊', j:'Field Analyst: open LISAs table → sort by PS2 score descending → export top 20 highest-priority LISAs to CSV'},
+        {icon:'📊', j:'Field Analyst: open Gaps table → filter by highlighted assets > 5 → identify the most critical pipeline gaps for investigation'},
+        {icon:'📥', j:'Download Boundary Results: export all LISAs, Gaps, and AutoFOV zones as a structured report for EU regulator submission'},
+        {icon:'🚗', j:'Operations Manager: view Fleet Map → see which survey vehicles are on-route vs parked → car data flowing into system'},
+        {icon:'📖', j:'New team member: access Dynamic User Manual → find step-by-step guides for every operator workflow'},
+        {icon:'⚙️', j:'Operator: view Summary settings + Licensed Features — understand what capabilities their subscription includes'},
+      ].map(x => `<div style="display:flex;gap:10px;padding:10px 12px;background:white;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:8px;font-size:11px;color:#374151;line-height:1.5">
+        <span style="font-size:16px;flex-shrink:0">${x.icon}</span>
+        <span>${x.j}</span>
+      </div>`).join('')}
+    </div>`;
+
+  el.innerHTML += releaseCard('R3','Jul 1 – Aug 15','Sprint 23–25','#f97316','#c2410c','#ffedd5',
+    'HIGH RISK','#b45309','#fef3c7',
+    'Staging Live + User Mgmt + Results + Investigation Setup',
+    41, TOTAL_V1, null,
+    r3_screens.join(''), r3_journeys, 18);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // R4 — Full Investigation + V1 LAUNCH
+  // ═══════════════════════════════════════════════════════════════════════════
+  const r4_screens = [
+    screen('🔍','Assign LISAs & Gaps for Investigation','Field analyst selects LISAs or Gaps from the table or map → clicks "Assign for Investigation" → chooses investigator, due date, template. Investigation session is created automatically.',
+      role('🔬 Field Analyst','#f59e0b') + role('⚙️ Tenant Admin','#0891b2')),
+    screen('📋','Investigation Dashboard: Track All Active Cases','A dedicated investigation view shows all open and closed investigations. Filter by status (open/in-progress/complete), assignee, or LISA/Gap code. See at-a-glance which cases are overdue.',
+      role('🔬 Field Analyst','#f59e0b') + role('⚙️ Tenant Admin','#0891b2') + role('🗺 Operator','#059669')),
+    screen('📄','Investigation Sessions + Results','Open an investigation case → see the session log: field notes, GPS tracks, measurements, photos. View investigation results: confirmed leak, false positive, or deferred. Download full case file.',
+      role('🔬 Field Analyst','#f59e0b') + role('🗺 Operator','#059669')),
+    screen('📝','Manual Reports: Create + Artifacts + Labels','Create a manual survey report from scratch. Add artifact photos, measurement data, geocoded points snapped to street centerlines. Add labels and export as PDF.',
+      role('🔬 Field Analyst','#f59e0b') + role('🗺 Operator','#059669')),
+    screen('🌍','LISA/Gap Geocode + Snap to Street','LISAs and Gaps can be geocoded (human-readable addresses) and snapped to the nearest street centerline for accurate mapping and report generation.',
+      role('🔬 Field Analyst','#f59e0b')),
+    screen('🎨','Campaign Symbology','Campaign boundaries displayed with customizable symbology — color-coded by status, type, or PS2 threshold. Clear visual differentiation between active, complete, and flagged campaigns.',
+      role('🗺 Operator','#059669')),
+  ];
+
+  const r4_journeys = `
+    <div>
+      ${[
+        {icon:'🔍', j:'Field Analyst: filter LISAs by PS2 > 0.8 → select 5 high-priority LISAs → assign to investigator with "Field Investigation" template → cases appear in their dashboard'},
+        {icon:'📋', j:'Investigation Manager: open Investigation Dashboard → see 23 open cases → sort by due date → identify 3 overdue investigations → escalate'},
+        {icon:'📄', j:'Investigator: open a LISA case → record field notes + GPS track → mark result as "Confirmed Leak" → attach photo evidence → submit → case closed automatically'},
+        {icon:'📥', j:'Download Investigation Results: export all closed investigation cases for the quarter as a structured CSV for PHMSA ALDP documentation'},
+        {icon:'📝', j:'Field Analyst: create a Manual Report → geocode 3 measurement points → snap to street → add artifact photos → export as PDF for client delivery'},
+        {icon:'🌍', j:'Geocode + Snap to Street: LISA at GPS [37.4, -122.0] resolved to "123 Pipeline Rd, San Jose" → appears correctly on street map for report'},
+        {icon:'🇺🇸', j:'Compliance Officer: confirm PHMSA 2025 ALDP requirements met — investigation tracking framework operational, all leak indications logged and traceable'},
+        {icon:'🎉', j:'V1 LAUNCH Oct 1: all operators can log in, run campaigns, view full boundary data, manage investigations, generate reports — end-to-end workflow complete'},
+      ].map(x => `<div style="display:flex;gap:10px;padding:10px 12px;background:${x.icon==='🎉'?'#dcfce7':'white'};border-radius:8px;border:1px solid ${x.icon==='🎉'?'#86efac':'#e2e8f0'};margin-bottom:8px;font-size:11px;color:#374151;line-height:1.5">
+        <span style="font-size:16px;flex-shrink:0">${x.icon}</span>
+        <span>${x.j}</span>
+      </div>`).join('')}
+    </div>`;
+
+  el.innerHTML += releaseCard('R4','Aug 16 – Oct 1','Sprint 26–28','#dc2626','#991b1b','#fee2e2',
+    'CRITICAL RISK','#dc2626','#fee2e2',
+    '🚀 V1 LAUNCH: Full Investigation Workflow + Reports + Compliance Certification',
+    58, TOTAL_V1,
+    '🇺🇸 PHMSA 2025 Gate: Investigation framework operational · 🇪🇺 EU 2024/1787: Certified · 🚀 V1 launches Oct 1',
+    r4_screens.join(''), r4_journeys, 17);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // V2 Preview — what comes after Oct 1
+  // ═══════════════════════════════════════════════════════════════════════════
+  el.innerHTML += `
+  <div style="background:white;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);padding:24px;margin-top:8px;border-top:3px dashed #94a3b8">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="font-size:24px">📦</div>
+      <div>
+        <div style="font-size:15px;font-weight:800;color:#475569">V2 — Post Oct 1 (What users will see next)</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px">17 deferred features. These are what field teams and mobile users unlock after V1 launch.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+      ${[
+        {icon:'📱', title:'Driver View (Mobile)', desc:'Drivers see their route, current session status, and capture mode for recording measurements — on ChromeOS or iPad.', color:'#b45309'},
+        {icon:'📡', title:'Mobile App: PCP Integration', desc:'Field teams use the mobile app to sync with P-Cubed hardware in the vehicle during a survey run.', color:'#b45309'},
+        {icon:'🤚', title:'Handheld Device Support', desc:'Technicians carry handheld units on foot surveys. Handheld timeseries data ingested, Observer View shows handheld position on map.', color:'#059669'},
+        {icon:'🚗', title:'Car System Management', desc:'Create and manage car survey systems — configure vehicle, peripherals, and link to campaigns. Full car system UI in the web portal.', color:'#059669'},
+        {icon:'📊', title:'Product Analytics', desc:'Usage dashboards show campaign activity, feature adoption, and system health. PM and ops teams track product metrics.', color:'#1d4ed8'},
+        {icon:'🌐', title:'Internationalization', desc:'UI available in multiple languages. Units configurable (metric/imperial). EU operators see localized content and unit systems.', color:'#1d4ed8'},
+        {icon:'🗂', title:'Historical Data Migration', desc:'Existing survey data from legacy systems migrated into P-Cubed Pro. Historical campaigns visible alongside new ones.', color:'#1d4ed8'},
+        {icon:'🔎', title:'Data Explorer', desc:'Network-level data explorer — browse all pipeline assets, filter by status, and drill into individual pipeline segments and their boundary history.', color:'#6366f1'},
+      ].map(x => `<div style="border-radius:10px;border:1.5px dashed #cbd5e1;padding:14px 16px;background:#f8fafc">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:20px">${x.icon}</span>
+          <span style="font-size:12px;font-weight:700;color:#374151">${x.title}</span>
+        </div>
+        <div style="font-size:11px;color:#64748b;line-height:1.5">${x.desc}</div>
+      </div>`).join('')}
     </div>
   </div>`;
 }
