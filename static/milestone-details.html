@@ -322,6 +322,7 @@
         <li><button class="sb-sub-btn" id="sbtab-adpv7" onclick="switchInnerTab('adpv7')">🎯 Oct 1 Release Plan V7</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv8" onclick="switchInnerTab('adpv8')">👁 User Journey View V8</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv9" onclick="switchInnerTab('adpv9')">🚀 Vertical Slice Proposal V9</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-adpv10" onclick="switchInnerTab('adpv10')">🔀 Journey Release Plan V10</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -353,6 +354,7 @@
     <button class="inner-tab-btn" id="itab-adpv7" onclick="switchInnerTab('adpv7')" style="background:linear-gradient(135deg,#dc2626,#7c3aed);color:white;border-color:#dc2626">🎯 Oct 1 Release Plan V7</button>
     <button class="inner-tab-btn" id="itab-adpv8" onclick="switchInnerTab('adpv8')" style="background:linear-gradient(135deg,#0f766e,#1d4ed8);color:white;border-color:#0f766e">👁 User Journey View V8</button>
     <button class="inner-tab-btn" id="itab-adpv9" onclick="switchInnerTab('adpv9')" style="background:linear-gradient(135deg,#1a73e8,#34a853);color:white;border-color:#1a73e8">🚀 Vertical Slice Proposal V9</button>
+    <button class="inner-tab-btn" id="itab-adpv10" onclick="switchInnerTab('adpv10')" style="background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;border-color:#7c3aed">🔀 Journey Release Plan V10</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -1029,6 +1031,10 @@
     <div id="adpv9-content"></div>
   </div><!-- adpv9-tab -->
 
+  <div id="adpv10-tab" style="display:none">
+    <div id="adpv10-content"></div>
+  </div><!-- adpv10-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -1037,7 +1043,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8','adpv9'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8','adpv9','adpv10'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -1056,6 +1062,7 @@ function switchInnerTab(tab) {
   if (tab==='adpv7' && !document.getElementById('adpv7-content').hasChildNodes()) buildADPv7();
   if (tab==='adpv8' && !document.getElementById('adpv8-content').hasChildNodes()) buildADPv8();
   if (tab==='adpv9' && !document.getElementById('adpv9-content').hasChildNodes()) buildADPv9();
+  if (tab==='adpv10' && !document.getElementById('adpv10-content').hasChildNodes()) buildADPv10();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -3753,6 +3760,406 @@ function buildADPv9() {
     if (numEl) numEl.textContent = n + ' / 7';
   };
   window.v9GoTo(1);
+}
+
+function buildADPv10() {
+  var el = document.getElementById('adpv10-content');
+  if (!el) return;
+
+  /* ── palette ─────────────────────────────────────────────────────────────── */
+  var C = {
+    r1j:'#0891b2', r1jl:'#cffafe', r1jd:'#0e7490',   // Journey R1 teal
+    r2j:'#16a34a', r2jl:'#dcfce7', r2jd:'#15803d',   // Journey R2 green
+    r3j:'#7c3aed', r3jl:'#ede9fe', r3jd:'#6d28d9',   // Journey R3 purple
+    r4j:'#dc2626', r4jl:'#fee2e2', r4jd:'#991b1b',   // Journey R4 red
+    cur:'#64748b', curl:'#f1f5f9',                    // current plan grey
+    db:'#065f46',  dbg:'#d1fae5',
+    wk:'#1e40af',  wkg:'#dbeafe',
+    bf:'#92400e',  bfg:'#fef3c7',
+    ui:'#6d28d9',  uig:'#ede9fe',
+  };
+
+  /* ── tiny helpers ────────────────────────────────────────────────────────── */
+  function pill(txt, bg, fg) {
+    return '<span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;background:' + bg + ';color:' + fg + ';margin:2px">' + txt + '</span>';
+  }
+  function stackTag(layer, txt) {
+    var cfg = {DB:[C.db,C.dbg], Worker:[C.wk,C.wkg], BFF:[C.bf,C.bfg], UI:[C.ui,C.uig]};
+    var cc = cfg[layer] || ['#374151','#f3f4f6'];
+    return '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;background:' + cc[1] + ';color:' + cc[0] + ';margin:2px 2px 2px 0"><span style="font-size:9px;font-weight:800;opacity:.6">' + layer + '</span>' + txt + '</span>';
+  }
+  function featurePill(code, name, moved) {
+    var border = moved ? '2px solid #f97316' : '1px solid #e2e8f0';
+    var bg = moved ? '#fff7ed' : '#f8fafc';
+    return '<div style="display:inline-flex;align-items:baseline;gap:5px;padding:4px 10px;border-radius:8px;border:' + border + ';background:' + bg + ';margin:3px;cursor:default" title="' + (moved ? 'MOVED from current plan' : 'Same position') + '">'
+      + '<span style="font-size:10px;font-weight:800;color:#64748b">' + code + '</span>'
+      + '<span style="font-size:11px;color:#1e293b">' + name + '</span>'
+      + (moved ? '<span style="font-size:9px;font-weight:700;color:#f97316">↕ moved</span>' : '')
+    + '</div>';
+  }
+
+  /* ── journey release data ────────────────────────────────────────────────── */
+  var JOURNEYS = [
+    {
+      id: 'r1j',
+      color: C.r1j, light: C.r1jl, dark: C.r1jd,
+      badge: 'R1', dates: 'Apr 1 – May 15',
+      icon: '🗺️',
+      headline: 'See My Coverage',
+      tagline: 'Operator selects a boundary → sees driving sessions → sees FOV coverage % → understands what\'s covered',
+      demo: '"Select boundary IN-0824 → 87% FOV coverage. 3 driving sessions contributed."',
+      sp: 78,
+      gate: { label: 'Pre-condition', text: 'AutoFOV (PH-279) in QA or Accepted before R1 Sprint 1' },
+      stack: [
+        { layer: 'DB',     items: ['Boundary schema', 'Driving Sessions schema', 'FOV results table'] },
+        { layer: 'Worker', items: ['AutoFOV pipeline (validate from M5, PH-279)'] },
+        { layer: 'BFF',    items: ['GET /boundaries', 'GET /boundaries/{id}/sessions', 'GET /boundaries/{id}/fov'] },
+        { layer: 'UI',     items: ['O-BM-01 Campaign Map', 'O-BM-06 DS Panel', 'O-BM-07 DS Map', 'O-BM-08 DS Table', 'O-BM-12 AutoFOV Pipeline', 'O-BM-13 AutoFOV Panel', 'O-BM-14 FOV Map Overlay', 'O-BM-15 FOV Metadata'] },
+      ],
+      features: [
+        { code:'P-01',    name:'RBAC Phase 1',              moved: false },
+        { code:'O-BM-01', name:'Campaign Map',              moved: false },
+        { code:'O-BM-06', name:'DS Panel',                  moved: false },
+        { code:'O-BM-07', name:'DS Map',                    moved: false },
+        { code:'O-BM-08', name:'DS Table',                  moved: false },
+        { code:'O-BM-12', name:'AutoFOV Pipeline',          moved: false },
+        { code:'O-BM-13', name:'AutoFOV Panel',             moved: false },
+        { code:'O-BM-14', name:'FOV Map Overlay',           moved: false },
+        { code:'O-BM-15', name:'FOV Metadata',              moved: false },
+        { code:'A-O-04',  name:'Operator Settings: DS',     moved: true,  reason: 'Needed for DS journey — was R2 in current plan' },
+      ],
+      dropped: [
+        { code:'A-T-05', name:'Tenant Settings: PS2',  reason: 'Not needed to see coverage' },
+        { code:'A-T-06', name:'Tenant Settings: RFR',  reason: 'Not needed to see coverage' },
+        { code:'A-O-02', name:'Operator Settings: General', reason: 'Ships when its journey needs it (R3)' },
+        { code:'P-27',   name:'GIS Data Hub EU',       reason: 'EU infra — ships with EU compliance (R2)' },
+      ]
+    },
+    {
+      id: 'r2j',
+      color: C.r2j, light: C.r2jl, dark: C.r2jd,
+      badge: 'R2', dates: 'May 16 – Jun 30',
+      icon: '🔍',
+      headline: 'Find My Gaps',
+      tagline: 'Operator sees gap polygons where FOV is missing → clicks gap → sees pipeline assets → exports for field crew',
+      demo: '"3 gaps in IN-0824. Oak Street gap: 2 pipeline segments. Export CSV for field crew."',
+      sp: 65,
+      gate: { label: 'EU 2024/1787 ✅', text: 'Gaps + FOV operational → EU LDAR regulation met at R2 end' },
+      stack: [
+        { layer: 'DB',     items: ['Gaps schema', 'Asset intersection results'] },
+        { layer: 'Worker', items: ['Gap computation engine (PH-385)', 'Walking buffer + asset intersection'] },
+        { layer: 'BFF',    items: ['GET /gaps', 'GET /gaps/{id}/assets', 'POST /gaps/export'] },
+        { layer: 'UI',     items: ['O-BM-17 Gaps Pipeline', 'O-BM-18 Gaps Panel', 'O-BM-19 Gaps Map', 'O-BM-22 Highlighted Assets: Gaps', 'O-BM-20 Gaps Table'] },
+      ],
+      features: [
+        { code:'O-BM-17', name:'Gaps Pipeline',           moved: false },
+        { code:'O-BM-18', name:'Gaps Panel',              moved: false },
+        { code:'O-BM-19', name:'Gaps Map',                moved: false },
+        { code:'O-BM-22', name:'Highlighted Assets: Gaps',moved: false },
+        { code:'O-BM-20', name:'Gaps Table',              moved: true, reason: 'Was R3 — moved here: belongs to the gaps journey' },
+        { code:'P-27',    name:'GIS Data Hub EU',         moved: true, reason: 'Was R1 — ships here with the EU compliance gate' },
+      ],
+      dropped: [
+        { code:'O-BM-24', name:'LISAs Pipeline', reason: 'LISAs is a separate journey (R3) — not a layer add-on to R2' },
+        { code:'O-BM-25', name:'LISAs Panel',    reason: 'Same — partial LISA view without ranking/investigation is not a journey' },
+        { code:'O-BM-26', name:'LISAs Map',      reason: 'Same — ship the full LISA journey together in R3' },
+      ]
+    },
+    {
+      id: 'r3j',
+      color: C.r3j, light: C.r3jl, dark: C.r3jd,
+      badge: 'R3', dates: 'Jul 1 – Aug 15',
+      icon: '📊',
+      headline: 'Prioritize LISA Boundaries',
+      tagline: 'Operator views LISAs → sees PS2 scores → ranks by priority → selects top LISA → creates investigation → assigns to field',
+      demo: '"TX-0291 PS2=0.87, rank #1. Creating investigation → assigning to Jane Smith."',
+      sp: 110,
+      gate: { label: 'Pre-condition', text: 'LISA TDD approved by May 15. No TDD = no Journey R3. This is the hard gate.' },
+      stack: [
+        { layer: 'DB',     items: ['LISA schema', 'PS2 scores', 'Investigation schema'] },
+        { layer: 'Worker', items: ['LISA computation pipeline (PH-104/119)'] },
+        { layer: 'BFF',    items: ['GET /lisas', 'GET /lisas/{id}', 'POST /investigations', 'GET /investigations'] },
+        { layer: 'UI',     items: ['O-BM-24 LISAs Pipeline', 'O-BM-25 LISAs Panel', 'O-BM-26 LISAs Map', 'O-BM-27 LISAs Table', 'O-BM-30 PS2 Ranking', 'O-BM-28 LISA Metadata', 'O-BM-29 Highlighted Assets: LISAs', 'O-BM-32 Boundary Results', 'O-BM-33 Download', 'A-I-01 Investigation Components', 'A-I-02 Investigation Templates'] },
+      ],
+      features: [
+        { code:'O-BM-24', name:'LISAs Pipeline',          moved: true,  reason: 'Was R2 in current plan — moved to R3 with full LISA journey' },
+        { code:'O-BM-25', name:'LISAs Panel',             moved: true,  reason: 'Was R2 — same reason' },
+        { code:'O-BM-26', name:'LISAs Map',               moved: true,  reason: 'Was R2 — same reason' },
+        { code:'O-BM-27', name:'LISAs Table',             moved: false },
+        { code:'O-BM-30', name:'PS2 Ranking & Metadata',  moved: false },
+        { code:'O-BM-28', name:'LISA Metadata',           moved: false },
+        { code:'O-BM-29', name:'Highlighted Assets: LISAs', moved: false },
+        { code:'O-BM-32', name:'Boundary Results',        moved: false },
+        { code:'O-BM-33', name:'Download Boundary Results',moved: false },
+        { code:'A-I-01',  name:'Investigation Components', moved: true,  reason: 'Was standalone admin in R3 — now anchored to LISA journey' },
+        { code:'A-I-02',  name:'Investigation Templates',  moved: true,  reason: 'Same — you set up templates because you have LISAs to investigate' },
+        { code:'A-O-02',  name:'Operator Settings: General', moved: true, reason: 'Was R1 — ships here when operators are managing LISA/investigation workflows' },
+      ],
+      dropped: []
+    },
+    {
+      id: 'r4j',
+      color: C.r4j, light: C.r4jl, dark: C.r4jd,
+      badge: 'R4', dates: 'Aug 16 – Oct 1',
+      icon: '✅',
+      headline: 'Close the Loop',
+      tagline: 'Field team receives investigation → executes → results come back → supervisor downloads compliance report → PHMSA/EU docs ready',
+      demo: '"Investigation #INV-4421 complete. 2 LISAs resolved. Downloading PHMSA ALDP report."',
+      sp: 114,
+      gate: { label: 'PHMSA 2025 ✅', text: 'Investigation framework operational → PHMSA ALDP requirement met at R4 end' },
+      stack: [
+        { layer: 'DB',     items: ['Investigation results schema', 'Report artifacts'] },
+        { layer: 'Worker', items: ['Report generation'] },
+        { layer: 'BFF',    items: ['PATCH /investigations/{id}', 'GET /investigations/{id}/results', 'POST /reports'] },
+        { layer: 'UI',     items: ['O-BM-34 Assign LISAs for Investigation', 'O-BM-35 Assign Gaps for Investigation', 'O-BM-36 View & Assign Investigations', 'O-BM-37 Investigation Sessions', 'O-BM-38 Investigation Results', 'O-BM-39 Download Results', 'O-04/05/06 Manual Reports', 'O-07/08 Geocode + Snap'] },
+      ],
+      features: [
+        { code:'O-BM-34', name:'Assign LISAs for Investigation', moved: false },
+        { code:'O-BM-35', name:'Assign Gaps for Investigation',  moved: false },
+        { code:'O-BM-36', name:'View & Assign Investigations',   moved: false },
+        { code:'O-BM-37', name:'Show Investigation Sessions',    moved: false },
+        { code:'O-BM-38', name:'Show Investigation Results',     moved: false },
+        { code:'O-BM-39', name:'Download Investigation Results', moved: false },
+        { code:'O-04',    name:'Manual Report Creation',         moved: false },
+        { code:'O-05',    name:'Manual Report Artifacts',        moved: false },
+        { code:'O-07',    name:'LISA/Gap Geocode',               moved: false },
+        { code:'O-08',    name:'Snap to Street',                 moved: false },
+        { code:'A-U-01',  name:'User Management',               moved: true, reason: 'Was R3 standalone — ships here: needed for investigation assignment' },
+        { code:'A-U-02',  name:'User Settings: General',        moved: true, reason: 'Same — user roles needed when assigning investigations' },
+        { code:'A-T-05',  name:'Tenant Settings: PS2',          moved: true, reason: 'Was R1 — ships here: tenants configure PS2 thresholds when they have LISA data to act on' },
+        { code:'A-T-06',  name:'Tenant Settings: RFR',          moved: true, reason: 'Same' },
+        { code:'A-O-02',  name:'Operator Settings: General + Summary', moved: false },
+        { code:'P-14',    name:'NA Staging',                    moved: false },
+        { code:'P-15',    name:'EU Staging',                    moved: false },
+        { code:'P-10',    name:'P-Cubed Pro NA V1 Launch',      moved: false },
+        { code:'P-11',    name:'P-Cubed Pro EU Launch',         moved: false },
+      ],
+      dropped: []
+    },
+  ];
+
+  /* ── comparison table rows (key moves) ──────────────────────────────────── */
+  var MOVES = [
+    { feature:'O-BM-20 Gaps Table',           cur:'R3', new:'R2', why:'Part of the Gaps journey — user needs the table to act on gaps' },
+    { feature:'O-BM-24/25/26 LISAs (pipeline/panel/map)', cur:'R2', new:'R3', why:'Partial LISA view without ranking/investigation is layer thinking. Ship complete.' },
+    { feature:'O-BM-27/28/30 LISA table/metadata/PS2',    cur:'R3', new:'R3', why:'Same release (no change) — already grouped correctly' },
+    { feature:'A-I-01/02 Investigation Components/Templates', cur:'R3 (admin setup)', new:'R3 (end of LISA journey)', why:'Set up templates because you have LISAs to investigate, not in a vacuum' },
+    { feature:'A-U-01/02 User Management',     cur:'R3', new:'R4', why:'Needed for investigation assignment — ships with the workflow that uses it' },
+    { feature:'A-T-05/06 Tenant Settings PS2/RFR', cur:'R1', new:'R4', why:'Tenants configure PS2 thresholds once they have LISA data. Not needed Day 1.' },
+    { feature:'A-O-02 Operator Settings: General', cur:'R1', new:'R3', why:'Not needed to see coverage (R1). Needed when operators manage LISA workflows.' },
+    { feature:'A-O-04 Operator Settings: DS',  cur:'R2', new:'R1', why:'Driving Session settings belong in the DS journey, not a release later' },
+    { feature:'P-27 GIS Data Hub EU',          cur:'R1', new:'R2', why:'EU infrastructure ships with the EU compliance gate, not upfront' },
+    { feature:'P-21 Centralized Logging',      cur:'R3', new:'R3', why:'Same — launch prep stays in R3' },
+  ];
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     BUILD HTML
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  var h = '';
+
+  /* ── header banner ──────────────────────────────────────────────────────── */
+  h += '<div style="max-width:1200px;margin:0 auto;padding:24px 28px;font-family:\'Segoe UI\',system-ui,sans-serif">';
+  h += '<div style="background:linear-gradient(135deg,#7c3aed,#0891b2);border-radius:14px;padding:22px 28px;margin-bottom:24px;box-shadow:0 4px 16px rgba(124,58,237,.25)">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.8);margin-bottom:6px">V10 · Journey-Based Release Plan · Oct 1, 2026 target</div>'
+    + '<div style="font-size:22px;font-weight:800;color:white;margin-bottom:6px">User-Journey Driven R1–R4</div>'
+    + '<div style="font-size:13px;color:rgba(255,255,255,.85)">Same features. Same Oct 1 date. Regrouped by <strong style="color:white">what the user can DO</strong> after each release — not which layer is complete.</div>'
+  + '</div>';
+
+  /* ── principle row ──────────────────────────────────────────────────────── */
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px">'
+    + '<div style="background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:18px 20px">'
+        + '<div style="font-size:12px;font-weight:800;color:#dc2626;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">❌ Current plan (Layer-by-Layer)</div>'
+        + '<div style="font-size:13px;color:#374151;line-height:1.8">'
+          + '• R1: Foundation + AutoFOV pipeline<br>'
+          + '• R2: All BM data visible (DS + FOV + Gaps + <strong>partial</strong> LISAs)<br>'
+          + '• R3: Results + staging + user mgmt + <strong>partial</strong> LISAs + <strong>partial</strong> investigations<br>'
+          + '• R4: Investigations workflow + reports + launch<br>'
+        + '</div>'
+        + '<div style="margin-top:12px;padding:10px 14px;background:#fee2e2;border-radius:8px;font-size:12px;color:#991b1b;font-style:italic">LISAs split across 3 releases. Investigation split across 2. No complete journey until R2 minimum.</div>'
+    + '</div>'
+    + '<div style="background:#f0faf2;border:2px solid #86efac;border-radius:12px;padding:18px 20px">'
+        + '<div style="font-size:12px;font-weight:800;color:#15803d;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">✅ Journey plan (Vertical Slices)</div>'
+        + '<div style="font-size:13px;color:#374151;line-height:1.8">'
+          + '• R1: <strong>"See My Coverage"</strong> — boundary + sessions + FOV end-to-end<br>'
+          + '• R2: <strong>"Find My Gaps"</strong> — AutoGaps pilot, complete gaps journey<br>'
+          + '• R3: <strong>"Prioritize LISAs"</strong> — full LISA journey + investigation create<br>'
+          + '• R4: <strong>"Close the Loop"</strong> — investigation workflow + reports + launch<br>'
+        + '</div>'
+        + '<div style="margin-top:12px;padding:10px 14px;background:#dcfce7;border-radius:8px;font-size:12px;color:#166534;font-style:italic">Every release has a demoable customer outcome. LISA journey ships complete in R3.</div>'
+    + '</div>'
+  + '</div>';
+
+  /* ── journey cards ──────────────────────────────────────────────────────── */
+  for (var i = 0; i < JOURNEYS.length; i++) {
+    var J = JOURNEYS[i];
+    var movedIn  = J.features.filter(function(f){ return f.moved; });
+    var droppedOut = J.dropped || [];
+
+    h += '<div style="background:white;border-radius:14px;border:2px solid ' + J.color + ';box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:28px;overflow:hidden">';
+
+    /* card header */
+    h += '<div style="background:linear-gradient(135deg,' + J.color + ',' + J.dark + ');padding:18px 24px;display:flex;align-items:center;gap:16px">'
+      + '<div style="background:rgba(255,255,255,.2);border-radius:10px;padding:10px 16px;font-size:24px;font-weight:800;color:white">' + J.badge + '</div>'
+      + '<div style="flex:1">'
+          + '<div style="font-size:18px;font-weight:800;color:white">' + J.icon + ' ' + J.headline + '</div>'
+          + '<div style="font-size:12px;color:rgba(255,255,255,.85);margin-top:2px">' + J.dates + ' · ' + J.sp + ' SP est.</div>'
+      + '</div>'
+      + '<div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 18px;text-align:center">'
+          + '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.5px">MOVED IN</div>'
+          + '<div style="font-size:22px;font-weight:800;color:white">' + movedIn.length + '</div>'
+          + '<div style="font-size:10px;color:rgba(255,255,255,.7)">features</div>'
+      + '</div>'
+    + '</div>';
+
+    /* tagline + demo */
+    h += '<div style="padding:16px 24px;background:' + J.light + ';border-bottom:1px solid ' + J.color + '40;display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">'
+      + '<div style="flex:1;min-width:200px">'
+          + '<div style="font-size:10px;font-weight:700;color:' + J.dark + ';text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">User Journey</div>'
+          + '<div style="font-size:13px;color:#374151;line-height:1.6">' + J.tagline + '</div>'
+      + '</div>'
+      + '<div style="background:white;border-radius:8px;padding:10px 14px;border:1px solid ' + J.color + '60;min-width:200px;max-width:340px">'
+          + '<div style="font-size:10px;font-weight:700;color:' + J.dark + ';margin-bottom:4px">Demo scenario</div>'
+          + '<div style="font-size:12px;color:#374151;font-style:italic">' + J.demo + '</div>'
+      + '</div>'
+    + '</div>';
+
+    /* gate */
+    var gateColor = J.gate.label.indexOf('✅') >= 0 ? '#15803d' : '#92400e';
+    var gateBg    = J.gate.label.indexOf('✅') >= 0 ? '#dcfce7' : '#fef3c7';
+    h += '<div style="padding:10px 24px;background:' + gateBg + ';border-bottom:1px solid ' + J.color + '30;display:flex;align-items:center;gap:10px">'
+      + '<span style="font-size:11px;font-weight:800;color:' + gateColor + ';text-transform:uppercase;letter-spacing:.5px">' + J.gate.label + '</span>'
+      + '<span style="font-size:12px;color:' + gateColor + '">' + J.gate.text + '</span>'
+    + '</div>';
+
+    /* full-stack breakdown */
+    h += '<div style="padding:18px 24px;border-bottom:1px solid #f1f5f9">';
+    h += '<div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Full Stack Scope (DB → Worker → BFF → UI)</div>';
+    h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">';
+    for (var s = 0; s < J.stack.length; s++) {
+      var sl = J.stack[s];
+      var bgMap = {DB:C.dbg, Worker:C.wkg, BFF:C.bfg, UI:C.uig};
+      var fgMap = {DB:C.db,  Worker:C.wk,  BFF:C.bf,  UI:C.ui};
+      h += '<div style="background:' + bgMap[sl.layer] + ';border-radius:8px;padding:10px 12px">'
+        + '<div style="font-size:11px;font-weight:800;color:' + fgMap[sl.layer] + ';margin-bottom:6px">' + sl.layer + '</div>';
+      for (var it = 0; it < sl.items.length; it++) {
+        h += '<div style="font-size:11px;color:#374151;margin-bottom:3px;line-height:1.4">· ' + sl.items[it] + '</div>';
+      }
+      h += '</div>';
+    }
+    h += '</div></div>';
+
+    /* features in this release */
+    h += '<div style="padding:18px 24px">';
+    h += '<div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Features in this release</div>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:14px">';
+    for (var fi = 0; fi < J.features.length; fi++) {
+      h += featurePill(J.features[fi].code, J.features[fi].name, J.features[fi].moved);
+    }
+    h += '</div>';
+
+    /* moved-in detail */
+    if (movedIn.length > 0) {
+      h += '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 14px;margin-bottom:10px">';
+      h += '<div style="font-size:10px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">↕ Moves vs current plan (' + movedIn.length + ')</div>';
+      for (var mi = 0; mi < movedIn.length; mi++) {
+        h += '<div style="font-size:12px;color:#374151;margin-bottom:5px;line-height:1.5">'
+          + '<span style="font-weight:700;color:#c2410c">' + movedIn[mi].code + '</span> '
+          + '— ' + movedIn[mi].reason
+        + '</div>';
+      }
+      h += '</div>';
+    }
+
+    /* features dropped from layer plan for this slot */
+    if (droppedOut.length > 0) {
+      h += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">';
+      h += '<div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🚫 Removed from this slot vs current plan</div>';
+      for (var di = 0; di < droppedOut.length; di++) {
+        h += '<div style="font-size:12px;color:#374151;margin-bottom:4px">'
+          + '<span style="font-weight:700">' + droppedOut[di].code + ' ' + droppedOut[di].name + '</span>'
+          + ' — ' + droppedOut[di].reason
+        + '</div>';
+      }
+      h += '</div>';
+    }
+
+    h += '</div></div>';
+  }
+
+  /* ── moves summary table ─────────────────────────────────────────────────── */
+  h += '<div style="background:white;border-radius:14px;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:28px;overflow:hidden">';
+  h += '<div style="background:#1e293b;padding:16px 24px">'
+    + '<div style="font-size:15px;font-weight:800;color:white;margin-bottom:2px">Feature Move Summary</div>'
+    + '<div style="font-size:11px;color:#94a3b8">What changed vs the current V7 layer plan, and why</div>'
+  + '</div>';
+  h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-family:inherit">';
+  h += '<thead><tr style="background:#f8fafc;border-bottom:2px solid #e2e8f0">'
+    + '<th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.5px;min-width:220px">Feature</th>'
+    + '<th style="padding:10px 16px;text-align:center;font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.5px;width:90px">Current Plan</th>'
+    + '<th style="padding:10px 16px;text-align:center;font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.5px;width:90px">Journey Plan</th>'
+    + '<th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.5px">Reason</th>'
+  + '</tr></thead><tbody>';
+
+  var rColors = {R1:'#3b82f6',R2:'#8b5cf6',R3:'#f97316',R4:'#dc2626'};
+  var jColors  = {'R1':'#0891b2','R2':'#16a34a','R3':'#7c3aed','R4':'#dc2626'};
+
+  for (var mi2 = 0; mi2 < MOVES.length; mi2++) {
+    var mv = MOVES[mi2];
+    var same = mv.cur === mv.new;
+    var rowBg = same ? '#f8fafc' : '#fff7ed';
+    h += '<tr style="border-bottom:1px solid #f1f5f9;background:' + rowBg + '">'
+      + '<td style="padding:10px 16px;font-size:12px;font-weight:600;color:#1e293b">' + mv.feature + '</td>'
+      + '<td style="padding:10px 16px;text-align:center">'
+          + '<span style="padding:3px 12px;border-radius:12px;font-size:11px;font-weight:700;background:' + (rColors[mv.cur]||'#64748b') + '20;color:' + (rColors[mv.cur]||'#64748b') + '">' + mv.cur + '</span>'
+      + '</td>'
+      + '<td style="padding:10px 16px;text-align:center">'
+          + (same
+            ? '<span style="padding:3px 12px;border-radius:12px;font-size:11px;font-weight:700;background:#f1f5f9;color:#64748b">' + mv.new + '</span>'
+            : '<span style="padding:3px 12px;border-radius:12px;font-size:11px;font-weight:700;background:' + (jColors[mv.new]||'#64748b') + '20;color:' + (jColors[mv.new]||'#64748b') + '">' + mv.new + ' ↕</span>')
+      + '</td>'
+      + '<td style="padding:10px 16px;font-size:12px;color:#374151;font-style:' + (same ? 'normal' : 'italic') + '">' + mv.why + '</td>'
+    + '</tr>';
+  }
+  h += '</tbody></table></div></div>';
+
+  /* ── closing comparison: demo story per release ─────────────────────────── */
+  h += '<div style="background:white;border-radius:14px;border:1px solid #e2e8f0;padding:24px;margin-bottom:24px">';
+  h += '<div style="font-size:14px;font-weight:800;color:#1e293b;margin-bottom:16px">The Demo Question: "What can you show me after this release?"</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">';
+
+  var demos = [
+    { r:'R1', cur:'"Here\'s the platform. You can see a boundary on a map and configure settings."',
+               new:'"Select boundary IN-0824 → 87% FOV coverage. Here are the 3 driving sessions."',
+               delta:'Demoable to a customer on Day 1.' },
+    { r:'R2', cur:'"Here\'s the data layer. DS, FOV, Gaps, and partial LISAs all visible on map."',
+               new:'"3 gaps found. Oak Street gap has 2 pipeline segments. Here\'s the export."',
+               delta:'EU compliance met. Complete AutoGaps pilot shipped.' },
+    { r:'R3', cur:'"Here\'s results + staging + user management + part of LISAs."',
+               new:'"TX-0291 PS2=0.87, top LISA. Creating investigation → assigned to Jane Smith."',
+               delta:'Full LISA journey complete. Investigation creation enabled.' },
+    { r:'R4', cur:'"Here\'s the full investigation workflow + reports. We launch."',
+               new:'"INV-4421 closed. PHMSA report downloaded. Launching P-Cubed Pro."',
+               delta:'Same outcome — but everything upstream is cleaner.' },
+  ];
+
+  var demoRColors = {R1:'#0891b2',R2:'#16a34a',R3:'#7c3aed',R4:'#dc2626'};
+  for (var di2 = 0; di2 < demos.length; di2++) {
+    var d = demos[di2];
+    h += '<div style="border-radius:10px;border:1px solid #e2e8f0;overflow:hidden">'
+      + '<div style="background:' + demoRColors[d.r] + ';padding:8px 14px;font-size:12px;font-weight:700;color:white">' + d.r + ' Demo</div>'
+      + '<div style="padding:12px 14px">'
+          + '<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:700;color:#dc2626;margin-bottom:3px">CURRENT</div><div style="font-size:12px;color:#374151;font-style:italic">' + d.cur + '</div></div>'
+          + '<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:700;color:#16a34a;margin-bottom:3px">JOURNEY PLAN</div><div style="font-size:12px;color:#374151;font-style:italic">' + d.new + '</div></div>'
+          + '<div style="padding:6px 10px;background:#f0fdf4;border-radius:6px;font-size:11px;color:#166534;font-weight:600">' + d.delta + '</div>'
+      + '</div>'
+    + '</div>';
+  }
+
+  h += '</div></div>';
+  h += '</div>'; /* max-width wrapper */
+
+  el.innerHTML = h;
 }
 
 </script>
