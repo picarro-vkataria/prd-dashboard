@@ -5111,11 +5111,11 @@ function buildADPv11() {
 
   /* ── outer shell ─────────────────────────────────────────────────────── */
   el.innerHTML =
-    '<div style="font-family:'Segoe UI',system-ui,sans-serif">'
+    '<div style="font-family:\'Segoe UI\',system-ui,sans-serif">'
   + '<div style="display:flex;align-items:center;gap:10px;padding:14px 22px;background:#0f172a;border-radius:14px 14px 0 0;flex-wrap:wrap">'
       + '<div style="font-size:15px;font-weight:800;color:white;flex:1">🧭 Journey Plan V11 — 58 Features × 5 User Journeys</div>'
-      + '<button id="v11-btn-sw"  onclick="v11Show('sw')"  style="padding:8px 20px;border-radius:20px;border:2px solid #f97316;font-size:12px;font-weight:700;cursor:pointer;background:#f97316;color:white">🏊 Journey Swimlane</button>'
-      + '<button id="v11-btn-tbl" onclick="v11Show('tbl')" style="padding:8px 20px;border-radius:20px;border:2px solid #475569;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#94a3b8">📋 Delivery Table</button>'
+      + '<button id="v11-btn-sw"  onclick="v11Show(\'sw\')"  style="padding:8px 20px;border-radius:20px;border:2px solid #f97316;font-size:12px;font-weight:700;cursor:pointer;background:#f97316;color:white">🏊 Journey Swimlane</button>'
+      + '<button id="v11-btn-tbl" onclick="v11Show(\'tbl\')" style="padding:8px 20px;border-radius:20px;border:2px solid #475569;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#94a3b8">📋 Delivery Table</button>'
   + '</div>'
   + '<div id="v11-sw-view"  style="display:block;padding:20px"></div>'
   + '<div id="v11-tbl-view" style="display:none;padding:20px"></div>'
@@ -5606,14 +5606,14 @@ function buildADPv11() {
       + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">'
         + '<span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Journey:</span>'
         + ['ALL','J1','J2','J3a','J3b','J4','J5'].map(function(v){
-            return '<button id="v11-fj-'+v+'" onclick="v11Filter('j',''+v+'')" style="padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;background:white;color:#374151">'+v+'</button>';
+            return '<button id="v11-fj-'+v+'" onclick="v11Filter(\'j\',\''+v+'\')" style="padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;background:white;color:#374151">'+v+'</button>';
           }).join('')
       + '</div>'
       + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
         + '<span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Release:</span>'
         + ['ALL','R1','R2','R3','R4'].map(function(v){
             var c={'R1':'#3b82f6','R2':'#8b5cf6','R3':'#f97316','R4':'#dc2626'}[v]||'#64748b';
-            return '<button id="v11-fr-'+v+'" onclick="v11Filter('r',''+v+'')" style="padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid '+(v==='ALL'?'#e2e8f0':c+'60')+';background:white;color:#374151">'+v+'</button>';
+            return '<button id="v11-fr-'+v+'" onclick="v11Filter(\'r\',\''+v+'\')" style="padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid '+(v==='ALL'?'#e2e8f0':c+'60')+';background:white;color:#374151">'+v+'</button>';
           }).join('')
         + '<span id="v11-tbl-count" style="margin-left:auto;font-size:12px;font-weight:700;color:#0891b2"></span>'
       + '</div>'
