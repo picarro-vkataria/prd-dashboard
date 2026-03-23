@@ -323,6 +323,7 @@
         <li><button class="sb-sub-btn" id="sbtab-adpv8" onclick="switchInnerTab('adpv8')">👁 User Journey View V8</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv9" onclick="switchInnerTab('adpv9')">🚀 Vertical Slice Proposal V9</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv10" onclick="switchInnerTab('adpv10')">🔀 Journey Release Plan V10</button></li>
+        <li><button class="sb-sub-btn" id="sbtab-adpv11" onclick="switchInnerTab('adpv11')">🧭 Journey Plan V11</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -355,6 +356,7 @@
     <button class="inner-tab-btn" id="itab-adpv8" onclick="switchInnerTab('adpv8')" style="background:linear-gradient(135deg,#0f766e,#1d4ed8);color:white;border-color:#0f766e">👁 User Journey View V8</button>
     <button class="inner-tab-btn" id="itab-adpv9" onclick="switchInnerTab('adpv9')" style="background:linear-gradient(135deg,#1a73e8,#34a853);color:white;border-color:#1a73e8">🚀 Vertical Slice Proposal V9</button>
     <button class="inner-tab-btn" id="itab-adpv10" onclick="switchInnerTab('adpv10')" style="background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;border-color:#7c3aed">🔀 Journey Release Plan V10</button>
+    <button class="inner-tab-btn" id="itab-adpv11" onclick="switchInnerTab('adpv11')" style="background:linear-gradient(135deg,#f97316,#dc2626);color:white;border-color:#f97316">🧭 Journey Plan V11</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -1035,6 +1037,10 @@
     <div id="adpv10-content"></div>
   </div><!-- adpv10-tab -->
 
+  <div id="adpv11-tab" style="display:none">
+    <div id="adpv11-content"></div>
+  </div><!-- adpv11-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -1043,7 +1049,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8','adpv9','adpv10'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8','adpv9','adpv10','adpv11'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -1063,6 +1069,7 @@ function switchInnerTab(tab) {
   if (tab==='adpv8' && !document.getElementById('adpv8-content').hasChildNodes()) buildADPv8();
   if (tab==='adpv9' && !document.getElementById('adpv9-content').hasChildNodes()) buildADPv9();
   if (tab==='adpv10' && !document.getElementById('adpv10-content').hasChildNodes()) buildADPv10();
+  if (tab==='adpv11' && !document.getElementById('adpv11-content').hasChildNodes()) buildADPv11();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -5096,6 +5103,599 @@ function buildADPv10() {
   h += '</div>'; /* max-width wrapper */
     el.innerHTML = h;
   }
+}
+
+function buildADPv11() {
+  var el = document.getElementById('adpv11-content');
+  if (!el) return;
+
+  /* ── outer shell ─────────────────────────────────────────────────────── */
+  el.innerHTML =
+    '<div style="font-family:'Segoe UI',system-ui,sans-serif">'
+  + '<div style="display:flex;align-items:center;gap:10px;padding:14px 22px;background:#0f172a;border-radius:14px 14px 0 0;flex-wrap:wrap">'
+      + '<div style="font-size:15px;font-weight:800;color:white;flex:1">🧭 Journey Plan V11 — 58 Features × 5 User Journeys</div>'
+      + '<button id="v11-btn-sw"  onclick="v11Show('sw')"  style="padding:8px 20px;border-radius:20px;border:2px solid #f97316;font-size:12px;font-weight:700;cursor:pointer;background:#f97316;color:white">🏊 Journey Swimlane</button>'
+      + '<button id="v11-btn-tbl" onclick="v11Show('tbl')" style="padding:8px 20px;border-radius:20px;border:2px solid #475569;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#94a3b8">📋 Delivery Table</button>'
+  + '</div>'
+  + '<div id="v11-sw-view"  style="display:block;padding:20px"></div>'
+  + '<div id="v11-tbl-view" style="display:none;padding:20px"></div>'
+  + '</div>';
+
+  /* ── view toggle ─────────────────────────────────────────────────────── */
+  window.v11Show = function(view) {
+    var sw  = document.getElementById('v11-sw-view');
+    var tbl = document.getElementById('v11-tbl-view');
+    var bsw = document.getElementById('v11-btn-sw');
+    var btbl= document.getElementById('v11-btn-tbl');
+    if (view === 'sw') {
+      sw.style.display='block'; tbl.style.display='none';
+      bsw.style.background='#f97316'; bsw.style.color='white'; bsw.style.borderColor='#f97316';
+      btbl.style.background='transparent'; btbl.style.color='#94a3b8'; btbl.style.borderColor='#475569';
+      if (!sw.hasChildNodes()) v11BuildSwimlane(sw);
+    } else {
+      sw.style.display='none'; tbl.style.display='block';
+      btbl.style.background='#0891b2'; btbl.style.color='white'; btbl.style.borderColor='#0891b2';
+      bsw.style.background='transparent'; bsw.style.color='#94a3b8'; bsw.style.borderColor='#475569';
+      if (!tbl.hasChildNodes()) v11BuildTable(tbl);
+    }
+  };
+
+  /* ─────────────────────────────────────────────────────────────────────
+     VIEW 1 — JOURNEY SWIMLANE
+  ───────────────────────────────────────────────────────────────────── */
+  window.v11BuildSwimlane = function(el) {
+    var ORIGIN = new Date('2026-03-15');
+    var S = 7;
+    function df(d) { return Math.round((new Date(d)-ORIGIN)/86400000); }
+    function px(d) { return d*S; }
+
+    var TOTAL_DAYS = df('2026-10-05');
+    var TW = px(TOTAL_DAYS);
+
+    /* months */
+    var MONTHS = [
+      {label:'Apr 2026', d:'2026-04-01'},
+      {label:'May',      d:'2026-05-01'},
+      {label:'Jun',      d:'2026-06-01'},
+      {label:'Jul',      d:'2026-07-01'},
+      {label:'Aug',      d:'2026-08-01'},
+      {label:'Sep',      d:'2026-09-01'},
+      {label:'Oct',      d:'2026-10-01'},
+    ];
+
+    /* release ranges (for background shading) */
+    var RELS = [
+      {label:'R1', start:'2026-04-01', end:'2026-05-15', color:'#3b82f620'},
+      {label:'R2', start:'2026-05-16', end:'2026-06-30', color:'#8b5cf620'},
+      {label:'R3', start:'2026-07-01', end:'2026-08-15', color:'#f9731620'},
+      {label:'R4', start:'2026-08-16', end:'2026-10-01', color:'#dc262620'},
+    ];
+
+    /* journey lanes */
+    var LANES = [
+      {
+        id:'j1', icon:'🚗', label:'J1', name:'Survey & Ingest',
+        sub:'Pipeline runs throughout all releases',
+        color:'#0369a1', light:'#e0f2fe', height:100,
+        bars:[{start:'2026-04-01',end:'2026-10-01',label:'AutoFOV + Hardware pipeline — ongoing'}],
+        dots:[
+          {at:'2026-04-01', code:'O-BM-12', text:'AutoFOV Pipeline'},
+          {at:'2026-04-01', code:'O-BM-16', text:'DS QA/QC'},
+          {at:'2026-07-01', code:'H-01',    text:'Car Data Ingest'},
+          {at:'2026-07-01', code:'H-02',    text:'PSA Updates'},
+          {at:'2026-07-01', code:'H-03',    text:'Fleet Map View'},
+        ]
+      },
+      {
+        id:'j2', icon:'🗺️', label:'J2', name:'See My Coverage',
+        sub:'Operator understands boundary FOV end-to-end',
+        color:'#0891b2', light:'#cffafe', height:110,
+        bars:[{start:'2026-04-01',end:'2026-05-15',label:'R1 — See My Coverage (11 features)'}],
+        dots:[
+          {at:'2026-04-01', code:'P-01',    text:'RBAC'},
+          {at:'2026-04-01', code:'O-BM-01', text:'Campaign Map'},
+          {at:'2026-04-01', code:'O-BM-07', text:'DS Map'},
+          {at:'2026-04-01', code:'O-BM-14', text:'FOV Overlay'},
+          {at:'2026-04-08', code:'O-BM-06', text:'DS Panel'},
+          {at:'2026-04-08', code:'O-BM-13', text:'AutoFOV Panel'},
+        ]
+      },
+      {
+        id:'j3', icon:'🔍', label:'J3', name:'Gaps → LISAs',
+        sub:'Find coverage gaps (R2) then prioritise LISAs (R3)',
+        color:'#16a34a', light:'#dcfce7', height:140,
+        bars:[
+          {start:'2026-05-16',end:'2026-06-30',label:'R2 — Find My Gaps (9 features)', color:'#16a34a'},
+          {start:'2026-07-01',end:'2026-08-15',label:'R3 — Prioritise LISAs (11 features)', color:'#7c3aed'},
+        ],
+        dots:[
+          {at:'2026-05-16', code:'O-BM-17', text:'Gaps Pipeline', color:'#16a34a'},
+          {at:'2026-05-16', code:'O-BM-19', text:'Gaps Map',      color:'#16a34a'},
+          {at:'2026-05-16', code:'O-BM-22', text:'Assets: Gaps',  color:'#16a34a'},
+          {at:'2026-07-01', code:'O-BM-24', text:'LISAs Pipeline',color:'#7c3aed'},
+          {at:'2026-07-01', code:'O-BM-30', text:'PS2 Ranking',   color:'#7c3aed'},
+          {at:'2026-07-01', code:'O-BM-32', text:'Boundary Results',color:'#7c3aed'},
+        ]
+      },
+      {
+        id:'j4', icon:'📋', label:'J4', name:'Dispatch Investigation',
+        sub:'Supervisor assigns LISAs/Gaps to field investigators',
+        color:'#b45309', light:'#fef3c7', height:100,
+        bars:[{start:'2026-08-16',end:'2026-10-01',label:'R4 — Dispatch Investigation (9 features)'}],
+        dots:[
+          {at:'2026-08-16', code:'O-BM-34', text:'Assign LISAs'},
+          {at:'2026-08-16', code:'O-BM-36', text:'Investigation Dashboard'},
+          {at:'2026-08-16', code:'A-U-01',  text:'User Management'},
+          {at:'2026-08-23', code:'O-BM-35', text:'Assign Gaps'},
+          {at:'2026-08-23', code:'O-BM-37', text:'Investigation Sessions'},
+        ]
+      },
+      {
+        id:'j5', icon:'✅', label:'J5', name:'Close & Report',
+        sub:'Field results in, boundary results downloaded, V1 launches',
+        color:'#dc2626', light:'#fee2e2', height:110,
+        bars:[{start:'2026-08-16',end:'2026-10-01',label:'R4 — Close & Report + V1 Launch (13 features)'}],
+        dots:[
+          {at:'2026-08-16', code:'O-BM-38', text:'Investigation Results'},
+          {at:'2026-08-16', code:'O-BM-39', text:'Download Results'},
+          {at:'2026-08-23', code:'O-04',    text:'Manual Reports'},
+          {at:'2026-09-01', code:'P-14',    text:'NA Staging'},
+          {at:'2026-09-15', code:'P-10',    text:'🚀 NA Launch'},
+        ]
+      },
+    ];
+
+    /* build header */
+    var h = '<div class="sl-outer"><div class="sl-scroll">';
+    h += '<div class="sl-header-row">';
+    h += '<div class="sl-lhd" style="width:200px;min-width:200px">Journey</div>';
+    h += '<div style="position:relative;height:40px;flex:1;min-width:'+TW+'px">';
+    /* release shade labels */
+    for (var ri=0; ri<RELS.length; ri++) {
+      var rr=RELS[ri];
+      var rx=px(df(rr.start)), rw=px(df(rr.end)-df(rr.start));
+      h += '<div style="position:absolute;left:'+rx+'px;width:'+rw+'px;top:0;bottom:0;background:'+rr.color+';display:flex;align-items:center;justify-content:center">'
+        +  '<span style="font-size:11px;font-weight:800;color:white;opacity:.9">'+rr.label+'</span>'
+        + '</div>';
+    }
+    /* month markers */
+    for (var mi=0; mi<MONTHS.length; mi++) {
+      var mm=MONTHS[mi], mx=px(df(mm.d));
+      h += '<div class="sl-month" style="left:'+mx+'px;right:'+(mx===px(df(MONTHS[MONTHS.length-1].d))?'0':px(df(MONTHS[Math.min(mi+1,MONTHS.length-1)].d))-mx)+'px">'+mm.label+'</div>';
+    }
+    /* today line */
+    var todayPx = px(df('2026-03-23'));
+    h += '<div class="sl-today-hd" style="left:'+todayPx+'px"><div class="sl-today-hd-label">Today</div></div>';
+    h += '</div></div>'; /* header-row */
+
+    /* lane rows */
+    for (var li=0; li<LANES.length; li++) {
+      var L=LANES[li];
+      h += '<div class="sl-lane" style="min-height:'+L.height+'px">';
+      /* label */
+      h += '<div class="sl-lane-lbl" style="width:200px;min-width:200px;border-left:4px solid '+L.color+'">'
+        +  '<div style="display:flex;align-items:center;gap:6px">'
+        +    '<span style="font-size:20px">'+L.icon+'</span>'
+        +    '<div><div class="sl-lbl-ms" style="color:'+L.color+'">'+L.label+'</div>'
+        +    '<div class="sl-lbl-name">'+L.name+'</div></div>'
+        +  '</div>'
+        +  '<div class="sl-lbl-sub" style="margin-top:4px">'+L.sub+'</div>'
+        + '</div>';
+      /* track */
+      h += '<div class="sl-track" style="position:relative;flex:1;min-width:'+TW+'px;min-height:'+L.height+'px">';
+      /* release bg shading */
+      for (var ri2=0; ri2<RELS.length; ri2++) {
+        var rr2=RELS[ri2];
+        var rx2=px(df(rr2.start)), rw2=px(df(rr2.end)-df(rr2.start));
+        h += '<div style="position:absolute;left:'+rx2+'px;width:'+rw2+'px;top:0;bottom:0;background:'+rr2.color+'"></div>';
+      }
+      /* week lines */
+      for (var w=0; w<TOTAL_DAYS; w+=7) {
+        h += '<div class="sl-week-line" style="left:'+px(w)+'px;top:0;bottom:0"></div>';
+      }
+      /* today line */
+      h += '<div class="sl-today-line" style="left:'+todayPx+'px;top:0;bottom:0"></div>';
+      /* bars */
+      for (var bi=0; bi<L.bars.length; bi++) {
+        var b=L.bars[bi], bc=b.color||L.color;
+        var bx=px(df(b.start)), bw=px(df(b.end)-df(b.start));
+        h += '<div class="sl-ms-bar" style="left:'+(bx+4)+'px;width:'+(bw-8)+'px;height:36px;top:8px;background:'+bc+'">'
+          +  '<span class="sl-bar-label">'+b.label+'</span>'
+          + '</div>';
+      }
+      /* feature dots */
+      var dotTop = (L.bars.length > 1) ? 90 : 52;
+      var dotRowMap = {};
+      for (var di=0; di<L.dots.length; di++) {
+        var d=L.dots[di], dc=d.color||L.color;
+        var dx=px(df(d.at));
+        var row = dotRowMap[d.at] || 0;
+        dotRowMap[d.at] = row+1;
+        var dTop = dotTop + row*18;
+        h += '<div class="sl-feat-row" style="left:'+dx+'px;top:'+dTop+'px">'
+          +  '<div class="sl-feat-dot" style="background:'+dc+'"></div>'
+          +  '<span class="sl-feat-text" style="color:'+dc+'">'+d.code+' '+d.text+'</span>'
+          + '</div>';
+      }
+      /* compliance gates */
+      if (L.id==='j3') {
+        var euPx = px(df('2026-06-30'));
+        h += '<div class="sl-gate" style="left:'+euPx+'px;top:0;height:100%">'
+          +  '<div class="sl-gate-flag" style="background:#16a34a;color:white;top:4px">🇪🇺 EU Gate</div>'
+          + '</div>';
+      }
+      if (L.id==='j5') {
+        var phPx = px(df('2026-10-01'));
+        h += '<div class="sl-gate" style="left:'+phPx+'px;top:0;height:100%">'
+          +  '<div class="sl-gate-flag" style="background:#dc2626;color:white;top:4px">🇺🇸 PHMSA + 🚀 Launch</div>'
+          + '</div>';
+      }
+      h += '</div>'; /* track */
+      h += '</div>'; /* lane */
+    }
+
+    /* legend */
+    h += '<div style="padding:12px 16px;border-top:2px solid #e2e8f0;display:flex;gap:20px;flex-wrap:wrap;background:#f8fafc">';
+    h += '<div style="font-size:11px;font-weight:700;color:#64748b">Journeys:</div>';
+    var legendItems = [
+      {c:'#0369a1',l:'J1 Survey & Ingest'},
+      {c:'#0891b2',l:'J2 See My Coverage'},
+      {c:'#16a34a',l:'J3a Find My Gaps'},
+      {c:'#7c3aed',l:'J3b Prioritise LISAs'},
+      {c:'#b45309',l:'J4 Dispatch Investigation'},
+      {c:'#dc2626',l:'J5 Close & Report'},
+    ];
+    for (var gi=0; gi<legendItems.length; gi++) {
+      var g=legendItems[gi];
+      h += '<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#475569">'
+        +  '<div style="width:12px;height:12px;border-radius:3px;background:'+g.c+'"></div>'+g.l
+        + '</div>';
+    }
+    h += '</div>';
+
+    h += '</div></div>'; /* sl-scroll / sl-outer */
+    el.innerHTML = h;
+  };
+
+  /* ─────────────────────────────────────────────────────────────────────
+     VIEW 2 — DELIVERY TABLE
+  ───────────────────────────────────────────────────────────────────── */
+  window.v11BuildTable = function(el) {
+
+    /* journey config */
+    var JC = {
+      J1:  {label:'J1 Survey & Ingest',          color:'#0369a1', bg:'#e0f2fe'},
+      J2:  {label:'J2 See My Coverage',           color:'#0891b2', bg:'#cffafe'},
+      J3a: {label:'J3a Find My Gaps',             color:'#16a34a', bg:'#dcfce7'},
+      J3b: {label:'J3b Prioritise LISAs',         color:'#7c3aed', bg:'#ede9fe'},
+      J4:  {label:'J4 Dispatch Investigation',    color:'#b45309', bg:'#fef3c7'},
+      J5:  {label:'J5 Close & Report',            color:'#dc2626', bg:'#fee2e2'},
+    };
+    var RC = {R1:'#3b82f6',R2:'#8b5cf6',R3:'#f97316',R4:'#dc2626'};
+
+    function spBadge(sp) {
+      var fg,bg;
+      if(sp<=3){fg='#065f46';bg='#d1fae5'}
+      else if(sp<=5){fg='#1e40af';bg='#dbeafe'}
+      else if(sp<=8){fg='#92400e';bg='#fef3c7'}
+      else{fg='#7c2d12';bg='#ffedd5'}
+      return '<span style="display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;background:'+bg+';color:'+fg+'">'+sp+' SP</span>';
+    }
+    function jBadge(j) {
+      var jj=JC[j];
+      return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800;background:'+jj.bg+';color:'+jj.color+'">'+j+'</span>';
+    }
+    function rBadge(r) {
+      var c=RC[r]||'#64748b';
+      return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800;background:'+c+'20;color:'+c+'">'+r+'</span>';
+    }
+
+    /* ── ROWS data: 58 features + journey + delivery ────────────────── */
+    var ROWS = [
+      /* ── J1 Survey & Ingest ── */
+      {r:'R1',j:'J1',code:'O-BM-12',name:'AutoFOV Pipeline',
+       uval:'AutoFOV computation runs automatically after each driving session.',
+       delivery:'AutoFOV runs after every session — FOV data ready without manual trigger',sp:13},
+      {r:'R1',j:'J1',code:'O-BM-16',name:'Driving Session QA/QC',
+       uval:'Automated quality flags on sessions that fail coverage thresholds.',
+       delivery:'Low-quality sessions flagged before analysis — bad data stays out of gaps and LISAs',sp:8},
+      {r:'R3',j:'J1',code:'H-01',name:'Car Data Ingestion & Storage',
+       uval:'Survey car data automatically ingested and stored — GPS, sensor readings, timestamps.',
+       delivery:'Survey car data flows into cloud automatically after every drive',sp:13},
+      {r:'R3',j:'J1',code:'H-02',name:'PSA (in-car) Updates',
+       uval:'In-car PSA software receives over-the-air updates.',
+       delivery:'In-car firmware updates remotely — no field technician visits needed',sp:8},
+      {r:'R3',j:'J1',code:'H-03',name:'Fleet Map: Map View',
+       uval:'Live positions of all survey vehicles shown on the operations map.',
+       delivery:'All survey vehicles visible live on the operations map',sp:5},
+      /* ── J2 See My Coverage ── */
+      {r:'R1',j:'J2',code:'P-01',name:'RBAC & Multi-Tenancy Ph1',
+       uval:'Users log in and see only their tenant data.',
+       delivery:'Each user sees only their tenant's data from first login',sp:13},
+      {r:'R1',j:'J2',code:'A-O-02',name:'Operator Settings: General',
+       uval:'Operators configure default display units, map preferences, notifications.',
+       delivery:'Operator sets display defaults before their first boundary review',sp:3},
+      {r:'R1',j:'J2',code:'O-BM-01',name:'View Campaign (Map)',
+       uval:'Operators see their active survey campaign boundary on an interactive map.',
+       delivery:'Operator opens the app and sees their campaign boundary immediately',sp:8},
+      {r:'R1',j:'J2',code:'O-BM-06',name:'Driving Sessions Panel',
+       uval:'Side panel lists all driving sessions with status indicators.',
+       delivery:'All sessions listed with status — one click from the campaign map',sp:5},
+      {r:'R2',j:'J2',code:'O-BM-07',name:'View DS (Map)',
+       uval:'GPS tracks for every driving session shown as colored lines on the map.',
+       delivery:'Operator sees exactly which roads were surveyed — as colored tracks on the map',sp:8},
+      {r:'R2',j:'J2',code:'O-BM-08',name:'View DS (Table)',
+       uval:'Sortable, filterable table of all driving sessions.',
+       delivery:'Sessions filtered by status, sorted by date, bulk actions available',sp:5},
+      {r:'R2',j:'J2',code:'O-BM-09',name:'View DS (Tab)',
+       uval:'Quick-access tab on campaign detail panel shows DS count and status summary.',
+       delivery:'Session count and status accessible in one click from the campaign panel',sp:3},
+      {r:'R1',j:'J2',code:'O-BM-13',name:'AutoFOV Panel',
+       uval:'Panel shows AutoFOV pipeline status — processing, complete, or failed.',
+       delivery:'Operator sees AutoFOV status per session — silent failures are visible',sp:5},
+      {r:'R2',j:'J2',code:'O-BM-14',name:'AutoFOV Map Overlay',
+       uval:'AutoFOV coverage zones drawn as colored polygons on the map.',
+       delivery:'Coverage gaps visible as color-coded zones on the boundary map',sp:8},
+      {r:'R2',j:'J2',code:'O-BM-15',name:'AutoFOV Metadata',
+       uval:'Click any AutoFOV zone to open a metadata panel: date, vehicle, coverage %, confidence.',
+       delivery:'One click on a coverage zone reveals the full context behind it',sp:5},
+      {r:'R2',j:'J2',code:'A-O-04',name:'Operator Settings: Driving Session',
+       uval:'Operators configure how driving sessions are displayed.',
+       delivery:'Operator controls how DS tracks are sorted and colored before views launch',sp:3},
+      /* ── J3a Find My Gaps ── */
+      {r:'R1',j:'J3a',code:'O-BM-17',name:'Gaps Pipeline',
+       uval:'Automated gap detection pipeline runs on AutoFOV output.',
+       delivery:'Gap detection runs automatically — gaps ready to display without extra steps',sp:13},
+      {r:'R1',j:'J3a',code:'O-BM-18',name:'Gaps Panel',
+       uval:'Panel showing gaps pipeline status and summary counts.',
+       delivery:'Gaps count and pipeline health visible at a glance in the panel',sp:5},
+      {r:'R2',j:'J3a',code:'O-BM-19',name:'Gaps Map',
+       uval:'Gap segments shown as highlighted lines on the map.',
+       delivery:'Unsurveyed pipeline segments highlighted on the map — gaps are unmissable',sp:8},
+      {r:'R3',j:'J3a',code:'O-BM-20',name:'Gaps Table',
+       uval:'Full sortable table of all detected gaps.',
+       delivery:'Every gap listed with length, assets affected, and status in one table',sp:5},
+      {r:'R4',j:'J3a',code:'O-BM-21',name:'Gap Metadata',
+       uval:'Click any gap to see: length, GPS coordinates, assets affected, detection date.',
+       delivery:'One click on a gap reveals every field detail needed for dispatch decisions',sp:3},
+      {r:'R2',j:'J3a',code:'O-BM-22',name:'Highlighted Assets: Gaps',
+       uval:'Pipeline assets inside gap zones are highlighted in orange.',
+       delivery:'Assets at risk inside gaps highlighted — turns a gap polygon into an action list',sp:5},
+      {r:'R4',j:'J3a',code:'O-07',name:'LISA/Gap Geocode',
+       uval:'GPS coordinates for LISAs and Gaps resolved to human-readable street addresses.',
+       delivery:'Gap and LISA locations shown as street addresses — ready for regulator reports',sp:5},
+      {r:'R4',j:'J3a',code:'O-08',name:'Snap to Street',
+       uval:'LISA and Gap locations snapped to nearest street centreline.',
+       delivery:'Locations snap to road centrelines — accurate positions on every exported map',sp:5},
+      {r:'R1',j:'J3a',code:'P-27',name:'GIS Data Hub EU',
+       uval:'EU operators geographic data stored and served from EU infrastructure.',
+       delivery:'EU operator data stays in EU infrastructure from day one of onboarding',sp:8},
+      /* ── J3b Prioritise LISAs ── */
+      {r:'R2',j:'J3b',code:'O-BM-24',name:'LISAs Pipeline',
+       uval:'LISA computation pipeline detects Leak Indication Survey Areas with PS2 scoring.',
+       delivery:'LISA computation runs on AutoFOV output — every boundary scored automatically',sp:13},
+      {r:'R2',j:'J3b',code:'O-BM-25',name:'LISAs Panel',
+       uval:'Panel listing all LISAs detected — LISA ID, PS2 score, detection date, status.',
+       delivery:'All LISAs visible in a panel — entry point for prioritisation and dispatch',sp:5},
+      {r:'R2',j:'J3b',code:'O-BM-26',name:'LISAs Map',
+       uval:'LISA zones shown as polygon overlays on the map, color-coded by PS2 severity.',
+       delivery:'LISA zones on the map — high PS2 areas stand out immediately',sp:8},
+      {r:'R3',j:'J3b',code:'O-BM-27',name:'LISAs Table',
+       uval:'Full sortable table of all LISAs — ID, PS2 score, coordinates, investigation status.',
+       delivery:'All LISAs sortable by PS2 — analysts select the highest-priority cases',sp:5},
+      {r:'R4',j:'J3b',code:'O-BM-28',name:'LISA Metadata',
+       uval:'Click any LISA to see: PS2 score history, contributing driving sessions, coordinates.',
+       delivery:'Full LISA context in one click — no external lookups needed before assignment',sp:3},
+      {r:'R4',j:'J3b',code:'O-BM-29',name:'Highlighted Assets: LISAs',
+       uval:'Pipeline assets within LISA zones highlighted.',
+       delivery:'Assets inside LISAs highlighted — risk is visible before investigation begins',sp:5},
+      {r:'R3',j:'J3b',code:'O-BM-30',name:'LISA PS2 Ranking & Metadata',
+       uval:'LISAs ranked by PS2 score with a metadata panel — score history, AutoFOV zone.',
+       delivery:'LISAs ordered by PS2 score — highest-risk boundaries always at the top',sp:5},
+      {r:'R3',j:'J3b',code:'O-BM-32',name:'Boundary Results',
+       uval:'Aggregated view of all boundary results — totals, status breakdown, compliance summary.',
+       delivery:'All boundary results in one compliance summary — ready for regulator review',sp:8},
+      {r:'R3',j:'J3b',code:'O-BM-33',name:'Download Boundary Results',
+       uval:'Export all boundary data as structured CSV/PDF for regulator submission.',
+       delivery:'Full boundary dataset exported in one click — EU LDAR submission ready',sp:5},
+      {r:'R3',j:'J3b',code:'A-I-01',name:'Investigation: Components',
+       uval:'Configurable form components for investigations — text, photo, GPS, severity.',
+       delivery:'Investigation form building blocks ready — any tenant workflow can be configured',sp:8},
+      {r:'R3',j:'J3b',code:'A-I-02',name:'Investigation: Templates',
+       uval:'Pre-built investigation templates configured per tenant.',
+       delivery:'Tenant investigation templates ready — field teams know exactly what to capture',sp:5},
+      /* ── J4 Dispatch Investigation ── */
+      {r:'R4',j:'J4',code:'O-BM-02',name:'View Campaign Symbology',
+       uval:'Campaign boundaries displayed with customisable symbols and colors.',
+       delivery:'Campaign map is unambiguous with consistent symbology across all states',sp:3},
+      {r:'R4',j:'J4',code:'O-BM-34',name:'Assign LISAs for Investigation',
+       uval:'Select LISAs from table or map and assign to a field investigator.',
+       delivery:'Supervisor selects a LISA and assigns it to an investigator in one action',sp:8},
+      {r:'R4',j:'J4',code:'O-BM-35',name:'Assign Gaps for Investigation',
+       uval:'Select Gaps and assign for re-survey investigation.',
+       delivery:'Gaps assigned for re-survey with the same workflow as LISA assignment',sp:8},
+      {r:'R4',j:'J4',code:'O-BM-36',name:'View & Assign Investigations',
+       uval:'Investigation dashboard showing all open, in-progress, and closed cases.',
+       delivery:'All investigations in one dashboard — managers see workload and progress',sp:8},
+      {r:'R4',j:'J4',code:'O-BM-37',name:'Show Investigation Sessions',
+       uval:'Open an investigation to see all field sessions logged: who, when, GPS, measurements.',
+       delivery:'Every field session tied to an investigation — full PHMSA audit trail',sp:5},
+      {r:'R3',j:'J4',code:'A-U-01',name:'User Management',
+       uval:'Tenant Admins invite users, assign roles, deactivate accounts.',
+       delivery:'Tenant admin manages all users without Picarro support involvement',sp:8},
+      {r:'R3',j:'J4',code:'A-U-02',name:'User Settings: General',
+       uval:'Per-user settings: display units, default map view, notification preferences.',
+       delivery:'Each investigator personalises their view — metric or imperial, their preferred map',sp:3},
+      {r:'R1',j:'J4',code:'A-T-05',name:'Tenant Settings: PS2',
+       uval:'Tenant Admin sets the PS2 score threshold that defines significant leak indications.',
+       delivery:'PS2 threshold set per tenant — LISA scoring calibrated before first survey',sp:5},
+      {r:'R1',j:'J4',code:'A-T-06',name:'Tenant Settings: RFR',
+       uval:'Admins configure Repeat False Reading parameters.',
+       delivery:'RFR parameters configured before data collection — quality baseline set upfront',sp:5},
+      /* ── J5 Close & Report ── */
+      {r:'R4',j:'J5',code:'O-BM-38',name:'Show Investigation Results',
+       uval:'Investigation results: confirmed leak, false positive, deferred, or inconclusive.',
+       delivery:'Investigation outcomes recorded and categorised — every case has a closure state',sp:8},
+      {r:'R4',j:'J5',code:'O-BM-39',name:'Download Investigation Results',
+       uval:'Export all investigation cases as structured file for PHMSA ALDP documentation.',
+       delivery:'Full investigation record exported as PHMSA ALDP package in one download',sp:5},
+      {r:'R4',j:'J5',code:'O-04',name:'Manual Report Creation',
+       uval:'Create a manual survey report from scratch.',
+       delivery:'Field teams capture edge-case surveys manually — every survey has a record',sp:8},
+      {r:'R4',j:'J5',code:'O-05',name:'Manual Report Artifacts',
+       uval:'Attach photos, measurements, and documents to a manual report.',
+       delivery:'Photo and measurement evidence attached to reports — credible for regulators',sp:5},
+      {r:'R4',j:'J5',code:'O-06',name:'Manual Report Labels',
+       uval:'Add labels, tags, and categories to reports.',
+       delivery:'Reports tagged and labelled — findable across hundreds of campaign records',sp:3},
+      {r:'R4',j:'J5',code:'P-10',name:'P-Cubed Pro NA V1 Launch',
+       uval:'NA production environment is live — all operators can use full V1 feature set.',
+       delivery:'P-Cubed Pro V1 live for all NA operators on Oct 1',sp:5},
+      {r:'R4',j:'J5',code:'P-11',name:'P-Cubed Pro EU Launch',
+       uval:'EU production environment is live — EU operators certified against EU 2024/1787.',
+       delivery:'P-Cubed Pro V1 live for EU operators with certified EU data residency',sp:5},
+      {r:'R3',j:'J5',code:'P-14',name:'P-Cubed Pro NA Staging',
+       uval:'Full NA staging environment for QA teams to test before V1 launch.',
+       delivery:'NA staging ready — 6 weeks of regression testing before Oct 1 launch',sp:8},
+      {r:'R3',j:'J5',code:'P-15',name:'P-Cubed Pro EU Staging',
+       uval:'EU-region staging environment for EU-specific compliance testing.',
+       delivery:'EU staging live — EU compliance certification testable before launch',sp:8},
+      {r:'R3',j:'J5',code:'P-21',name:'Centralized Logging',
+       uval:'All application logs centralized — ops team can debug production issues immediately.',
+       delivery:'Every production error traceable — ops team can debug without guesswork',sp:8},
+      {r:'R3',j:'J5',code:'P-23',name:'Dynamic User Manual',
+       uval:'In-app user manual with context-sensitive help.',
+       delivery:'Users get in-context help without leaving the product — support costs drop at launch',sp:5},
+      {r:'R3',j:'J5',code:'A-O-03',name:'Operator Settings: Summary',
+       uval:'A summary view showing all operator settings in one screen.',
+       delivery:'New operator onboarding: admin audits all settings in one screen',sp:3},
+      {r:'R3',j:'J5',code:'A-O-05',name:'Licensed Features',
+       uval:'Operators see which features are enabled by their subscription tier.',
+       delivery:'Operators see exactly which features are in their subscription — no confusion',sp:3},
+    ];
+
+    /* ── journey summary strip ─────────────────────────────────────────── */
+    var journeyCounts = {};
+    var journeySP = {};
+    var journeyRels = {J1:'R1-R3',J2:'R1-R2',J3a:'R1-R2',J3b:'R2-R3',J4:'R1,R3-R4',J5:'R3-R4'};
+    for (var i=0;i<ROWS.length;i++) {
+      var jj=ROWS[i].j;
+      journeyCounts[jj]=(journeyCounts[jj]||0)+1;
+      journeySP[jj]=(journeySP[jj]||0)+ROWS[i].sp;
+    }
+
+    var stripH = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">';
+    var jKeys = ['J1','J2','J3a','J3b','J4','J5'];
+    for (var ki=0;ki<jKeys.length;ki++) {
+      var k=jKeys[ki], jcfg=JC[k];
+      stripH += '<div style="flex:1;min-width:140px;background:'+jcfg.bg+';border-radius:10px;padding:12px 14px;border-left:4px solid '+jcfg.color+'">'
+        + '<div style="font-size:11px;font-weight:800;color:'+jcfg.color+';margin-bottom:2px">'+k+'</div>'
+        + '<div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:2px">'+jcfg.label.replace(k+' ','')+'</div>'
+        + '<div style="display:flex;gap:8px;margin-top:4px">'
+          + '<span style="font-size:11px;font-weight:700;color:'+jcfg.color+'">'+journeyCounts[k]+' features</span>'
+          + '<span style="font-size:11px;color:#64748b">·</span>'
+          + '<span style="font-size:11px;color:#64748b">'+journeySP[k]+' SP</span>'
+        + '</div>'
+      + '</div>';
+    }
+    stripH += '</div>';
+
+    /* ── dual filter row ───────────────────────────────────────────────── */
+    var filterJourney = 'ALL', filterRelease = 'ALL';
+    var filterH = '<div style="background:#f8fafc;border-radius:10px;padding:12px 16px;margin-bottom:14px;border:1px solid #e2e8f0">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">'
+        + '<span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Journey:</span>'
+        + ['ALL','J1','J2','J3a','J3b','J4','J5'].map(function(v){
+            return '<button id="v11-fj-'+v+'" onclick="v11Filter('j',''+v+'')" style="padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;background:white;color:#374151">'+v+'</button>';
+          }).join('')
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+        + '<span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px">Release:</span>'
+        + ['ALL','R1','R2','R3','R4'].map(function(v){
+            var c={'R1':'#3b82f6','R2':'#8b5cf6','R3':'#f97316','R4':'#dc2626'}[v]||'#64748b';
+            return '<button id="v11-fr-'+v+'" onclick="v11Filter('r',''+v+'')" style="padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid '+(v==='ALL'?'#e2e8f0':c+'60')+';background:white;color:#374151">'+v+'</button>';
+          }).join('')
+        + '<span id="v11-tbl-count" style="margin-left:auto;font-size:12px;font-weight:700;color:#0891b2"></span>'
+      + '</div>'
+    + '</div>';
+
+    /* ── table shell ──────────────────────────────────────────────────── */
+    var tableH = '<div style="background:white;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.06)">'
+      + '<table style="width:100%;border-collapse:collapse;font-family:inherit">'
+      + '<thead><tr style="background:#0f172a">'
+        + '<th style="padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;width:100px">Journey / Release</th>'
+        + '<th style="padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;min-width:160px">Feature</th>'
+        + '<th style="padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;min-width:220px">What user can do</th>'
+        + '<th style="padding:10px 12px;text-align:left;font-size:10px;font-weight:700;color:#0891b2;text-transform:uppercase;letter-spacing:.5px;min-width:220px">What it delivers — one line</th>'
+        + '<th style="padding:10px 12px;text-align:center;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;width:70px">SP</th>'
+      + '</tr></thead>'
+      + '<tbody id="v11-tbody"></tbody>'
+      + '</table></div>';
+
+    el.innerHTML = stripH + filterH + tableH;
+
+    /* ── render + filter logic ─────────────────────────────────────────── */
+    window.v11FJ = 'ALL';
+    window.v11FR = 'ALL';
+
+    window.v11Filter = function(type, val) {
+      if (type==='j') v11FJ=val; else v11FR=val;
+      /* update button styles */
+      ['ALL','J1','J2','J3a','J3b','J4','J5'].forEach(function(v){
+        var b=document.getElementById('v11-fj-'+v);
+        if(!b) return;
+        var active=(v===v11FJ);
+        var jcfg=JC[v]||null;
+        b.style.background  = active ? (jcfg?jcfg.color:'#475569') : 'white';
+        b.style.color       = active ? 'white' : '#374151';
+        b.style.borderColor = active ? (jcfg?jcfg.color:'#475569') : '#e2e8f0';
+      });
+      ['ALL','R1','R2','R3','R4'].forEach(function(v){
+        var b=document.getElementById('v11-fr-'+v);
+        if(!b) return;
+        var active=(v===v11FR);
+        var c={'R1':'#3b82f6','R2':'#8b5cf6','R3':'#f97316','R4':'#dc2626'}[v]||'#64748b';
+        b.style.background  = active ? c : 'white';
+        b.style.color       = active ? 'white' : '#374151';
+        b.style.borderColor = active ? c : (v==='ALL'?'#e2e8f0':c+'60');
+      });
+      v11Render();
+    };
+
+    window.v11Render = function() {
+      var filtered = ROWS.filter(function(r){
+        return (v11FJ==='ALL'||r.j===v11FJ) && (v11FR==='ALL'||r.r===v11FR);
+      });
+      var tbody = document.getElementById('v11-tbody');
+      if (!tbody) return;
+      var totalSP = filtered.reduce(function(s,r){return s+r.sp;},0);
+      var cnt = document.getElementById('v11-tbl-count');
+      if (cnt) cnt.textContent = filtered.length+' features · '+totalSP+' SP';
+      tbody.innerHTML = filtered.map(function(row,i){
+        var jcfg=JC[row.j];
+        var bg = i%2===0?'':'background:#fafbff';
+        return '<tr style="border-bottom:1px solid #f1f5f9;'+bg+'">'
+          + '<td style="padding:10px 12px;vertical-align:top;white-space:nowrap">'
+              + '<div>'+jBadge(row.j)+'</div>'
+              + '<div style="margin-top:4px">'+rBadge(row.r)+'</div>'
+          + '</td>'
+          + '<td style="padding:10px 12px;vertical-align:top">'
+              + '<div style="font-size:10px;font-weight:700;color:'+jcfg.color+';margin-bottom:2px">'+row.code+'</div>'
+              + '<div style="font-size:12px;font-weight:600;color:#1e293b">'+row.name+'</div>'
+          + '</td>'
+          + '<td style="padding:10px 12px;vertical-align:top;font-size:11px;color:#374151;line-height:1.6;max-width:240px">'+row.uval+'</td>'
+          + '<td style="padding:10px 12px;vertical-align:top;font-size:11px;color:#0369a1;line-height:1.6;max-width:240px;font-weight:600">'+row.delivery+'</td>'
+          + '<td style="padding:10px 12px;vertical-align:middle;text-align:center">'+spBadge(row.sp)+'</td>'
+        + '</tr>';
+      }).join('');
+    };
+
+    v11Filter('j','ALL');
+    v11Render();
+  };
+
+  /* lazy-build swimlane immediately (default view) */
+  v11BuildSwimlane(document.getElementById('v11-sw-view'));
 }
 
 </script>
