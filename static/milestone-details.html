@@ -324,6 +324,7 @@
         <li><button class="sb-sub-btn" id="sbtab-adpv9" onclick="switchInnerTab('adpv9')">🚀 Vertical Slice Proposal V9</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv10" onclick="switchInnerTab('adpv10')">🔀 Journey Release Plan V10</button></li>
         <li><button class="sb-sub-btn" id="sbtab-adpv11" onclick="switchInnerTab('adpv11')">🧭 Journey Plan V11</button></li>
+<li><button class="sb-sub-btn" id="sbtab-adpv12" onclick="switchInnerTab('adpv12')">🤝 Parallel Team Plan V12</button></li>
       </ul>
     </li>
     <li class="sb-item">
@@ -357,6 +358,7 @@
     <button class="inner-tab-btn" id="itab-adpv9" onclick="switchInnerTab('adpv9')" style="background:linear-gradient(135deg,#1a73e8,#34a853);color:white;border-color:#1a73e8">🚀 Vertical Slice Proposal V9</button>
     <button class="inner-tab-btn" id="itab-adpv10" onclick="switchInnerTab('adpv10')" style="background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;border-color:#7c3aed">🔀 Journey Release Plan V10</button>
     <button class="inner-tab-btn" id="itab-adpv11" onclick="switchInnerTab('adpv11')" style="background:linear-gradient(135deg,#f97316,#dc2626);color:white;border-color:#f97316">🧭 Journey Plan V11</button>
+<button class="inner-tab-btn" id="itab-adpv12" onclick="switchInnerTab('adpv12')" style="background:linear-gradient(135deg,#0369a1,#b45309);color:white;border-color:#0369a1">🤝 Parallel Team V12</button>
   </div>
 
   <!-- DETAIL TAB CONTENT -->
@@ -1041,6 +1043,10 @@
     <div id="adpv11-content"></div>
   </div><!-- adpv11-tab -->
 
+  <div id="adpv12-tab" style="display:none">
+    <div id="adpv12-content"></div>
+  </div><!-- adpv12-tab -->
+
 </div><!-- main-inner -->
 <footer>P-Cubed Pro · Project Horizon · Milestone Deep Plan · March 20, 2026 · Confidential — Internal Leadership Use Only</footer>
 </div><!-- main -->
@@ -1049,7 +1055,7 @@
 <script>
 // ── Inner tab switching ──────────────────────────────────────────────
 function switchInnerTab(tab) {
-  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8','adpv9','adpv10','adpv11'].forEach(t => {
+  ['detail','gantt','roadmap','prdmap','adp','adpv2','adpv3','adpv4','adpv5','adpv6','adpv7','adpv8','adpv9','adpv10','adpv11','adpv12'].forEach(t => {
     document.getElementById(t+'-tab').style.display = tab===t ? 'block' : 'none';
     document.getElementById('itab-'+t).classList.toggle('active', tab===t);
   });
@@ -1070,6 +1076,7 @@ function switchInnerTab(tab) {
   if (tab==='adpv9' && !document.getElementById('adpv9-content').hasChildNodes()) buildADPv9();
   if (tab==='adpv10' && !document.getElementById('adpv10-content').hasChildNodes()) buildADPv10();
   if (tab==='adpv11' && !document.getElementById('adpv11-content').hasChildNodes()) buildADPv11();
+  if (tab==='adpv12' && !document.getElementById('adpv12-content').hasChildNodes()) buildADPv12();
 }
 
 // ── Gantt chart builder ──────────────────────────────────────────────
@@ -5780,6 +5787,436 @@ function buildADPv11() {
   /* lazy-build swimlane immediately (default view) */
   v11BuildSwimlane(document.getElementById('v11-sw-view'));
 }
+
+function buildADPv12() {
+  var el = document.getElementById('adpv12-content');
+  if (!el) return;
+
+  /* ── colour palette ── */
+  var C = {
+    t1bg:'#0c2a4a', t1bar:'#0369a1', t1txt:'#7dd3fc',
+    t2bg:'#2d1a00', t2bar:'#b45309', t2txt:'#fcd34d',
+    r4bg:'#0f1a2e', r4bar:'#1d4ed8',
+    tst:'#1a1a2e', tstbdr:'#6366f1',
+    J1:'#0e7490', J2:'#0891b2', J3a:'#15803d', J3b:'#7c3aed', J4:'#b45309', J5:'#dc2626'
+  };
+
+  /* ── ROWS (58 features) ── */
+  var ROWS = [
+    /* J1 — Survey & Ingest (T1) */
+    {code:'O-BM-12',name:'Campaign Boundary Map Display',    j:'J1',team:'T1',r:'R1',sp:13,uval:'See your survey campaign on the map',delivery:'Renders campaign polygon boundaries on the operator map'},
+    {code:'O-BM-16',name:'Driving Session Filtering',        j:'J1',team:'T1',r:'R1',sp:8, uval:'Filter driving sessions by date/vehicle',delivery:'Filter bar to scope sessions by date range and vehicle ID'},
+    {code:'H-01',   name:'Car Data Ingestion - GPS',         j:'J1',team:'T1',r:'R3',sp:13,uval:'GPS track ingested automatically from car',delivery:'Ingests GPS stream from car hardware into pipeline'},
+    {code:'H-02',   name:'Car Data Ingestion - Methane',     j:'J1',team:'T1',r:'R3',sp:8, uval:'Methane readings arrive in real time',delivery:'Ingests CH4 sensor readings and timestamps from car'},
+    {code:'H-03',   name:'Car Data Ingestion - Config',      j:'J1',team:'T1',r:'R3',sp:5, uval:'Car config synced before survey',delivery:'Syncs car hardware config profile at session start'},
+    /* J2 — See My Coverage (T2) */
+    {code:'P-01',   name:'P-Cubed Pro Multi-Tenant Platform',j:'J2',team:'T2',r:'R2',sp:13,uval:'Operators log in to their own isolated tenant',delivery:'Multi-tenant auth + data isolation per operator org'},
+    {code:'A-O-02', name:'Operator Settings - Coverage',     j:'J2',team:'T2',r:'R2',sp:3, uval:'Configure coverage display preferences',delivery:'Settings panel for coverage map defaults per operator'},
+    {code:'O-BM-01',name:'Campaign List View',               j:'J2',team:'T2',r:'R2',sp:8, uval:'See all campaigns in a sortable table',delivery:'Paginated campaign list with status badges and search'},
+    {code:'O-BM-06',name:'Campaign Map View',                j:'J2',team:'T2',r:'R2',sp:5, uval:'View campaigns geographically on map',delivery:'Map layer rendering campaign polygons colour-coded by status'},
+    {code:'O-BM-13',name:'Campaign Status Panel',            j:'J2',team:'T2',r:'R2',sp:5, uval:'See campaign progress at a glance',delivery:'Side panel showing campaign completion %, date range, SP count'},
+    {code:'O-BM-07',name:'Driving Session Map Layer',        j:'J2',team:'T2',r:'R2',sp:8, uval:'See driving routes on the map',delivery:'Renders driving session polylines on campaign map'},
+    {code:'O-BM-08',name:'Driving Session Table',            j:'J2',team:'T2',r:'R2',sp:5, uval:'Browse all driving sessions in a table',delivery:'Sortable/filterable session table with vehicle, date, duration'},
+    {code:'O-BM-09',name:'Driving Session Detail',           j:'J2',team:'T2',r:'R2',sp:3, uval:'Drill into one session for full details',delivery:'Detail panel: route replay, methane readings, QA flags'},
+    {code:'O-BM-14',name:'AutoFOV Map Layer',                j:'J2',team:'T2',r:'R2',sp:8, uval:'See AutoFOV coverage zones on map',delivery:'Renders AutoFOV polygons with confidence shading'},
+    {code:'O-BM-15',name:'AutoFOV Metadata Panel',           j:'J2',team:'T2',r:'R2',sp:5, uval:'Inspect AutoFOV computation details',delivery:'Panel showing FOV algorithm version, confidence score, date'},
+    {code:'A-O-04', name:'Operator Settings - Driving Session',j:'J2',team:'T2',r:'R2',sp:3,uval:'Set driving session display preferences',delivery:'Settings for DS layer colours, clustering threshold'},
+    /* J3a — Gaps (T1) */
+    {code:'O-BM-17',name:'Gap Detection Setup',              j:'J3a',team:'T1',r:'R1',sp:13,uval:'Configure gap detection parameters',delivery:'Admin panel to set gap threshold, distance, algorithm version'},
+    {code:'O-BM-18',name:'Gap Configuration Panel',          j:'J3a',team:'T1',r:'R1',sp:5, uval:'Tune gap detection per campaign',delivery:'Per-campaign override for gap detection sensitivity'},
+    {code:'P-27',   name:'Investigation PRD - Gap Workflow',  j:'J3a',team:'T1',r:'R1',sp:8, uval:'Gap-to-investigation workflow defined',delivery:'Spec + acceptance criteria for gap → dispatch handoff flow'},
+    {code:'O-BM-19',name:'Gap Detection Results Map',        j:'J3a',team:'T1',r:'R3',sp:8, uval:'See gap locations on the map',delivery:'Map layer showing detected gaps as coloured segments'},
+    {code:'O-BM-22',name:'Highlighted Assets for Gaps',      j:'J3a',team:'T1',r:'R3',sp:5, uval:'See which assets are inside a gap zone',delivery:'Highlights pipe/valve assets that fall within gap boundaries'},
+    {code:'O-BM-20',name:'Gap Table View',                   j:'J3a',team:'T1',r:'R3',sp:5, uval:'Browse all gaps in a sortable table',delivery:'Paginated gap table with severity, length, campaign columns'},
+    {code:'O-BM-21',name:'Gap Metadata Panel',               j:'J3a',team:'T1',r:'R3',sp:3, uval:'Inspect gap details and confidence',delivery:'Detail panel: gap coords, algorithm confidence, FOV context'},
+    {code:'O-07',   name:'Gap Report Generation',            j:'J3a',team:'T1',r:'R3',sp:5, uval:'Export gaps as a compliance report',delivery:'Generates PDF/CSV gap report with EU 2024/1787 metadata'},
+    {code:'O-08',   name:'Gap Report - Geocode',             j:'J3a',team:'T1',r:'R3',sp:5, uval:'Reports include street address for each gap',delivery:'Reverse-geocodes gap coordinates into human-readable addresses'},
+    /* J3b — LISAs (T1) */
+    {code:'O-BM-24',name:'LISA Pipeline Integration',        j:'J3b',team:'T1',r:'R3',sp:13,uval:'LISA scores computed automatically',delivery:'Connects AutoFOV output to LISA microservice pipeline'},
+    {code:'O-BM-25',name:'LISA Panel',                       j:'J3b',team:'T1',r:'R3',sp:5, uval:'See LISA details in a side panel',delivery:'Slide-out panel showing LISA attributes, PS2 score, status'},
+    {code:'O-BM-26',name:'LISA Map Layer',                   j:'J3b',team:'T1',r:'R3',sp:8, uval:'See LISAs on the map',delivery:'Map layer rendering LISA polygons colour-coded by PS2 score'},
+    {code:'O-BM-27',name:'LISA Table',                       j:'J3b',team:'T1',r:'R3',sp:5, uval:'Browse all LISAs in a sortable table',delivery:'Paginated LISA table with PS2, status, campaign, date columns'},
+    {code:'O-BM-28',name:'LISA Metadata Panel',              j:'J3b',team:'T1',r:'R3',sp:3, uval:'Inspect LISA computation details',delivery:'Panel showing LISA algorithm version, confidence, boundary area'},
+    {code:'O-BM-29',name:'LISA PS2 Ranking',                 j:'J3b',team:'T1',r:'R3',sp:5, uval:'See LISAs ranked by PS2 score',delivery:'Sorted PS2 leaderboard view for prioritising investigation'},
+    {code:'O-BM-30',name:'Highlighted Assets for LISAs',     j:'J3b',team:'T1',r:'R3',sp:5, uval:'See assets inside each LISA boundary',delivery:'Highlights pipe assets within LISA polygon extents'},
+    {code:'O-BM-32',name:'Boundary Results View',            j:'J3b',team:'T1',r:'R3',sp:8, uval:'Review combined boundary analysis results',delivery:'Unified results view: gaps + LISAs + FOV in one panel'},
+    {code:'O-BM-33',name:'Boundary Results Download',        j:'J3b',team:'T1',r:'R3',sp:5, uval:'Download all boundary results as CSV',delivery:'Bulk CSV export of gaps + LISAs with regulatory metadata'},
+    {code:'A-I-01', name:'Investigation Component Framework',  j:'J3b',team:'T1',r:'R3',sp:8, uval:'Investigation UI components ready to use',delivery:'Reusable React components: assignment card, status badge, timeline'},
+    {code:'A-I-02', name:'Investigation Template Library',    j:'J3b',team:'T1',r:'R3',sp:5, uval:'Choose from standard investigation templates',delivery:'Library of pre-defined investigation workflows (leak, gap, LISA)'},
+    /* J4 — Dispatch Investigation (T2) */
+    {code:'A-T-05', name:'Technician Assignment Setup',       j:'J4',team:'T2',r:'R2',sp:5, uval:'Assign field technicians to investigations',delivery:'Tech roster management with skills and availability fields'},
+    {code:'A-T-06', name:'Technician Routing Config',         j:'J4',team:'T2',r:'R2',sp:5, uval:'Configure routing rules for field teams',delivery:'Dispatch rules engine: zone-based tech assignment logic'},
+    {code:'A-U-02', name:'User Role - Field Technician',      j:'J4',team:'T2',r:'R2',sp:3, uval:'Field tech has scoped view of assigned work',delivery:'RBAC role with read-only map + assigned-investigations access'},
+    {code:'O-BM-02',name:'Campaign Symbology',               j:'J4',team:'T2',r:'R4',sp:3, uval:'Distinguish campaign types by symbol',delivery:'Symbol library for campaign types (survey, inspection, LDAR)'},
+    {code:'O-BM-34',name:'Dispatch Investigation',           j:'J4',team:'T2',r:'R4',sp:8, uval:'Send a field team to investigate a LISA/gap',delivery:'One-click dispatch flow: LISA/gap → work order → technician'},
+    {code:'O-BM-35',name:'Investigation Assignment View',    j:'J4',team:'T2',r:'R4',sp:8, uval:'See who is assigned to each investigation',delivery:'Assignment board with tech name, ETA, investigation status'},
+    {code:'O-BM-36',name:'Field Investigation Results',      j:'J4',team:'T2',r:'R4',sp:8, uval:'Review what the field team found',delivery:'Results form: leak grade, repair action, notes, photo upload'},
+    {code:'O-BM-37',name:'Investigation Status Tracking',    j:'J4',team:'T2',r:'R4',sp:5, uval:'Track investigation from open to closed',delivery:'Status pipeline: Open → Dispatched → In Progress → Closed'},
+    {code:'A-U-01', name:'User Role - Operator',             j:'J4',team:'T2',r:'R4',sp:8, uval:'Operator has full campaign + dispatch access',delivery:'RBAC role with full BM + investigation + settings permissions'},
+    /* J5 — Close & Report (T2) */
+    {code:'O-BM-38',name:'Investigation Results Download',   j:'J5',team:'T2',r:'R2',sp:8, uval:'Export investigation results to CSV',delivery:'CSV export of all investigation records with PHMSA fields'},
+    {code:'O-BM-39',name:'Investigation Summary Export',     j:'J5',team:'T2',r:'R2',sp:5, uval:'Get a summary report of investigations',delivery:'PDF summary: open/closed counts, avg resolution time, map'},
+    {code:'O-04',   name:'Manual Report Generation',         j:'J5',team:'T2',r:'R2',sp:8, uval:'Create a manual report for any survey',delivery:'Report builder: select campaign → choose sections → export PDF'},
+    {code:'O-05',   name:'Report Geocode Attachment',        j:'J5',team:'T2',r:'R2',sp:5, uval:'Reports include street address for findings',delivery:'Attaches reverse-geocoded address to every finding in report'},
+    {code:'O-06',   name:'Snap to Street Utility',           j:'J5',team:'T2',r:'R2',sp:3, uval:'GPS points snap to the nearest road',delivery:'Map utility that snaps raw GPS coords to road centreline'},
+    {code:'P-10',   name:'P-Cubed Pro NA Launch Prep',       j:'J5',team:'T2',r:'R4',sp:5, uval:'NA tenant fully configured for launch',delivery:'NA region config: data residency, SLA, support routing'},
+    {code:'P-11',   name:'P-Cubed Pro EU Launch Prep',       j:'J5',team:'T2',r:'R4',sp:5, uval:'EU tenant compliant and ready',delivery:'EU region config: GDPR data residency, EU 2024/1787 flags'},
+    {code:'P-14',   name:'NA Staging Environment',           j:'J5',team:'T2',r:'R4',sp:8, uval:'Test in a staging copy of production',delivery:'Full NA staging environment with prod data snapshot pipeline'},
+    {code:'P-15',   name:'EU Staging Environment',           j:'J5',team:'T2',r:'R4',sp:8, uval:'EU staging ready for compliance testing',delivery:'EU staging with GDPR-compliant anonymised data pipeline'},
+    {code:'P-21',   name:'Centralized Logging',              j:'J5',team:'T2',r:'R4',sp:8, uval:'All system logs in one place',delivery:'Centralised log aggregation (CloudWatch / ELK) with alerting'},
+    {code:'P-23',   name:'Performance Benchmarking',         j:'J5',team:'T2',r:'R4',sp:5, uval:'System meets SLA before launch',delivery:'Load test suite validating p95 < 2s for key API endpoints'},
+    {code:'A-O-03', name:'Operator Settings - Summary',      j:'J5',team:'T2',r:'R4',sp:3, uval:'See all your settings in one summary page',delivery:'Read-only settings overview page for operator admins'},
+    {code:'A-O-05', name:'Operator Settings - Licensed Features',j:'J5',team:'T2',r:'R4',sp:3,uval:'See which features are enabled for your org',delivery:'Licensed feature flags panel per operator org'}
+  ];
+
+  /* ── helpers ── */
+  function jBadge(j) {
+    var jc = {J1:'#0e7490',J2:'#0891b2',J3a:'#15803d',J3b:'#7c3aed',J4:'#b45309',J5:'#dc2626'};
+    return '<span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;color:white;background:'+jc[j]+'">'+j+'</span>';
+  }
+  function rBadge(r) {
+    var rc = {R1:'#2563eb',R2:'#7c3aed',R3:'#ea580c',R4:'#dc2626'};
+    return '<span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;color:white;background:'+(rc[r]||'#64748b')+'">'+r+'</span>';
+  }
+  function tBadge(t) {
+    return t==='T1'
+      ? '<span style="display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;color:white;background:#0369a1">T1</span>'
+      : '<span style="display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;color:white;background:#b45309">T2</span>';
+  }
+  function spBadge(n) {
+    var col = n>=13?'#dc2626':n>=8?'#b45309':n>=5?'#0369a1':'#374151';
+    return '<span style="display:inline-block;min-width:28px;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:800;color:white;background:'+col+';text-align:center">'+n+'</span>';
+  }
+
+  /* ── outer shell ── */
+  el.innerHTML =
+    '<div id="v12-root" style="font-family:\'Segoe UI\',system-ui,sans-serif;background:#0f172a;border-radius:14px;overflow:hidden">'
+    + '<div style="display:flex;align-items:center;gap:10px;padding:14px 20px;background:#0f172a;flex-wrap:wrap">'
+        + '<div style="font-size:15px;font-weight:800;color:white;flex:1">🤝 Parallel Team Plan V12</div>'
+        + '<div style="font-size:11px;color:#94a3b8;background:#1e293b;padding:6px 12px;border-radius:20px;font-weight:600">Team 1: 174 SP ÷ 1.5 = <span style="color:#7dd3fc">116u</span> &nbsp;|&nbsp; Team 2: 108 SP ÷ 1.0 = <span style="color:#fcd34d">108u</span> &nbsp;|&nbsp; Δ=7% ✓</div>'
+        + '<button id="v12-btn-sw"  onclick="v12Show(\'sw\')"  style="padding:7px 18px;border-radius:20px;border:2px solid #0369a1;font-size:12px;font-weight:700;cursor:pointer;background:#0369a1;color:white">🏊 Parallel Swimlane</button>'
+        + '<button id="v12-btn-tbl" onclick="v12Show(\'tbl\')" style="padding:7px 18px;border-radius:20px;border:2px solid #475569;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#94a3b8">📋 Delivery Table</button>'
+    + '</div>'
+    + '<div id="v12-sw-view"  style="display:block;padding:0 20px 20px"></div>'
+    + '<div id="v12-tbl-view" style="display:none;padding:0 20px 20px"></div>'
+    + '</div>';
+
+  /* ── view switcher ── */
+  window.v12Show = function(view) {
+    var sw  = document.getElementById('v12-sw-view');
+    var tbl = document.getElementById('v12-tbl-view');
+    var bSw  = document.getElementById('v12-btn-sw');
+    var bTbl = document.getElementById('v12-btn-tbl');
+    if (view === 'sw') {
+      sw.style.display='block'; tbl.style.display='none';
+      bSw.style.background='#0369a1';  bSw.style.color='white';  bSw.style.borderColor='#0369a1';
+      bTbl.style.background='transparent'; bTbl.style.color='#94a3b8'; bTbl.style.borderColor='#475569';
+    } else {
+      sw.style.display='none'; tbl.style.display='block';
+      bTbl.style.background='#b45309'; bTbl.style.color='white'; bTbl.style.borderColor='#b45309';
+      bSw.style.background='transparent'; bSw.style.color='#94a3b8'; bSw.style.borderColor='#475569';
+      if (!tbl.hasChildNodes()) v12BuildTable(tbl);
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════════════════════
+     VIEW 1 — PARALLEL SWIMLANE
+  ══════════════════════════════════════════════════════════════════════ */
+  function v12BuildSwimlane(container) {
+    /* Timeline: Apr 1 – Oct 1, 2026 = 183 days. Scale S=5px/day → 915px */
+    var S = 5;
+    var LABEL = 160; /* left label column px */
+    /* Day offsets from Apr 1 */
+    var D = {
+      apr1:0, may1:30, may15:44, may16:45,
+      jun1:61, jun30:90,
+      jul1:91, aug1:122, aug31:152,
+      sep1:153, sep30:182, oct1:183
+    };
+    function px(day) { return day * S; }
+    var TW = px(D.oct1); /* 915 */
+
+    /* Month labels */
+    var months = [
+      {label:'Apr',day:0},{label:'May',day:30},{label:'Jun',day:61},
+      {label:'Jul',day:91},{label:'Aug',day:122},{label:'Sep',day:153},{label:'Oct',day:183}
+    ];
+
+    /* Build chip HTML for a set of feature codes */
+    function chips(codes) {
+      var jcol = {J1:'#0e7490',J2:'#0891b2',J3a:'#15803d',J3b:'#7c3aed',J4:'#b45309',J5:'#dc2626'};
+      return codes.map(function(c) {
+        var row = ROWS.filter(function(r){return r.code===c;})[0] || {j:'J1'};
+        var bg = jcol[row.j] || '#374151';
+        return '<span style="display:inline-block;padding:2px 6px;margin:1px;border-radius:10px;font-size:9px;font-weight:700;color:white;background:'+bg+';white-space:nowrap">'+c+'</span>';
+      }).join('');
+    }
+
+    /* Phase band helper */
+    function band(dayStart, dayEnd, bg, label, subLabel) {
+      var left = px(dayStart);
+      var width = px(dayEnd - dayStart);
+      return '<div style="position:absolute;left:'+left+'px;top:0;width:'+width+'px;height:100%;background:'+bg+';box-sizing:border-box;border-right:1px solid #334155">'
+           + '<div style="position:absolute;top:4px;left:6px;right:4px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+label+'</div>'
+           + '</div>';
+    }
+
+    /* Bar helper */
+    function bar(dayStart, dayEnd, bg, label, subPx) {
+      var left = px(dayStart);
+      var width = px(dayEnd - dayStart);
+      return '<div style="position:absolute;left:'+left+'px;top:'+(subPx||8)+'px;width:'+width+'px;height:36px;background:'+bg+';border-radius:8px;display:flex;align-items:center;padding:0 10px;box-sizing:border-box;overflow:hidden">'
+           + '<span style="font-size:11px;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+label+'</span>'
+           + '</div>';
+    }
+
+    /* Vertical marker helper */
+    function vline(day, color, label) {
+      var left = px(day);
+      return '<div style="position:absolute;left:'+left+'px;top:0;bottom:0;width:2px;background:'+color+';z-index:10">'
+           + '<div style="position:absolute;top:4px;left:4px;font-size:9px;font-weight:800;color:'+color+';white-space:nowrap;background:#0f172a;padding:1px 4px;border-radius:4px">'+label+'</div>'
+           + '</div>';
+    }
+
+    var h = '';
+    h += '<div style="overflow-x:auto;background:#0f172a;border-radius:10px;padding:16px 0 8px">';
+
+    /* ── Month header ── */
+    h += '<div style="display:flex;margin-bottom:8px">';
+    h += '<div style="width:'+LABEL+'px;flex-shrink:0"></div>';
+    h += '<div style="position:relative;width:'+TW+'px;height:24px;flex-shrink:0">';
+    months.forEach(function(m) {
+      h += '<div style="position:absolute;left:'+px(m.day)+'px;font-size:11px;font-weight:700;color:#64748b">'+m.label+'</div>';
+    });
+    h += '</div></div>';
+
+    /* ── Phase background bands ── */
+    /* We draw 4 phase bands across the full TW for context */
+    h += '<div style="display:flex;margin-bottom:0">';
+    h += '<div style="width:'+LABEL+'px;flex-shrink:0"></div>';
+    h += '<div style="position:relative;width:'+TW+'px;height:16px;flex-shrink:0">';
+    /* R1+R2+R3 band */
+    h += '<div style="position:absolute;left:0;top:0;width:'+px(D.jun30)+'px;height:16px;background:#0f2040;border-radius:4px 0 0 4px;opacity:0.7"></div>';
+    /* R4 band */
+    h += '<div style="position:absolute;left:'+px(D.jun30)+'px;top:0;width:'+px(D.aug31-D.jun30)+'px;height:16px;background:#1a0f30;opacity:0.7"></div>';
+    /* Sep testing */
+    h += '<div style="position:absolute;left:'+px(D.sep1)+'px;top:0;width:'+px(D.sep30-D.sep1)+'px;height:16px;background:#1a1a2e;opacity:0.7"></div>';
+    /* Phase labels */
+    h += '<div style="position:absolute;left:4px;top:0;font-size:9px;color:#3b82f6;font-weight:700">R1+R2+R3 (Dev)</div>';
+    h += '<div style="position:absolute;left:'+px(D.jun30+1)+'px;top:0;font-size:9px;color:#818cf8;font-weight:700">R4</div>';
+    h += '<div style="position:absolute;left:'+px(D.sep1+1)+'px;top:0;font-size:9px;color:#a78bfa;font-weight:700">Testing</div>';
+    h += '</div></div>';
+
+    /* ── Team 1 track ── */
+    h += '<div style="display:flex;align-items:flex-start;margin:12px 0 4px">';
+    h += '<div style="width:'+LABEL+'px;flex-shrink:0;padding:10px 12px 0 12px">';
+    h += '<div style="font-size:12px;font-weight:800;color:#7dd3fc">🤖 Team 1</div>';
+    h += '<div style="font-size:10px;color:#94a3b8;margin-top:2px">Agentic Dev · 1.5×</div>';
+    h += '<div style="font-size:10px;color:#64748b;margin-top:2px">J1 · J3a · J3b</div>';
+    h += '</div>';
+    /* timeline area */
+    h += '<div style="position:relative;width:'+TW+'px;flex-shrink:0;background:#0c2a4a;border-radius:10px;min-height:120px;padding-bottom:12px">';
+    /* R1 bar */
+    h += bar(D.apr1, D.may15, '#0369a1', 'R1 · 47 SP · J1+J3a', 8);
+    /* R3 bar */
+    h += bar(D.may16, D.jun30, '#0e7490', 'R3 · 127 SP · J3a+J3b+J1-HW', 8);
+    /* R4 participation indicator */
+    h += bar(D.jun30, D.aug31, '#1d4ed8', 'R4 · 42 SP · J3b items', 8);
+    /* chips T1 R1 */
+    h += '<div style="position:absolute;left:'+px(D.apr1)+'px;top:50px;width:'+px(D.may15-D.apr1)+'px;padding:4px 6px;box-sizing:border-box">';
+    h += chips(['O-BM-12','O-BM-16','O-BM-17','O-BM-18','P-27']);
+    h += '</div>';
+    /* chips T1 R3 */
+    h += '<div style="position:absolute;left:'+px(D.may16)+'px;top:50px;width:'+px(D.jun30-D.may16)+'px;padding:4px 6px;box-sizing:border-box">';
+    h += chips(['H-01','H-02','H-03','O-BM-19','O-BM-22','O-BM-20','O-BM-21','O-07','O-08','O-BM-24','O-BM-25','O-BM-26','O-BM-27','O-BM-28','O-BM-29','O-BM-30','O-BM-32','O-BM-33','A-I-01','A-I-02']);
+    h += '</div>';
+    /* chips T1 R4 */
+    h += '<div style="position:absolute;left:'+px(D.jun30)+'px;top:50px;width:'+px(D.aug31-D.jun30)+'px;padding:4px 6px;box-sizing:border-box">';
+    h += chips(['A-U-01']);
+    h += '</div>';
+    h += '</div>';
+    h += '</div>'; /* team 1 row */
+
+    /* ── Divider ── */
+    h += '<div style="display:flex;margin:4px 0">';
+    h += '<div style="width:'+LABEL+'px;flex-shrink:0"></div>';
+    h += '<div style="width:'+TW+'px;flex-shrink:0;border-top:1px solid #1e293b"></div>';
+    h += '</div>';
+
+    /* ── Team 2 track ── */
+    h += '<div style="display:flex;align-items:flex-start;margin:4px 0">';
+    h += '<div style="width:'+LABEL+'px;flex-shrink:0;padding:10px 12px 0 12px">';
+    h += '<div style="font-size:12px;font-weight:800;color:#fcd34d">👥 Team 2</div>';
+    h += '<div style="font-size:10px;color:#94a3b8;margin-top:2px">Standard Dev · 1.0×</div>';
+    h += '<div style="font-size:10px;color:#64748b;margin-top:2px">J2 · J4 · J5</div>';
+    h += '</div>';
+    h += '<div style="position:relative;width:'+TW+'px;flex-shrink:0;background:#2d1a00;border-radius:10px;min-height:120px;padding-bottom:12px">';
+    /* R2 bar */
+    h += bar(D.apr1, D.jun30, '#b45309', 'R2 · 108 SP · J2+J4+J5 (parallel with Team 1)', 8);
+    /* R4 bar */
+    h += bar(D.jun30, D.aug31, '#dc2626', 'R4 · 43 SP · J4+J5', 8);
+    /* chips T2 R2 */
+    h += '<div style="position:absolute;left:'+px(D.apr1)+'px;top:50px;width:'+px(D.jun30)+'px;padding:4px 6px;box-sizing:border-box">';
+    h += chips(['P-01','A-O-02','O-BM-01','O-BM-06','O-BM-13','O-BM-07','O-BM-08','O-BM-09','O-BM-14','O-BM-15','A-O-04','A-T-05','A-T-06','A-U-02','O-BM-38','O-BM-39','O-04','O-05','O-06']);
+    h += '</div>';
+    /* chips T2 R4 */
+    h += '<div style="position:absolute;left:'+px(D.jun30)+'px;top:50px;width:'+px(D.aug31-D.jun30)+'px;padding:4px 6px;box-sizing:border-box">';
+    h += chips(['O-BM-02','O-BM-34','O-BM-35','O-BM-36','O-BM-37','P-10','P-11','P-14','P-15','P-21','P-23','A-O-03','A-O-05']);
+    h += '</div>';
+    h += '</div>';
+    h += '</div>'; /* team 2 row */
+
+    /* ── Sep Testing Freeze row ── */
+    h += '<div style="display:flex;align-items:center;margin:12px 0 4px">';
+    h += '<div style="width:'+LABEL+'px;flex-shrink:0;padding:0 12px">';
+    h += '<div style="font-size:11px;font-weight:700;color:#a78bfa">🧪 Testing Freeze</div>';
+    h += '<div style="font-size:9px;color:#64748b;margin-top:2px">Sep 1–30</div>';
+    h += '</div>';
+    h += '<div style="position:relative;width:'+TW+'px;flex-shrink:0">';
+    /* Freeze band */
+    h += '<div style="position:absolute;left:'+px(D.sep1)+'px;top:0;width:'+px(D.sep30-D.sep1)+'px;height:40px;background:repeating-linear-gradient(45deg,#1a1a2e,#1a1a2e 6px,#1e1e3e 6px,#1e1e3e 12px);border:2px solid #6366f1;border-radius:8px;display:flex;align-items:center;padding:0 8px;box-sizing:border-box">';
+    h += '<span style="font-size:10px;font-weight:700;color:#a78bfa;white-space:nowrap">Data Migration · Golden Data Validation · E2E Regression</span>';
+    h += '</div>';
+    /* convergence marker at Jun 30 */
+    h += '<div style="position:absolute;left:'+px(D.jun30)+'px;top:-10px;width:2px;height:70px;background:#22c55e;opacity:0.7"></div>';
+    h += '<div style="position:absolute;left:'+(px(D.jun30)+4)+'px;top:-8px;font-size:9px;font-weight:800;color:#22c55e;white-space:nowrap;background:#0f172a;padding:1px 4px;border-radius:4px">🤝 Teams converge Jun 30</div>';
+    /* launch gate */
+    h += '<div style="position:absolute;left:'+px(D.oct1-1)+'px;top:-10px;width:3px;height:70px;background:#f59e0b"></div>';
+    h += '<div style="position:absolute;left:'+(px(D.oct1-1)-60)+'px;top:-8px;font-size:10px;font-weight:800;color:#f59e0b;white-space:nowrap;background:#0f172a;padding:2px 6px;border-radius:4px">🚀 V1 Launch Oct 1</div>';
+    h += '</div>';
+    h += '</div>'; /* testing row */
+
+    /* ── Legend ── */
+    var jdefs = [{j:'J1',label:'J1 Survey & Ingest',c:'#0e7490'},{j:'J2',label:'J2 Coverage',c:'#0891b2'},{j:'J3a',label:'J3a Gaps',c:'#15803d'},{j:'J3b',label:'J3b LISAs',c:'#7c3aed'},{j:'J4',label:'J4 Dispatch',c:'#b45309'},{j:'J5',label:'J5 Close & Report',c:'#dc2626'}];
+    h += '<div style="margin-top:16px;padding:0 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">';
+    h += '<span style="font-size:10px;color:#64748b;font-weight:600">Journey colours:</span>';
+    jdefs.forEach(function(d){
+      h += '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;color:#94a3b8">'
+         + '<span style="width:12px;height:12px;border-radius:3px;background:'+d.c+';display:inline-block"></span>'+d.label+'</span>';
+    });
+    h += '</div>';
+
+    h += '</div>'; /* overflow-x:auto */
+    container.innerHTML = h;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     VIEW 2 — DELIVERY TABLE
+  ══════════════════════════════════════════════════════════════════════ */
+  function v12BuildTable(container) {
+    var curTeam = 'ALL', curJ = 'ALL', curR = 'ALL';
+
+    /* Journey summary strip */
+    var jSummary = ['J1','J2','J3a','J3b','J4','J5'].map(function(j){
+      var rows = ROWS.filter(function(r){return r.j===j;});
+      var sp = rows.reduce(function(a,r){return a+r.sp;},0);
+      var jcol = {J1:'#0e7490',J2:'#0891b2',J3a:'#15803d',J3b:'#7c3aed',J4:'#b45309',J5:'#dc2626'};
+      var jname = {J1:'Survey & Ingest',J2:'See My Coverage',J3a:'Gaps',J3b:'LISAs',J4:'Dispatch',J5:'Close & Report'};
+      var jteam = {J1:'T1',J2:'T2',J3a:'T1',J3b:'T1',J4:'T2',J5:'T2'};
+      return '<div style="background:#1e293b;border-radius:10px;padding:10px 14px;border-top:3px solid '+jcol[j]+';min-width:120px;flex:1">'
+           + '<div style="font-size:11px;font-weight:800;color:'+jcol[j]+'">'+j+' · '+jname[j]+'</div>'
+           + '<div style="font-size:10px;color:#94a3b8;margin-top:2px">'+rows.length+' features · '+sp+' SP</div>'
+           + '<div style="margin-top:4px">'+tBadge(jteam[j])+'</div>'
+           + '</div>';
+    }).join('');
+
+    var h = '';
+    h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">'+jSummary+'</div>';
+
+    /* Filter rows */
+    function filterBtn(id, val, label, active, grp) {
+      var oc = 'v12Filter(' + JSON.stringify(grp) + ',' + JSON.stringify(val) + ')';
+      return '<button id="v12f-'+grp+'-'+id+'" onclick="'+oc+'" '
+           + 'style="padding:5px 14px;border-radius:20px;border:1.5px solid '+(active?'#0369a1':'#334155')+';font-size:11px;font-weight:700;cursor:pointer;background:'+(active?'#0369a1':'transparent')+';color:'+(active?'white':'#94a3b8')+'">'+label+'</button>';
+    }
+
+    h += '<div style="background:#1e293b;border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px">';
+    /* Team filter */
+    h += '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:10px;color:#64748b;font-weight:700;min-width:50px">Team:</span>';
+    ['ALL','T1','T2'].forEach(function(v){ h += filterBtn(v,v,v==='ALL'?'All':v,v==='ALL','tm'); });
+    h += '</div>';
+    /* Journey filter */
+    h += '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:10px;color:#64748b;font-weight:700;min-width:50px">Journey:</span>';
+    ['ALL','J1','J2','J3a','J3b','J4','J5'].forEach(function(v){ h += filterBtn(v,v,v==='ALL'?'All':v,v==='ALL','jf'); });
+    h += '</div>';
+    /* Release filter */
+    h += '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:10px;color:#64748b;font-weight:700;min-width:50px">Release:</span>';
+    ['ALL','R1','R2','R3','R4'].forEach(function(v){ h += filterBtn(v,v,v==='ALL'?'All':v,v==='ALL','rf'); });
+    h += '</div>';
+    h += '</div>';
+
+    /* Table */
+    h += '<div id="v12-tbl-wrap"><table style="width:100%;border-collapse:collapse;font-size:12px"></table></div>';
+    container.innerHTML = h;
+
+    /* Filter logic */
+    window.v12Filter = function(grp, val) {
+      if (grp==='tm') curTeam=val;
+      if (grp==='jf') curJ=val;
+      if (grp==='rf') curR=val;
+      /* Update button styles */
+      ['tm','jf','rf'].forEach(function(g){
+        var cur = g==='tm'?curTeam:g==='jf'?curJ:curR;
+        var opts = g==='tm'?['ALL','T1','T2']:g==='jf'?['ALL','J1','J2','J3a','J3b','J4','J5']:['ALL','R1','R2','R3','R4'];
+        opts.forEach(function(v){
+          var btn = document.getElementById('v12f-'+g+'-'+v);
+          if (!btn) return;
+          var active = v===cur;
+          btn.style.background = active?'#0369a1':'transparent';
+          btn.style.color = active?'white':'#94a3b8';
+          btn.style.borderColor = active?'#0369a1':'#334155';
+        });
+      });
+      v12Render();
+    };
+
+    function v12Render() {
+      var filtered = ROWS.filter(function(r){
+        return (curTeam==='ALL'||r.team===curTeam) && (curJ==='ALL'||r.j===curJ) && (curR==='ALL'||r.r===curR);
+      });
+      var totalSP = filtered.reduce(function(a,r){return a+r.sp;},0);
+      var wrap = document.getElementById('v12-tbl-wrap');
+      if (!wrap) return;
+      var body = filtered.map(function(row){
+        var jcol = {J1:'#0e7490',J2:'#0891b2',J3a:'#15803d',J3b:'#7c3aed',J4:'#b45309',J5:'#dc2626'};
+        var c = jcol[row.j]||'#374151';
+        return '<tr style="border-bottom:1px solid #1e293b">'
+          + '<td style="padding:10px 8px;vertical-align:top;white-space:nowrap">'
+              + tBadge(row.team)+'<br>'
+              + '<div style="margin-top:3px">'+jBadge(row.j)+'</div>'
+              + '<div style="margin-top:3px">'+rBadge(row.r)+'</div>'
+          + '</td>'
+          + '<td style="padding:10px 8px;vertical-align:top">'
+              + '<div style="font-size:10px;font-weight:700;color:'+c+';margin-bottom:2px">'+row.code+'</div>'
+              + '<div style="font-size:12px;font-weight:600;color:#e2e8f0">'+row.name+'</div>'
+          + '</td>'
+          + '<td style="padding:10px 8px;vertical-align:top;font-size:11px;color:#94a3b8;line-height:1.5;max-width:220px">'+row.uval+'</td>'
+          + '<td style="padding:10px 8px;vertical-align:top;font-size:11px;color:#7dd3fc;line-height:1.5;max-width:220px;font-weight:600">'+row.delivery+'</td>'
+          + '<td style="padding:10px 8px;vertical-align:middle;text-align:center">'+spBadge(row.sp)+'</td>'
+          + '</tr>';
+      }).join('');
+      wrap.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12px">'
+        + '<thead><tr style="background:#1e293b">'
+        + '<th style="padding:10px 8px;text-align:left;font-size:11px;color:#94a3b8;font-weight:700">Team/Journey/Rel</th>'
+        + '<th style="padding:10px 8px;text-align:left;font-size:11px;color:#94a3b8;font-weight:700">Feature</th>'
+        + '<th style="padding:10px 8px;text-align:left;font-size:11px;color:#94a3b8;font-weight:700">What user can do</th>'
+        + '<th style="padding:10px 8px;text-align:left;font-size:11px;color:#94a3b8;font-weight:700">What it delivers</th>'
+        + '<th style="padding:10px 8px;text-align:center;font-size:11px;color:#94a3b8;font-weight:700">SP</th>'
+        + '</tr></thead>'
+        + '<tbody>'+body+'</tbody>'
+        + '<tfoot><tr style="background:#1e293b">'
+        + '<td colspan="4" style="padding:10px 8px;font-size:12px;font-weight:700;color:#94a3b8">'+filtered.length+' features shown</td>'
+        + '<td style="padding:10px 8px;text-align:center">'+spBadge(totalSP)+'</td>'
+        + '</tr></tfoot>'
+        + '</table>';
+    }
+    v12Render();
+  }
+
+  /* ── lazy-build swimlane (default view) ── */
+  v12BuildSwimlane(document.getElementById('v12-sw-view'));
+}
+
 
 </script>
 </body>
