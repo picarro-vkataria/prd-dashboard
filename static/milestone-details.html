@@ -6125,7 +6125,7 @@ function buildADPv12() {
 
     /* Filter rows */
     function filterBtn(id, val, label, active, grp) {
-      var oc = 'v12Filter(' + JSON.stringify(grp) + ',' + JSON.stringify(val) + ')';
+      var oc = "v12Filter('" + grp + "','" + val + "')";
       return '<button id="v12f-'+grp+'-'+id+'" onclick="'+oc+'" '
            + 'style="padding:5px 14px;border-radius:20px;border:1.5px solid '+(active?'#0369a1':'#334155')+';font-size:11px;font-weight:700;cursor:pointer;background:'+(active?'#0369a1':'transparent')+';color:'+(active?'white':'#94a3b8')+'">'+label+'</button>';
     }
