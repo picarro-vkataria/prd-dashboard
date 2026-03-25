@@ -175,10 +175,10 @@
       <div class="subtitle">GTM Tier: Demo - Start Up &nbsp;·&nbsp; Original 11-Milestone Plan (MS4–MS11) &nbsp;·&nbsp; Story Point analysis with FE / BE breakdown</div>
       <div class="header-badges">
         <span class="badge badge-purple">141 Features · 3 GTM Phases</span>
-        <span class="badge badge-blue">1,089 Total SP</span>
-        <span class="badge badge-green">497 FE SP · 46%</span>
-        <span class="badge badge-amber">592 BE SP · 54%</span>
-        <span class="badge" style="background:#0c2a0c;color:#86efac;border:1px solid #16a34a">Startup 682 SP · 99 feats</span>
+        <span class="badge badge-blue">1,202 Total SP</span>
+        <span class="badge badge-green">510 FE SP · 42%</span>
+        <span class="badge badge-amber">692 BE SP · 58%</span>
+        <span class="badge" style="background:#0c2a0c;color:#86efac;border:1px solid #16a34a">Startup 795 SP · 101 feats</span>
         <span class="badge" style="background:#1a1a00;color:#fde68a;border:1px solid #ca8a04">Maturity 231 SP · 24 feats</span>
         <span class="badge" style="background:#2d0a00;color:#fca5a5;border:1px solid #dc2626">Excellence 176 SP · 18 feats</span>
         <span class="badge badge-slate">Original 11-Milestone Plan</span>
@@ -193,6 +193,8 @@
     <button class="nav-tab" onclick="showTab('features')">📋 Feature Table</button>
     <button class="nav-tab" onclick="showTab('risks')">⚠️ Staffing Risks & Insights</button>
     <button class="nav-tab" onclick="showTab('parallel')">🤝 V1 Parallel Plan</button>
+    <button class="nav-tab" onclick="showTab('r4plan')">📐 R1–R4 Plan</button>
+    <button class="nav-tab" onclick="showTab('v1risks')">🛡 V1 Staffing Risks</button>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════ TAB 1: OVERVIEW -->
@@ -202,23 +204,23 @@
     <div class="cards-row">
       <div class="card card-total">
         <div class="card-label">Grand Total SP</div>
-        <div class="card-value">1,089</div>
+        <div class="card-value">1,202</div>
         <div class="card-sub">141 features · 3 GTM phases</div>
       </div>
       <div class="card card-fe">
         <div class="card-label">Total Front-End SP</div>
-        <div class="card-value">497</div>
-        <div class="card-sub">46% of total work</div>
+        <div class="card-value">510</div>
+        <div class="card-sub">42% of total work</div>
       </div>
       <div class="card card-be">
         <div class="card-label">Total Back-End SP</div>
-        <div class="card-value">592</div>
-        <div class="card-sub">54% of total work</div>
+        <div class="card-value">692</div>
+        <div class="card-sub">58% of total work</div>
       </div>
       <div class="card" style="border-top:3px solid #16a34a">
         <div class="card-label">🚀 GTM Startup</div>
-        <div class="card-value">682</div>
-        <div class="card-sub">99 feats · FE 323 / BE 359</div>
+        <div class="card-value">795</div>
+        <div class="card-sub">101 feats · FE 336 / BE 459</div>
       </div>
       <div class="card" style="border-top:3px solid #ca8a04">
         <div class="card-label">📈 GTM Maturity</div>
@@ -401,16 +403,16 @@
       <div class="group-card">
         <div class="gc-header"><span class="gc-name">📱 Mobile</span><span class="gc-meta">5 feat · 60 SP</span></div>
         <div class="sp-bar-row">
-          <div class="sp-bar-label"><span>Front-End</span><span>42 SP <span class="pct-pill pct-fe">70%</span></span></div>
-          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:70%"></div></div>
+          <div class="sp-bar-label"><span>Front-End</span><span>36 SP <span class="pct-pill pct-fe">60%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:60%"></div></div>
         </div>
         <div class="sp-bar-row">
-          <div class="sp-bar-label"><span>Back-End</span><span>18 SP <span class="pct-pill pct-be">30%</span></span></div>
-          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:30%"></div></div>
+          <div class="sp-bar-label"><span>Back-End</span><span>24 SP <span class="pct-pill pct-be">40%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:40%"></div></div>
         </div>
-        <div class="sp-split-display"><span class="sp-fe-num">FE 42</span><span style="color:#475569">/</span><span class="sp-be-num">BE 18</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 60</span></div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 36</span><span style="color:#475569">/</span><span class="sp-be-num">BE 24</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 60</span></div>
         <div style="margin-top:10px;font-size:11px;color:#64748b">Driver View eval · Basic · Capture Mode · Assignment dispatching · Mobile app PCP integration</div>
-        <div style="margin-top:6px;font-size:11px;color:#f97316">⚠ M-DV-02 alone = 15 FE SP. Requires dedicated mobile FE engineer (not web FE).</div>
+        <div style="margin-top:6px;font-size:11px;color:#f97316">ℹ Driver View = web development (assigned to Gladiators UI dev). M-App-01 = API integration only (2 FE / 11 BE).</div>
       </div>
 
       <div class="group-card">
@@ -437,17 +439,17 @@
       <div style="background:#0c1a0c;border:1px solid #16a34a;border-radius:12px;padding:18px 20px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
           <span style="font-size:15px;font-weight:800;color:#86efac">🚀 Startup</span>
-          <span style="font-size:11px;color:#4ade80;font-weight:700">99 features</span>
+          <span style="font-size:11px;color:#4ade80;font-weight:700">101 features</span>
         </div>
-        <div style="font-size:32px;font-weight:800;color:#f1f5f9;margin-bottom:4px">682 <span style="font-size:14px;color:#64748b">SP</span></div>
-        <div style="font-size:12px;color:#4ade80;margin-bottom:14px">Core product — Original 11-Milestone Plan (MS4–MS11)</div>
+        <div style="font-size:32px;font-weight:800;color:#f1f5f9;margin-bottom:4px">795 <span style="font-size:14px;color:#64748b">SP</span></div>
+        <div style="font-size:12px;color:#4ade80;margin-bottom:14px">Core product — V1 launch · P-18 migration + SEC testing included</div>
         <div style="margin-bottom:8px">
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>FE</span><span>323 SP · 47%</span></div>
-          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:47%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>FE</span><span>336 SP · 42%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:42%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>
         </div>
         <div style="margin-bottom:8px">
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>BE</span><span>359 SP · 53%</span></div>
-          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:53%;height:100%;background:linear-gradient(90deg,#c2410c,#f97316)"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>BE</span><span>459 SP · 58%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:58%;height:100%;background:linear-gradient(90deg,#c2410c,#f97316)"></div></div>
         </div>
         <div style="margin-top:12px;font-size:11px;color:#64748b">Groups: Platform · Admin · Campaign · BM · Ops · Hardware · Mobile · Intelligence</div>
       </div>
@@ -534,6 +536,14 @@
   <!-- ════════════════════════════════════════════════ TAB 2: MILESTONES -->
   <div id="tab-milestones" class="tab-panel">
 
+    <!-- Toggle: Original vs R1-R4 -->
+    <div style="display:flex;gap:4px;margin-bottom:18px;background:#1e293b;padding:4px;border-radius:10px;width:fit-content">
+      <button id="ms-btn-orig" onclick="msView('orig')" style="padding:7px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:#4f46e5;color:white">📋 Original 11-Milestone Plan</button>
+      <button id="ms-btn-r4"   onclick="msView('r4')"   style="padding:7px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:none;color:#94a3b8">🔄 V1 Parallel Plan (R1–R4)</button>
+    </div>
+
+    <!-- Original 11-MS view -->
+    <div id="ms-orig-view">
     <div class="section-header">SP by Milestone — Original 11-Milestone Plan</div>
 
     <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#94a3b8">
@@ -1403,6 +1413,238 @@
 
   </div><!-- /tab-parallel -->
 
+  <!-- ════════════════════════════════════════════════ TAB 6: R1-R4 PLAN -->
+  <div id="tab-r4plan" class="tab-panel">
+
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#0d2040 100%);border:1px solid #1d4ed8;border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:800;color:#f8fafc">📐 R1–R4 Parallel Plan — SP Breakdown</div>
+        <div style="font-size:12px;color:#94a3b8;margin-top:4px">All SP figures computed live from V1 feature assignments · 101 Startup features · 795 SP total</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="badge" style="background:#0d2d52;color:#bfdbfe;border:1px solid #1d4ed8">⚡ Avengers: ~363 SP</span>
+        <span class="badge" style="background:#2d1a00;color:#fed7aa;border:1px solid #b45309">👥 Gladiators: ~432 SP</span>
+        <span class="badge badge-purple">795 SP total</span>
+      </div>
+    </div>
+
+    <!-- 4 Release detail cards (2 rows × 2) -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-bottom:24px" id="r4plan-cards"></div>
+
+    <!-- Team Avengers breakdown -->
+    <div class="section-header">Team Avengers — Feature-by-Release Breakdown</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px" id="r4plan-avg-cols"></div>
+
+    <!-- Team Gladiators breakdown -->
+    <div class="section-header">Team Gladiators — Feature-by-Release Breakdown</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px" id="r4plan-gld-cols"></div>
+
+    <!-- Sprint-level SP demand -->
+    <div class="section-header">Sprint-Level SP Demand (estimated)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:16px" id="r4plan-sprints"></div>
+    <div class="footnote">Sprint velocity assumes Team Avengers 72–80 SP/sprint, Team Gladiators 72–96 SP/sprint. Combined capacity: 144–176 SP/sprint. P-18 (66 SP, 61 BE) runs as dedicated BE parallel track in Sprints 4–7, not counted against sprint velocity for other work.</div>
+
+  </div><!-- /tab-r4plan -->
+
+  <!-- ════════════════════════════════════════════════ TAB 7: V1 STAFFING RISKS -->
+  <div id="tab-v1risks" class="tab-panel">
+
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1a0a1a 100%);border:1px solid #7c3aed;border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:800;color:#f8fafc">🛡 V1 Staffing Risks — Parallel Plan (Team Avengers + Gladiators)</div>
+        <div style="font-size:12px;color:#94a3b8;margin-top:4px">Updated for V1 parallel structure · Driver View = web dev · Mobile App = API integration only · 4-release plan Apr–Aug 2026</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="badge" style="background:#450a0a;color:#fca5a5;border-color:#dc2626">2 Critical</span>
+        <span class="badge badge-amber">4 High</span>
+        <span class="badge" style="background:#422006;color:#fef08a;border-color:#ca8a04">3 Medium</span>
+        <span class="badge badge-blue">3 Insights</span>
+      </div>
+    </div>
+
+    <div class="risk-grid">
+
+      <!-- CRITICAL 1 -->
+      <div class="risk-card critical">
+        <div class="risk-header">
+          <span class="risk-level rl-critical">CRITICAL</span>
+          <span class="risk-title">AutoFOV Pipeline Readiness — Entire Avengers Track Blocked</span>
+        </div>
+        <div class="risk-body">
+          O-BM-12 (AutoFOV pipeline, 13 SP, 80% BE) is the keystone of Team Avengers' critical path. If not production-ready at Apr 1 kickoff, the Gaps pipeline (Sprint 2) and LISA pipeline (Sprint 4) are blocked — cascading to all BM displays and all investigation workflows. This single dependency governs the entire Avengers R1–R3 delivery.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Team Avengers BE Lead · Assign 2 BE devs to AutoFOV in Sprint 1 if validation fails.<br>
+          <strong>Mitigation:</strong> Sprint 0 (Mar 25–Apr 1) pre-kickoff validation sprint for AutoFOV. Gate: AutoFOV pipeline in test by Apr 14 (Sprint 1 end). If missed, R2 LISA start moves to Sprint 5 (Jun 11), compressing R3 by 2 weeks.
+        </div>
+      </div>
+
+      <!-- CRITICAL 2 -->
+      <div class="risk-card critical">
+        <div class="risk-header">
+          <span class="risk-level rl-critical">CRITICAL</span>
+          <span class="risk-title">P-18 Historical Data Migration — 66 SP Dedicated BE Track</span>
+        </div>
+        <div class="risk-body">
+          P-18 is 61 BE SP (93% BE) — the largest single feature in the V1 plan after the update from 13 SP. It's a parallel BE track for Team Avengers across Sprints 4–7 (Jun–Aug). If legacy data quality issues surface mid-migration, the Sep testing freeze is at risk: golden data validation requires migrated data to be clean by Sep 1. A 66 SP scope with 1 dedicated BE dev = ~4 sprints at 15–18 SP/sprint.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> 1 dedicated Avengers BE dev · Do not share with investigation workflow work.<br>
+          <strong>Mitigation:</strong> Start data profiling and migration analysis in Sprint 3 (Jun 1–14). Lock data cleansing rules before Sprint 6 (Jul 1) hard start. Buffer: 1 sprint before Sep testing freeze.
+        </div>
+      </div>
+
+      <!-- HIGH 1 -->
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">HIGH</span>
+          <span class="risk-title">Driver View is Web Development — Platform Decision Must Be Locked in Sprint 1</span>
+        </div>
+        <div class="risk-body">
+          Driver View (M-DV-01 through M-DV-03, 42 SP FE) is <strong>web-based development</strong>, not native mobile. It is assigned to Team Gladiators regular UI dev and fullstack dev. M-DV-02 (Capture Mode) is 21 SP / 15 FE SP — the single largest FE feature in the entire V1 plan. The PRD (v0.1) lists platform as TBD (browser vs ChromeOS vs tablet web app). Driver View starts Sprint 5 (May 27). If platform is not locked by Sprint 1 end (Apr 14), the UI dev cannot begin design or component selection.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Gladiators UI dev + Fullstack dev.<br>
+          <strong>Mitigation:</strong> Lock web platform (browser-based, responsive) by Apr 14. If ChromeOS: confirm WebUSB / device permissions for sensor integration in Sprint 2. M-DV-02 FE: budget 15 SP for Gladiators UI dev in R3 Sprints 7–8.
+        </div>
+      </div>
+
+      <!-- HIGH 2 -->
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">HIGH</span>
+          <span class="risk-title">Hardware Lead Time — Car + Handheld Systems Must Be Ordered at Kickoff</span>
+        </div>
+        <div class="risk-body">
+          H-01/H-02 (car data ingestion + PSA updates, 21 SP) are in Team Gladiators R1 starting Sprint 2 (Apr 15). Car hardware procurement + firmware setup = 8–12 weeks. If hardware is not ordered by Apr 1, firmware development cannot start Sprint 2, pushing H-01/H-02 into R2 and cascading to H-05 (Observer View live stream, 13 SP, R3) and fleet features. Handheld (H-00, 13 SP) is in R3 starting Sprint 7 (Jul 1) — must be ordered by Apr 15.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Gladiators BE dev assigned as hardware lead.<br>
+          <strong>Mitigation:</strong> Place car hardware order by Apr 1. Place handheld order by Apr 15. Create H-01/H-02 Jira epics immediately — currently no Jira epics exist. Assign a dedicated hardware BE dev in Gladiators team.
+        </div>
+      </div>
+
+      <!-- HIGH 3 -->
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">HIGH</span>
+          <span class="risk-title">Team Avengers: 1 UI Dev Handling All 36 BM Features</span>
+        </div>
+        <div class="risk-body">
+          Team Avengers has a single UI dev responsible for all BM map/panel/table views across R1–R4. Key FE-heavy features include: O-BM-14 AutoFOV Map (8 SP / 5 FE), O-BM-19 Gaps Map (8 SP / 5 FE), O-BM-26 LISA Map (8 SP / 5 FE), O-BM-34/35/36 Investigation assign/view (24 SP / 15 FE). If this developer is unavailable for 2+ sprints, the entire BM display layer across R2–R3 slips. All 36 BM features share this single FE resource.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Avengers UI dev (primary) · Gladiators UI dev (backup).<br>
+          <strong>Mitigation:</strong> From Sprint 2: Gladiators UI dev cross-trains on BM Leaflet/GeoJSON patterns. In Sprint 4+, Gladiators UI can absorb BM display work. Fullstack dev on Gladiators is backup for Admin/Campaign FE while Gladiators UI helps BM if needed.
+        </div>
+      </div>
+
+      <!-- HIGH 4 -->
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">HIGH</span>
+          <span class="risk-title">LISA Microservice Has No TDD — Blocks Sprint 4 Start</span>
+        </div>
+        <div class="risk-body">
+          O-BM-24 (LISA pipeline, 13 SP) is the most technically complex pipeline in the plan (PS2 scoring, ALD 5.0 boundary analysis). The LISA microservice has no Technical Design Document. LISA Boundary Results PRD was published Mar 20, 2026 and cannot be groomed before Sprint 4 (May 16). Without TDD, Team Avengers BE cannot start the LISA pipeline — blocking all LISA display features (O-BM-25 through O-BM-30, 31 SP) in R2.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Avengers BE Lead.<br>
+          <strong>Mitigation:</strong> Assign LISA TDD authoring to Avengers BE Lead during R1 Sprint 2–3 (Apr 15 – May 15). TDD must reach "Reviewed" status before Sprint 4. Hard gate: if TDD not reviewed by May 15, LISA pipeline moves to Sprint 5 and R2 LISA display features move to R3.
+        </div>
+      </div>
+
+      <!-- MEDIUM 1 -->
+      <div class="risk-card medium">
+        <div class="risk-header">
+          <span class="risk-level rl-medium">MEDIUM</span>
+          <span class="risk-title">Mobile App (M-App-01) Reclassified — API Integration Only, No App Frontend</span>
+        </div>
+        <div class="risk-body">
+          M-App-01 (Mobile App: PCP Integration, 13 SP) has been reclassified from 8 FE / 5 BE to <strong>2 FE / 11 BE</strong>. This is an API integration feature — the existing mobile app remains unchanged; only backend APIs and service endpoints are added. This frees ~6 FE SP from Team Gladiators in R3 (Sprint 8), reducing FE pressure on the Gladiators UI dev who is also handling Driver View Capture Mode (M-DV-02, 15 FE SP) in R3.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact (positive):</strong> Gladiators UI dev FE load in R3 drops from ~26 FE SP to ~20 FE SP — more manageable in a 3-sprint window.<br>
+          <strong>Action:</strong> Assign M-App-01 to Gladiators BE dev, not UI dev. Confirm API contract for PCP integration by Sprint 6 (Jun 30) so BE can start Sprint 7 without delay.
+        </div>
+      </div>
+
+      <!-- MEDIUM 2 -->
+      <div class="risk-card medium">
+        <div class="risk-header">
+          <span class="risk-level rl-medium">MEDIUM</span>
+          <span class="risk-title">SEC-01 / SEC-02 Parallel Tracks Require External Coordination</span>
+        </div>
+        <div class="risk-body">
+          SEC-01 (Pen Testing, 30 SP) runs Sprints 7–9 (Jul–Aug). SEC-02 (Scalability &amp; Performance Testing, 30 SP) runs Sprint 10 (Aug 16–31). Both require external security / performance vendors or specialized internal resources. If vendor engagement is not started by Sprint 5 (May 27), test readiness may not be achieved before the Sep testing freeze.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Engineering Lead.<br>
+          <strong>Mitigation:</strong> Initiate vendor/resource RFP or internal assignment by May 27 (Sprint 5). Pen test scope document must be ready by Jun 30 (R2 end). Scalability test plan must be complete by Aug 15 (R3 end).
+        </div>
+      </div>
+
+      <!-- MEDIUM 3 -->
+      <div class="risk-card medium">
+        <div class="risk-header">
+          <span class="risk-level rl-medium">MEDIUM</span>
+          <span class="risk-title">EU Compliance Pre-Certification Window: Jun 30 Deadline</span>
+        </div>
+        <div class="risk-body">
+          EU Regulation 2024/1787 requires Gaps and AutoFOV to be operational for EU LDAR certification. These features land at end of R2 (Jun 30): O-BM-17 Gaps Pipeline complete (Sprint 2), O-BM-18/19/22 Gaps display complete (Sprint 4–5), O-BM-14 AutoFOV display (Sprint 4). Pre-certification can begin if these are in staging by Jun 30. Missing this window means EU certification pushes to Oct 1+ GA, delaying EU customer onboarding.
+        </div>
+        <div class="risk-impact">
+          <strong>Owner:</strong> Product + Engineering Lead.<br>
+          <strong>Mitigation:</strong> P-14/P-15 staging environments deployed in R1 Sprint 2. Submit EU pre-certification documentation package by Jun 30. Assign compliance reviewer from Sprint 5.
+        </div>
+      </div>
+
+      <!-- INSIGHT 1 -->
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">INSIGHT</span>
+          <span class="risk-title">GIS Developers Are Critical for Map-Heavy Features Across Both Releases</span>
+        </div>
+        <div class="risk-body">
+          Team Gladiators has 3 GIS developers who own all map layers: O-BM-06/07 Driving Sessions map, O-BM-13/14 AutoFOV map, H-03/04 Fleet Map, O-BM-03/04 Assign Boundaries, O-C-03 Manual boundary select. This is ~18 map-display features across R2–R3. GIS devs are <strong>not</strong> assigned to mobile (Driver View, Mobile App) — those stay with regular BE/fullstack devs. GIS skills are a non-fungible resource; they cannot be replaced with general web devs for GeoServer/PostGIS work.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> Protect GIS dev availability from Sprint 4 onward. Do not assign GIS devs to Driver View, Mobile App, or Admin work. Consider having 1 GIS dev shadow Avengers BM display work from Sprint 2 as a capacity reserve.
+        </div>
+      </div>
+
+      <!-- INSIGHT 2 -->
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">INSIGHT</span>
+          <span class="risk-title">Team Gladiators R3 FE Load Is the Highest FE Concentration in the Plan</span>
+        </div>
+        <div class="risk-body">
+          R3 (Jul 1 – Aug 15) is the peak FE sprint for Team Gladiators: M-DV-02 Driver View Capture Mode (15 FE SP), M-DV-03 Assignment Dispatching (5 FE SP), H-05 Observer View (8 FE SP), O-C-03b Copy Campaign (4 FE SP) — ~32 FE SP in 6 weeks for 1 UI dev + 1 fullstack dev. This is challenging but manageable at 16 FE SP each. If M-App-01 was still 8 FE SP (old estimate), it would have been 40 FE SP — dangerously high. The reclassification to 2 FE SP for M-App-01 is therefore important for maintaining R3 delivery quality.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> In Sprint 5–6 (R2 end), have Gladiators UI dev start Driver View wireframe/component setup ahead of Sprint 7. This gives a running start on M-DV-02 and avoids context-switching penalty.
+        </div>
+      </div>
+
+      <!-- INSIGHT 3 -->
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">INSIGHT</span>
+          <span class="risk-title">R1 Is the Highest-Risk Release — Sets the Pace for Everything</span>
+        </div>
+        <div class="risk-body">
+          R1 (Apr 1 – May 15) establishes the foundation for all subsequent work: RBAC must gate auth, AutoFOV pipeline must complete by May 15, and both teams must hit their R1 sprint targets simultaneously. If either team slips R1, R2 dependency chains cascade. Admin/Campaign (Gladiators R1, ~120 SP) is the largest single-release workload and covers 23 features — a heavy backlog for 6 weeks even at 84 SP/sprint.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> Backlog grooming for all R1 features must complete by Mar 31 (before kickoff). Prioritize AutoFOV validation in the Sprint 0 window. Run daily sync between Team Avengers and Gladiators in R1 to catch blockers early.
+        </div>
+      </div>
+
+    </div><!-- /risk-grid -->
+
+  </div><!-- /tab-v1risks -->
+
 </div><!-- /page -->
 
 <script>
@@ -1413,6 +1655,7 @@ function showTab(id) {
   document.getElementById('tab-' + id).classList.add('active');
   event.target.classList.add('active');
   if (id === 'features' && !window._tableBuilt) buildTable();
+  if (id === 'r4plan') buildR4PlanTab();
 }
 
 // ── Feature data ──────────────────────────────────────────────────────────
@@ -1517,7 +1760,7 @@ var FEATS = [
   ['M-DV-01','Driver View: Basic','Mobile','7',13,10,3,'EST','Startup'],
   ['M-DV-02','Driver View: Capture Mode','Mobile','10',21,15,6,'EST','Startup'],
   ['M-DV-03','Driver View: Assignment Dispatching','Mobile','7',8,5,3,'EST','Startup'],
-  ['M-App-01','Mobile App (current): PCP Integration','Mobile','8',13,8,5,'EST','Startup'],
+  ['M-App-01','Mobile App (current): PCP Integration','Mobile','8',13,2,11,'EST','Startup'],
   ['SEC-01','Penetration Testing','Platform','?',30,5,25,'EST','Startup'],
   ['SEC-02','Scalability & Performance Testing','Platform','?',30,10,20,'EST','Startup'],
   // ── MATURITY (24 features) ───────────────────────────────────────────────
@@ -1775,6 +2018,216 @@ function applyPlFilters() {
   });
   var el = document.getElementById('pl-feat-count');
   if (el) el.textContent = visible + ' feature' + (visible !== 1 ? 's' : '') + ' shown';
+}
+
+
+// ── Milestone view toggle ──────────────────────────────────────────────────
+function msView(view) {
+  document.getElementById('ms-orig-view').style.display = (view === 'orig') ? 'block' : 'none';
+  document.getElementById('ms-r4-view').style.display   = (view === 'r4')   ? 'block' : 'none';
+  var origBtn = document.getElementById('ms-btn-orig');
+  var r4Btn   = document.getElementById('ms-btn-r4');
+  origBtn.style.background = (view === 'orig') ? '#4f46e5' : 'none';
+  origBtn.style.color = (view === 'orig') ? 'white' : '#94a3b8';
+  r4Btn.style.background = (view === 'r4') ? '#4f46e5' : 'none';
+  r4Btn.style.color = (view === 'r4') ? 'white' : '#94a3b8';
+  if (view === 'r4' && !window._r4ViewBuilt) buildR4MilestoneView();
+}
+
+function buildR4MilestoneView() {
+  // Compute SP per team per release from FEATS + TEAM_RELEASE
+  var data = { AVG:{R1:{sp:0,fe:0,be:0,n:0},R2:{sp:0,fe:0,be:0,n:0},R3:{sp:0,fe:0,be:0,n:0},R4:{sp:0,fe:0,be:0,n:0}},
+               GLD:{R1:{sp:0,fe:0,be:0,n:0},R2:{sp:0,fe:0,be:0,n:0},R3:{sp:0,fe:0,be:0,n:0},R4:{sp:0,fe:0,be:0,n:0}} };
+  FEATS.forEach(function(f) {
+    var id=f[0], tot=f[4], fe=f[5], be=f[6], gtm=f[8];
+    if (gtm !== 'Startup') return;
+    var tr = TEAM_RELEASE[id]; if (!tr) return;
+    var d = data[tr.t][tr.r];
+    d.sp += tot; d.fe += fe; d.be += be; d.n += 1;
+  });
+  var rels = ['R1','R2','R3','R4'];
+  var relDates = {R1:'Apr 1–May 15',R2:'May 16–Jun 30',R3:'Jul 1–Aug 15',R4:'Aug 16–Aug 31'};
+  var relThemes = {
+    R1:'Platform infra + RBAC + AutoFOV/Gaps pipelines + Admin + Campaign',
+    R2:'LISA pipeline + full BM data layer + Investigation framework + Coverage + Driver View Basic',
+    R3:'Investigation workflows + Reports + P-18 migration + Driver View Capture + Hardware',
+    R4:'Hardening + Security testing + Launch prep'
+  };
+
+  // Release blocks row
+  var blocksHtml = '';
+  rels.forEach(function(r) {
+    var avgSP = data.AVG[r].sp, gldSP = data.GLD[r].sp, totSP = avgSP + gldSP;
+    var isHeavy = totSP > 200;
+    blocksHtml += '<div class="ms-block' + (isHeavy ? ' heavy' : '') + '" style="min-width:120px;text-align:center;padding:14px">' +
+      '<div class="ms-num" style="font-size:13px">' + r + (isHeavy ? ' ⚠️' : '') + '</div>' +
+      '<div class="ms-sp">' + totSP + '</div>' +
+      '<div style="font-size:10px;color:#7dd3fc;margin-top:2px">⚡ ' + avgSP + '</div>' +
+      '<div style="font-size:10px;color:#fdba74">👥 ' + gldSP + '</div>' +
+      '<div style="font-size:9px;color:#475569;margin-top:4px">' + relDates[r] + '</div>' +
+      '</div>';
+  });
+  document.getElementById('r4-blocks-row').innerHTML = blocksHtml;
+
+  // Chart rows
+  var maxSP = 0;
+  rels.forEach(function(r) { maxSP = Math.max(maxSP, data.AVG[r].sp, data.GLD[r].sp); });
+  var scale = 300 / maxSP;
+  var chartHtml = '<div class="ic-row"><div class="ic-label" style="font-size:10px;color:#475569;font-weight:700">RELEASE / TEAM</div><div class="ic-bars" style="font-size:10px;color:#475569">← SP by team</div><div class="ic-val" style="font-size:10px;color:#475569">FE / BE / Total</div></div>';
+  rels.forEach(function(r) {
+    ['AVG','GLD'].forEach(function(t) {
+      var d = data[t][r];
+      var label = r + ' ' + (t === 'AVG' ? '⚡ Avengers' : '👥 Gladiators');
+      var color = t === 'AVG' ? '#1d4ed8' : '#b45309';
+      var w = Math.round(d.sp * scale);
+      chartHtml += '<div class="ic-row"><div class="ic-label">' + label + '</div>' +
+        '<div class="ic-bars"><div class="ic-bar" style="width:' + w + 'px;background:' + color + '">' + (w > 30 ? d.sp : '') + '</div></div>' +
+        '<div class="ic-val"><span style="color:#60a5fa">' + d.fe + '</span> / <span style="color:#fb923c">' + d.be + '</span> / <span style="color:#c084fc">' + d.sp + '</span></div></div>';
+    });
+  });
+  document.getElementById('r4-chart-rows').innerHTML = chartHtml;
+
+  // Detail table
+  var tableHtml = '';
+  rels.forEach(function(r) {
+    ['AVG','GLD'].forEach(function(t) {
+      var d = data[t][r];
+      var teamLabel = t === 'AVG' ? '⚡ Avengers' : '👥 Gladiators';
+      var teamColor = t === 'AVG' ? '#bfdbfe' : '#fed7aa';
+      var relColor = {R1:'#166534',R2:'#0369a1',R3:'#7c3aed',R4:'#b45309'}[r];
+      var fePct = d.sp > 0 ? Math.round(d.fe/d.sp*100) : 0;
+      var alert = '';
+      if (r === 'R1' && t === 'AVG') alert = '⚠️ AutoFOV gate';
+      if (r === 'R2' && t === 'AVG') alert = '⚠️ LISA TDD gate';
+      if (r === 'R3' && t === 'AVG') alert = '⚠️ P-18 parallel track';
+      if (r === 'R1' && t === 'GLD') alert = '⚠️ Hardware order needed';
+      if (r === 'R3' && t === 'GLD') alert = 'ℹ Peak FE load';
+      tableHtml += '<tr>' +
+        '<td><span style="font-size:11px;font-weight:800;padding:2px 10px;border-radius:8px;background:#0f172a;color:white;border:1px solid ' + relColor + '">' + r + '</span></td>' +
+        '<td><span style="font-size:11px;font-weight:700;color:' + teamColor + '">' + teamLabel + '</span></td>' +
+        '<td style="color:#e2e8f0;font-weight:700">' + d.n + '</td>' +
+        '<td><span class="sp-tot-badge">' + d.sp + '</span></td>' +
+        '<td><span class="sp-fe-badge">' + d.fe + '</span></td>' +
+        '<td><span class="sp-be-badge">' + d.be + '</span></td>' +
+        '<td style="color:#94a3b8">' + fePct + '%</td>' +
+        '<td style="font-size:11px;color:#64748b">' + relThemes[r] + '<br><span style="color:#ef4444;font-size:10px">' + alert + '</span></td>' +
+        '</tr>';
+    });
+  });
+  document.getElementById('r4-detail-tbody').innerHTML = tableHtml;
+
+  window._r4ViewBuilt = true;
+}
+
+// ── R1-R4 Plan tab (tab-r4plan) ────────────────────────────────────────────
+var _r4PlanBuilt = false;
+function buildR4PlanTab() {
+  if (_r4PlanBuilt) return;
+
+  // Compute per-team-per-release
+  var data = { AVG:{R1:{sp:0,fe:0,be:0,feats:[]},R2:{sp:0,fe:0,be:0,feats:[]},R3:{sp:0,fe:0,be:0,feats:[]},R4:{sp:0,fe:0,be:0,feats:[]}},
+               GLD:{R1:{sp:0,fe:0,be:0,feats:[]},R2:{sp:0,fe:0,be:0,feats:[]},R3:{sp:0,fe:0,be:0,feats:[]},R4:{sp:0,fe:0,be:0,feats:[]}} };
+  FEATS.forEach(function(f) {
+    var id=f[0], name=f[1], grp=f[2], tot=f[4], fe=f[5], be=f[6], gtm=f[8];
+    if (gtm !== 'Startup') return;
+    var tr = TEAM_RELEASE[id]; if (!tr) return;
+    var d = data[tr.t][tr.r];
+    d.sp += tot; d.fe += fe; d.be += be;
+    d.feats.push({id:id, name:name, grp:grp, tot:tot, fe:fe, be:be});
+  });
+
+  var rels = ['R1','R2','R3','R4'];
+  var relDates = {R1:'Apr 1 – May 15',R2:'May 16 – Jun 30',R3:'Jul 1 – Aug 15',R4:'Aug 16 – Aug 31'};
+  var relSprints = {R1:'3 sprints',R2:'3 sprints',R3:'3 sprints',R4:'1 sprint (hardening)'};
+  var relGates = {
+    R1:'Gate: AutoFOV pipeline in test by May 15',
+    R2:'Gate: LISA TDD approved before Sprint 4',
+    R3:'P-18 parallel BE track active',
+    R4:'Feature freeze — R3 spillover buffer'
+  };
+
+  // 4 Release cards
+  var cardsHtml = '';
+  rels.forEach(function(r) {
+    var avgD = data.AVG[r], gldD = data.GLD[r];
+    var totSP = avgD.sp + gldD.sp;
+    var totFE = avgD.fe + gldD.fe;
+    var totBE = avgD.be + gldD.be;
+    var fePct = totSP > 0 ? Math.round(totFE/totSP*100) : 0;
+    cardsHtml += '<div style="background:#0d1f40;border:1px solid #1d4ed8;border-radius:12px;padding:16px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
+        '<span style="font-size:14px;font-weight:800;color:#bfdbfe">' + r + ' · ' + relDates[r] + '</span>' +
+        '<span style="font-size:10px;background:#1d4ed8;color:white;padding:2px 8px;border-radius:10px;font-weight:700">' + relSprints[r] + '</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:16px;margin-bottom:10px">' +
+        '<div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#f1f5f9">' + totSP + '</div><div style="font-size:10px;color:#64748b">Total SP</div></div>' +
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#7dd3fc">' + avgD.sp + '</div><div style="font-size:10px;color:#64748b">⚡ Avengers</div></div>' +
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#fdba74">' + gldD.sp + '</div><div style="font-size:10px;color:#64748b">👥 Gladiators</div></div>' +
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#60a5fa">' + totFE + '</div><div style="font-size:10px;color:#64748b">FE SP</div></div>' +
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#fb923c">' + totBE + '</div><div style="font-size:10px;color:#64748b">BE SP</div></div>' +
+      '</div>' +
+      '<div style="height:8px;background:#0f172a;border-radius:4px;overflow:hidden;margin-bottom:8px"><div style="width:' + fePct + '%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>' +
+      '<div style="font-size:11px;color:#ef4444">' + relGates[r] + '</div>' +
+      '</div>';
+  });
+  document.getElementById('r4plan-cards').innerHTML = cardsHtml;
+
+  // Feature columns per team
+  function buildTeamCols(teamKey, elId) {
+    var html = '';
+    rels.forEach(function(r) {
+      var d = data[teamKey][r];
+      var feats = d.feats;
+      var hdrColor = teamKey === 'AVG' ? '#bfdbfe' : '#fed7aa';
+      var hdrBg = teamKey === 'AVG' ? '#0d2d52' : '#2d1a00';
+      var hdrBorder = teamKey === 'AVG' ? '#1d4ed8' : '#b45309';
+      html += '<div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:12px">' +
+        '<div style="font-size:12px;font-weight:800;color:' + hdrColor + ';background:' + hdrBg + ';border:1px solid ' + hdrBorder + ';border-radius:7px;padding:5px 10px;margin-bottom:10px;text-align:center">' +
+          r + ' · ' + d.sp + ' SP · ' + feats.length + ' feats' +
+        '</div>';
+      feats.forEach(function(f) {
+        var gc = groupClass(f.grp);
+        html += '<div style="margin-bottom:5px;padding:5px 7px;background:#0f172a;border-radius:6px">' +
+          '<div style="font-size:10px;font-weight:700;color:#94a3b8;font-family:monospace">' + f.id + '</div>' +
+          '<div style="font-size:11px;color:#e2e8f0;margin:2px 0">' + f.name + '</div>' +
+          '<div style="display:flex;gap:4px;align-items:center">' +
+            '<span class="sp-tot-badge" style="font-size:11px">' + f.tot + '</span>' +
+            '<span class="sp-fe-badge" style="font-size:9px">' + f.fe + '</span>' +
+            '<span class="sp-be-badge" style="font-size:9px">' + f.be + '</span>' +
+            '<span class="group-pill ' + gc + '" style="font-size:9px;padding:1px 5px">' + f.grp + '</span>' +
+          '</div></div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById(elId).innerHTML = html;
+  }
+
+  buildTeamCols('AVG', 'r4plan-avg-cols');
+  buildTeamCols('GLD', 'r4plan-gld-cols');
+
+  // Sprint SP demand
+  var sprintLabels = [
+    'S1 Apr 1-14','S2 Apr 15-28','S3 Apr 29-May 12',
+    'S4 May 13-26','S5 May 27-Jun 9','S6 Jun 10-23',
+    'S7 Jun 24-Jul 7','S8 Jul 8-21','S9 Jul 22-Aug 4',
+    'S10 Aug 5-18'
+  ];
+  // Approximate SP per sprint (from plan distribution)
+  var sprintAvg = [30,35,25, 30,30,23, 59,59,59, 13];  // Avengers (R3 includes P-18 distributed)
+  var sprintGld = [50,50,47, 45,40,45, 48,48,48, 45];  // Gladiators
+  var sprintHtml = '';
+  for (var i = 0; i < 10; i++) {
+    var combined = sprintAvg[i] + sprintGld[i];
+    sprintHtml += '<div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px;text-align:center">' +
+      '<div style="font-size:9px;color:#64748b;font-weight:700;margin-bottom:4px">' + sprintLabels[i] + '</div>' +
+      '<div style="font-size:18px;font-weight:800;color:#f1f5f9">' + combined + '</div>' +
+      '<div style="font-size:9px;color:#7dd3fc">⚡ ' + sprintAvg[i] + '</div>' +
+      '<div style="font-size:9px;color:#fdba74">👥 ' + sprintGld[i] + '</div>' +
+      '</div>';
+  }
+  document.getElementById('r4plan-sprints').innerHTML = sprintHtml;
+
+  _r4PlanBuilt = true;
 }
 
 </script>
