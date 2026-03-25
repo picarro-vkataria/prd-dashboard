@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P-Cubed Pro — GTM Feature Plan</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0b1220; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Layout ── */
+  .page { max-width: 1400px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  /* ── Header ── */
+  .dash-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    border: 1px solid #312e81;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;
+  }
+  .dash-header h1 { font-size: 24px; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px; }
+  .dash-header .subtitle { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+  .header-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-purple { background: #4c1d95; color: #ddd6fe; border: 1px solid #6d28d9; }
+  .badge-blue   { background: #1e3a5f; color: #bfdbfe; border: 1px solid #2563eb; }
+  .badge-green  { background: #14532d; color: #bbf7d0; border: 1px solid #16a34a; }
+  .badge-amber  { background: #451a03; color: #fed7aa; border: 1px solid #b45309; }
+  .badge-red    { background: #450a0a; color: #fecaca; border: 1px solid #dc2626; }
+  .badge-slate  { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+
+  /* ── Nav tabs ── */
+  .nav-tabs { display: flex; gap: 4px; background: #1e293b; padding: 5px; border-radius: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .nav-tab { padding: 9px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; color: #94a3b8; transition: all 0.2s; border: none; background: none; }
+  .nav-tab:hover { background: #334155; color: #e2e8f0; }
+  .nav-tab.active { background: #4f46e5; color: white; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Summary cards ── */
+  .cards-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px 16px; }
+  .card .card-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .card .card-value { font-size: 28px; font-weight: 800; color: #f1f5f9; }
+  .card .card-sub { font-size: 11px; color: #64748b; margin-top: 4px; }
+  .card-fe { border-top: 3px solid #3b82f6; }
+  .card-be { border-top: 3px solid #f97316; }
+  .card-total { border-top: 3px solid #a855f7; }
+  .card-risk { border-top: 3px solid #ef4444; }
+
+  /* ── Section headers ── */
+  .section-header { font-size: 16px; font-weight: 700; color: #e2e8f0; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-header::after { content: ''; flex: 1; height: 1px; background: #1e293b; }
+
+  /* ── SP bar groups ── */
+  .group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .group-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px 18px; }
+  .group-card .gc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .group-card .gc-name { font-weight: 700; font-size: 14px; color: #f1f5f9; }
+  .group-card .gc-meta { font-size: 11px; color: #64748b; }
+  .sp-bar-row { margin-bottom: 8px; }
+  .sp-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-bottom: 3px; }
+  .sp-bar-track { height: 8px; background: #0f172a; border-radius: 4px; overflow: hidden; }
+  .sp-bar-fill { height: 100%; border-radius: 4px; }
+  .sp-bar-fe { background: linear-gradient(90deg, #2563eb, #3b82f6); }
+  .sp-bar-be { background: linear-gradient(90deg, #c2410c, #f97316); }
+  .sp-bar-tot { background: linear-gradient(90deg, #6d28d9, #a855f7); }
+  .sp-split-display { display: flex; gap: 10px; margin-top: 10px; font-size: 12px; }
+  .sp-fe-num { color: #60a5fa; font-weight: 700; }
+  .sp-be-num { color: #fb923c; font-weight: 700; }
+  .sp-tot-num { color: #c084fc; font-weight: 700; }
+  .pct-pill { font-size: 10px; padding: 1px 7px; border-radius: 10px; margin-left: 4px; }
+  .pct-fe { background: #1e3a5f; color: #93c5fd; }
+  .pct-be { background: #431407; color: #fdba74; }
+
+  /* ── MS timeline row ── */
+  .ms-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  .ms-block { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px 16px; flex: 1; min-width: 90px; text-align: center; }
+  .ms-block .ms-num { font-size: 12px; font-weight: 700; color: #94a3b8; }
+  .ms-block .ms-sp { font-size: 20px; font-weight: 800; color: #f1f5f9; }
+  .ms-block .ms-fe { font-size: 10px; color: #60a5fa; }
+  .ms-block .ms-be { font-size: 10px; color: #fb923c; }
+  .ms-block.heavy { border-color: #ef4444; background: #1a0a0a; }
+  .ms-block.heavy .ms-num { color: #fca5a5; }
+
+  /* ── Feature table ── */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+  .filter-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .filter-btn { padding: 5px 14px; border-radius: 16px; border: 1px solid #334155; background: transparent; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { border-color: #4f46e5; color: #c7d2fe; }
+  .filter-btn.active { background: #4f46e5; border-color: #4f46e5; color: white; }
+  .filter-divider { width: 1px; height: 20px; background: #334155; }
+
+  .feat-table { width: 100%; border-collapse: collapse; }
+  .feat-table th { background: #0f172a; color: #64748b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 12px; text-align: left; position: sticky; top: 0; z-index: 1; border-bottom: 1px solid #334155; }
+  .feat-table td { padding: 9px 12px; border-bottom: 1px solid #1e293b; vertical-align: middle; }
+  .feat-table tr:hover td { background: #1e293b; }
+  .feat-table tr.hidden { display: none; }
+
+  .id-code { font-family: monospace; font-size: 11px; color: #94a3b8; }
+  .feat-name { font-size: 13px; color: #e2e8f0; font-weight: 500; }
+  .feat-summary { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+  .group-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+  .gp-platform    { background: #1e1b4b; color: #a5b4fc; border: 1px solid #4338ca; }
+  .gp-admin       { background: #1a2e1a; color: #86efac; border: 1px solid #16a34a; }
+  .gp-campaign    { background: #1a1a2e; color: #c4b5fd; border: 1px solid #7c3aed; }
+  .gp-bm          { background: #0f2233; color: #7dd3fc; border: 1px solid #0284c7; }
+  .gp-ops         { background: #1e2a1e; color: #a7f3d0; border: 1px solid #059669; }
+  .gp-hardware    { background: #2d1a00; color: #fed7aa; border: 1px solid #b45309; }
+  .gp-mobile      { background: #2d0a2a; color: #f0abfc; border: 1px solid #a21caf; }
+  .gp-intel       { background: #1a1a1a; color: #e5e7eb; border: 1px solid #6b7280; }
+
+  .ms-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+  .ms-unset { background: #450a0a; color: #fca5a5; border-color: #dc2626; }
+
+  .sp-inline { display: flex; gap: 6px; align-items: center; }
+  .sp-tot-badge { font-size: 13px; font-weight: 800; color: #c084fc; min-width: 28px; }
+  .sp-fe-badge { font-size: 11px; font-weight: 700; color: #60a5fa; padding: 1px 6px; background: #0f2040; border-radius: 8px; }
+  .sp-be-badge { font-size: 11px; font-weight: 700; color: #fb923c; padding: 1px 6px; background: #2d1200; border-radius: 8px; }
+
+  .src-v12 { font-size: 10px; padding: 1px 6px; border-radius: 6px; background: #14532d; color: #86efac; border: 1px solid #16a34a; }
+  .src-est { font-size: 10px; padding: 1px 6px; border-radius: 6px; background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+  .gtm-startup   { background: #0c2e0c; color: #86efac; border: 1px solid #16a34a; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+  .gtm-maturity  { background: #2a1e00; color: #fde68a; border: 1px solid #ca8a04; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+  .gtm-excellence{ background: #2d0a00; color: #fca5a5; border: 1px solid #dc2626; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+
+  /* ── Risk cards ── */
+  .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 14px; }
+  .risk-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px 20px; }
+  .risk-card.critical { border-left: 4px solid #ef4444; }
+  .risk-card.high     { border-left: 4px solid #f97316; }
+  .risk-card.medium   { border-left: 4px solid #eab308; }
+  .risk-card.insight  { border-left: 4px solid #3b82f6; }
+  .risk-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .risk-level { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .rl-critical { background: #450a0a; color: #fca5a5; }
+  .rl-high     { background: #431407; color: #fed7aa; }
+  .rl-medium   { background: #422006; color: #fef08a; }
+  .rl-insight  { background: #1e3a5f; color: #93c5fd; }
+  .risk-title { font-weight: 700; font-size: 14px; color: #f1f5f9; }
+  .risk-body { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+  .risk-body strong { color: #e2e8f0; }
+  .risk-impact { margin-top: 10px; padding: 8px 12px; background: #0f172a; border-radius: 8px; font-size: 12px; color: #64748b; }
+  .risk-impact strong { color: #94a3b8; }
+
+  /* ── Insight bar chart ── */
+  .insight-chart { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .ic-row { display: flex; align-items: center; gap: 10px; }
+  .ic-label { min-width: 160px; font-size: 12px; color: #94a3b8; text-align: right; }
+  .ic-bars { flex: 1; display: flex; gap: 3px; align-items: center; }
+  .ic-bar { height: 18px; border-radius: 3px; display: flex; align-items: center; padding: 0 6px; font-size: 10px; font-weight: 700; color: white; white-space: nowrap; min-width: 28px; transition: width 0.3s; }
+  .ic-bar-fe { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
+  .ic-bar-be { background: linear-gradient(90deg, #c2410c, #f97316); }
+  .ic-val { min-width: 100px; font-size: 11px; color: #64748b; }
+
+  /* ── Table container ── */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid #334155; }
+  .table-scroll { max-height: 600px; overflow-y: auto; }
+
+  /* ── Footnote ── */
+  .footnote { font-size: 11px; color: #475569; margin-top: 20px; padding: 12px 16px; background: #0f172a; border-radius: 8px; border: 1px solid #1e293b; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="dash-header">
+    <div style="flex:1">
+      <h1>P-Cubed Pro — GTM Feature Plan</h1>
+      <div class="subtitle">GTM Tier: Demo - Start Up &nbsp;·&nbsp; Original 11-Milestone Plan (MS4–MS11) &nbsp;·&nbsp; Story Point analysis with FE / BE breakdown</div>
+      <div class="header-badges">
+        <span class="badge badge-purple">141 Features · 3 GTM Phases</span>
+        <span class="badge badge-blue">1,089 Total SP</span>
+        <span class="badge badge-green">497 FE SP · 46%</span>
+        <span class="badge badge-amber">592 BE SP · 54%</span>
+        <span class="badge" style="background:#0c2a0c;color:#86efac;border:1px solid #16a34a">Startup 682 SP · 99 feats</span>
+        <span class="badge" style="background:#1a1a00;color:#fde68a;border:1px solid #ca8a04">Maturity 231 SP · 24 feats</span>
+        <span class="badge" style="background:#2d0a00;color:#fca5a5;border:1px solid #dc2626">Excellence 176 SP · 18 feats</span>
+        <span class="badge badge-slate">Original 11-Milestone Plan</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('overview')">📊 Overview & SP by Group</button>
+    <button class="nav-tab" onclick="showTab('milestones')">📅 SP by Milestone</button>
+    <button class="nav-tab" onclick="showTab('features')">📋 Feature Table</button>
+    <button class="nav-tab" onclick="showTab('risks')">⚠️ Staffing Risks & Insights</button>
+    <button class="nav-tab" onclick="showTab('parallel')">🤝 V1 Parallel Plan</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ TAB 1: OVERVIEW -->
+  <div id="tab-overview" class="tab-panel active">
+
+    <!-- Summary cards -->
+    <div class="cards-row">
+      <div class="card card-total">
+        <div class="card-label">Grand Total SP</div>
+        <div class="card-value">1,089</div>
+        <div class="card-sub">141 features · 3 GTM phases</div>
+      </div>
+      <div class="card card-fe">
+        <div class="card-label">Total Front-End SP</div>
+        <div class="card-value">497</div>
+        <div class="card-sub">46% of total work</div>
+      </div>
+      <div class="card card-be">
+        <div class="card-label">Total Back-End SP</div>
+        <div class="card-value">592</div>
+        <div class="card-sub">54% of total work</div>
+      </div>
+      <div class="card" style="border-top:3px solid #16a34a">
+        <div class="card-label">🚀 GTM Startup</div>
+        <div class="card-value">682</div>
+        <div class="card-sub">99 feats · FE 323 / BE 359</div>
+      </div>
+      <div class="card" style="border-top:3px solid #ca8a04">
+        <div class="card-label">📈 GTM Maturity</div>
+        <div class="card-value">231</div>
+        <div class="card-sub">24 feats · FE 99 / BE 132</div>
+      </div>
+      <div class="card" style="border-top:3px solid #dc2626">
+        <div class="card-label">🏆 GTM Excellence</div>
+        <div class="card-value">176</div>
+        <div class="card-sub">18 feats · FE 75 / BE 101</div>
+      </div>
+    </div>
+
+    <!-- FE/BE bar chart by group -->
+    <div class="section-header">SP Breakdown by Feature Group</div>
+
+    <div class="insight-chart">
+      <!-- max SP in any group = 232, scale to 580px -->
+      <div class="ic-row">
+        <div class="ic-label" style="font-size:10px;color:#475569;font-weight:700">GROUP</div>
+        <div class="ic-bars" style="padding-left:4px;font-size:10px;color:#475569">← FE (blue) &nbsp; BE (orange) →</div>
+        <div class="ic-val" style="font-size:10px;color:#475569">FE / BE / Total</div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Platform &amp; Infra (17)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:80px">32</div>
+          <div class="ic-bar ic-bar-be" style="width:252px">101</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">32</span> / <span style="color:#fb923c">101</span> / <span style="color:#c084fc">133</span> &nbsp;<span style="font-size:10px;color:#64748b">76% BE ⚠️</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Administration (18)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:120px">48</div>
+          <div class="ic-bar ic-bar-be" style="width:85px">34</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">48</span> / <span style="color:#fb923c">34</span> / <span style="color:#c084fc">82</span> &nbsp;<span style="font-size:10px;color:#64748b">58% FE</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Campaign (5)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:45px">18</div>
+          <div class="ic-bar ic-bar-be" style="width:40px">16</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">18</span> / <span style="color:#fb923c">16</span> / <span style="color:#c084fc">34</span> &nbsp;<span style="font-size:10px;color:#64748b">balanced</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Boundary Mgmt (36)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:300px">120</div>
+          <div class="ic-bar ic-bar-be" style="width:280px">112</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">120</span> / <span style="color:#fb923c">112</span> / <span style="color:#c084fc">232</span> &nbsp;<span style="font-size:10px;color:#64748b">51% FE</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Operations Other (6)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:47px">19</div>
+          <div class="ic-bar ic-bar-be" style="width:37px">15</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">19</span> / <span style="color:#fb923c">15</span> / <span style="color:#c084fc">34</span> &nbsp;<span style="font-size:10px;color:#64748b">55% FE</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Hardware (11)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:92px">37</div>
+          <div class="ic-bar ic-bar-be" style="width:142px">57</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">37</span> / <span style="color:#fb923c">57</span> / <span style="color:#c084fc">94</span> &nbsp;<span style="font-size:10px;color:#64748b">61% BE</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Intelligence (1)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:17px">7</div>
+          <div class="ic-bar ic-bar-be" style="width:15px">6</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">7</span> / <span style="color:#fb923c">6</span> / <span style="color:#c084fc">13</span> &nbsp;<span style="font-size:10px;color:#64748b">balanced</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">Mobile (5)</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:105px">42</div>
+          <div class="ic-bar ic-bar-be" style="width:45px">18</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">42</span> / <span style="color:#fb923c">18</span> / <span style="color:#c084fc">60</span> &nbsp;<span style="font-size:10px;color:#64748b">70% FE ⚠️</span></div>
+      </div>
+    </div>
+
+    <!-- Group detail cards -->
+    <div class="section-header" style="margin-top:24px">Group Detail Cards</div>
+    <div class="group-grid">
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">🏗 Platform &amp; Infrastructure</span><span class="gc-meta">17 feat · 133 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>32 SP <span class="pct-pill pct-fe">24%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:24%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>101 SP <span class="pct-pill pct-be">76%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:76%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 32</span><span style="color:#475569">/</span><span class="sp-be-num">BE 101</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 133</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">RBAC · Auth · GIS pipelines · Staging envs · Logging · i18n · Data migration · Pendo</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">⚙️ Administration</span><span class="gc-meta">18 feat · 82 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>48 SP <span class="pct-pill pct-fe">58%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:58%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>34 SP <span class="pct-pill pct-be">41%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:41%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 48</span><span style="color:#475569">/</span><span class="sp-be-num">BE 34</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 82</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Tenant · Operator · User CRUD · Investigation components &amp; templates</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">🗂 Campaign Operations</span><span class="gc-meta">5 feat · 34 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>18 SP <span class="pct-pill pct-fe">53%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:53%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>16 SP <span class="pct-pill pct-be">47%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:47%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 18</span><span style="color:#475569">/</span><span class="sp-be-num">BE 16</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 34</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Campaign CRUD · Boundary upload (CSV/JSON) · Map selection · Copy campaign</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">🗺 Boundary Management</span><span class="gc-meta">36 feat · 232 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>120 SP <span class="pct-pill pct-fe">51%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:51%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>112 SP <span class="pct-pill pct-be">48%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:48%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 120</span><span style="color:#475569">/</span><span class="sp-be-num">BE 112</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 232</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Coverage · Driving Sessions · AutoFOV · Gaps · LISAs · Results · Investigations · Labels</div>
+        <div style="margin-top:6px;font-size:11px;color:#475569">Note: 3 data pipelines (AutoFOV/Gaps/LISA) are each 3FE/10BE; all display features are ~3FE/2BE</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">📝 Operations — Other</span><span class="gc-meta">6 feat · 34 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>19 SP <span class="pct-pill pct-fe">55%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:55%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>15 SP <span class="pct-pill pct-be">44%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:44%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 19</span><span style="color:#475569">/</span><span class="sp-be-num">BE 15</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 34</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Handheld timeseries · Manual reports · Labels · Geocode · Snap-to-street</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">🔧 Hardware</span><span class="gc-meta">11 feat · 94 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>37 SP <span class="pct-pill pct-fe">39%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:39%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>57 SP <span class="pct-pill pct-be">60%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:60%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 37</span><span style="color:#475569">/</span><span class="sp-be-num">BE 57</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 94</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Car &amp; HH ingest pipelines · Fleet map · Observer view · System &amp; peripheral mgmt · Sensor metrics</div>
+        <div style="margin-top:6px;font-size:11px;color:#ef4444">⚠ Zero Jira epics exist today. H-00/H-01 ingest = 2FE/11BE each — no owners assigned.</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">📱 Mobile</span><span class="gc-meta">5 feat · 60 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>42 SP <span class="pct-pill pct-fe">70%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:70%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>18 SP <span class="pct-pill pct-be">30%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:30%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 42</span><span style="color:#475569">/</span><span class="sp-be-num">BE 18</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 60</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Driver View eval · Basic · Capture Mode · Assignment dispatching · Mobile app PCP integration</div>
+        <div style="margin-top:6px;font-size:11px;color:#f97316">⚠ M-DV-02 alone = 15 FE SP. Requires dedicated mobile FE engineer (not web FE).</div>
+      </div>
+
+      <div class="group-card">
+        <div class="gc-header"><span class="gc-name">🧠 Intelligence</span><span class="gc-meta">1 feat · 13 SP</span></div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Front-End</span><span>7 SP <span class="pct-pill pct-fe">53%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-fe" style="width:53%"></div></div>
+        </div>
+        <div class="sp-bar-row">
+          <div class="sp-bar-label"><span>Back-End</span><span>6 SP <span class="pct-pill pct-be">46%</span></span></div>
+          <div class="sp-bar-track"><div class="sp-bar-fill sp-bar-be" style="width:46%"></div></div>
+        </div>
+        <div class="sp-split-display"><span class="sp-fe-num">FE 7</span><span style="color:#475569">/</span><span class="sp-be-num">BE 6</span><span style="color:#475569">/</span><span class="sp-tot-num">Total 13</span></div>
+        <div style="margin-top:10px;font-size:11px;color:#64748b">Data Explorer: Network &amp; Program level KPIs — new analytics domain. Scheduled MS11.</div>
+      </div>
+
+    </div><!-- /group-grid -->
+
+    <!-- GTM Phase chart -->
+    <div class="section-header" style="margin-top:28px">SP by GTM Phase</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-bottom:24px">
+
+      <!-- Startup -->
+      <div style="background:#0c1a0c;border:1px solid #16a34a;border-radius:12px;padding:18px 20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:15px;font-weight:800;color:#86efac">🚀 Startup</span>
+          <span style="font-size:11px;color:#4ade80;font-weight:700">99 features</span>
+        </div>
+        <div style="font-size:32px;font-weight:800;color:#f1f5f9;margin-bottom:4px">682 <span style="font-size:14px;color:#64748b">SP</span></div>
+        <div style="font-size:12px;color:#4ade80;margin-bottom:14px">Core product — Original 11-Milestone Plan (MS4–MS11)</div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>FE</span><span>323 SP · 47%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:47%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>BE</span><span>359 SP · 53%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:53%;height:100%;background:linear-gradient(90deg,#c2410c,#f97316)"></div></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:#64748b">Groups: Platform · Admin · Campaign · BM · Ops · Hardware · Mobile · Intelligence</div>
+      </div>
+
+      <!-- Maturity -->
+      <div style="background:#1a1a00;border:1px solid #ca8a04;border-radius:12px;padding:18px 20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:15px;font-weight:800;color:#fde68a">📈 Maturity</span>
+          <span style="font-size:11px;color:#fbbf24;font-weight:700">24 features</span>
+        </div>
+        <div style="font-size:32px;font-weight:800;color:#f1f5f9;margin-bottom:4px">231 <span style="font-size:14px;color:#64748b">SP</span></div>
+        <div style="font-size:12px;color:#fbbf24;margin-bottom:14px">Advanced capabilities — SSO, Emissions, ESRI, OTA integrations, advanced HH</div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>FE</span><span>99 SP · 43%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:43%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>BE</span><span>132 SP · 57%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:57%;height:100%;background:linear-gradient(90deg,#c2410c,#f97316)"></div></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:#64748b">New groups: Emissions (3 feats) · Integrations (8 feats) · Advanced HW/Mobile/Intelligence</div>
+      </div>
+
+      <!-- Excellence -->
+      <div style="background:#1a0500;border:1px solid #dc2626;border-radius:12px;padding:18px 20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:15px;font-weight:800;color:#fca5a5">🏆 Excellence</span>
+          <span style="font-size:11px;color:#f87171;font-weight:700">18 features</span>
+        </div>
+        <div style="font-size:32px;font-weight:800;color:#f1f5f9;margin-bottom:4px">176 <span style="font-size:14px;color:#64748b">SP</span></div>
+        <div style="font-size:12px;color:#f87171;margin-bottom:14px">Enterprise tier — MFA, subcontractors, compliance KPIs, route planning, full OTA, extended ESRI</div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>FE</span><span>75 SP · 43%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:43%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;margin-bottom:3px"><span>BE</span><span>101 SP · 57%</span></div>
+          <div style="height:10px;background:#0f172a;border-radius:5px;overflow:hidden"><div style="width:57%;height:100%;background:linear-gradient(90deg,#c2410c,#f97316)"></div></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:#64748b">Notably: O-BM-41 Route Planning (21 SP) · P-02 Custom Roles (13 SP) · Full Emissions suite (39 SP)</div>
+      </div>
+
+    </div>
+
+    <!-- Phase comparison bar -->
+    <div class="section-header">GTM Phase Comparison — Total SP</div>
+    <div class="insight-chart" style="margin-bottom:24px">
+      <div class="ic-row">
+        <div class="ic-label" style="color:#86efac;font-weight:700">🚀 Startup (99)</div>
+        <div class="ic-bars">
+          <div class="ic-bar" style="background:linear-gradient(90deg,#166534,#16a34a);width:341px">682 SP</div>
+        </div>
+        <div class="ic-val"><span style="color:#4ade80;font-weight:700">682</span> &nbsp;FE <span style="color:#60a5fa">323</span> / BE <span style="color:#fb923c">359</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label" style="color:#fde68a;font-weight:700">📈 Maturity (24)</div>
+        <div class="ic-bars">
+          <div class="ic-bar" style="background:linear-gradient(90deg,#713f12,#ca8a04);width:115px">231 SP</div>
+        </div>
+        <div class="ic-val"><span style="color:#fbbf24;font-weight:700">231</span> &nbsp;FE <span style="color:#60a5fa">99</span> / BE <span style="color:#fb923c">132</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label" style="color:#fca5a5;font-weight:700">🏆 Excellence (18)</div>
+        <div class="ic-bars">
+          <div class="ic-bar" style="background:linear-gradient(90deg,#7f1d1d,#dc2626);width:88px">176 SP</div>
+        </div>
+        <div class="ic-val"><span style="color:#f87171;font-weight:700">176</span> &nbsp;FE <span style="color:#60a5fa">75</span> / BE <span style="color:#fb923c">101</span></div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      <strong>SP Estimation Methodology:</strong>
+      59 features have SP confirmed from the V12 Parallel Team Plan (calibrated from Jira epics + PRD analysis).
+      40 features are estimates using the following rubric:
+      <strong>3 SP</strong> = trivial config/display-only &nbsp;|&nbsp;
+      <strong>5 SP</strong> = standard CRUD / list view &nbsp;|&nbsp;
+      <strong>8 SP</strong> = table+API / map layer &nbsp;|&nbsp;
+      <strong>13 SP</strong> = pipeline / cross-service integration &nbsp;|&nbsp;
+      <strong>21 SP</strong> = new platform / real-time mobile.
+      FE/BE split uses area-specific ratios (pipelines ≈ 20/80; map display ≈ 65/35; admin CRUD ≈ 50/50; mobile ≈ 75/25; infra ≈ 5/95).
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════ TAB 2: MILESTONES -->
+  <div id="tab-milestones" class="tab-panel">
+
+    <div class="section-header">SP by Milestone — Original 11-Milestone Plan</div>
+
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#94a3b8">
+      Milestones are referenced as the <strong style="color:#e2e8f0">Original 11-Milestone Plan (MS4–MS11)</strong>.
+      MS1–MS3 represent pre-MS4 foundation work (not captured in this GTM scope).
+      Note: 3 features (P-03b User Onboarding, P-07 Security &amp; Compliance, P-22 SFTP Configuration) have no milestone assigned in the source spreadsheet — shown as MS?.
+    </div>
+
+    <!-- MS blocks -->
+    <div class="ms-row">
+      <div class="ms-block">
+        <div class="ms-num">MS4</div>
+        <div class="ms-sp">11</div>
+        <div class="ms-fe">FE 5</div>
+        <div class="ms-be">BE 6</div>
+      </div>
+      <div class="ms-block">
+        <div class="ms-num">MS5</div>
+        <div class="ms-sp">65</div>
+        <div class="ms-fe">FE 19</div>
+        <div class="ms-be">BE 46</div>
+      </div>
+      <div class="ms-block heavy">
+        <div class="ms-num">MS6 ⚠️</div>
+        <div class="ms-sp">131</div>
+        <div class="ms-fe">FE 66</div>
+        <div class="ms-be">BE 65</div>
+      </div>
+      <div class="ms-block">
+        <div class="ms-num">MS7</div>
+        <div class="ms-sp">86</div>
+        <div class="ms-fe">FE 51</div>
+        <div class="ms-be">BE 35</div>
+      </div>
+      <div class="ms-block heavy">
+        <div class="ms-num">MS8 ⚠️</div>
+        <div class="ms-sp">128</div>
+        <div class="ms-fe">FE 54</div>
+        <div class="ms-be">BE 74</div>
+      </div>
+      <div class="ms-block">
+        <div class="ms-num">MS9</div>
+        <div class="ms-sp">103</div>
+        <div class="ms-fe">FE 55</div>
+        <div class="ms-be">BE 48</div>
+      </div>
+      <div class="ms-block">
+        <div class="ms-num">MS10</div>
+        <div class="ms-sp">88</div>
+        <div class="ms-fe">FE 53</div>
+        <div class="ms-be">BE 35</div>
+      </div>
+      <div class="ms-block">
+        <div class="ms-num">MS11</div>
+        <div class="ms-sp">44</div>
+        <div class="ms-fe">FE 23</div>
+        <div class="ms-be">BE 21</div>
+      </div>
+      <div class="ms-block" style="border-color:#ef4444;background:#1a0505">
+        <div class="ms-num" style="color:#fca5a5">MS?</div>
+        <div class="ms-sp" style="color:#fca5a5">26</div>
+        <div class="ms-fe">FE 4</div>
+        <div class="ms-be">BE 22</div>
+      </div>
+    </div>
+
+    <!-- Per-MS bar chart -->
+    <div class="section-header" style="margin-top:8px">Milestone Load Comparison</div>
+    <div class="insight-chart">
+      <div class="ic-row">
+        <div class="ic-label" style="font-size:10px;color:#475569;font-weight:700">MILESTONE</div>
+        <div class="ic-bars" style="padding-left:4px;font-size:10px;color:#475569">← FE (blue) &nbsp; BE (orange) →</div>
+        <div class="ic-val" style="font-size:10px;color:#475569">FE / BE / Total</div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS4</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:12px">5</div>
+          <div class="ic-bar ic-bar-be" style="width:15px">6</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">5</span> / <span style="color:#fb923c">6</span> / <span style="color:#c084fc">11</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS5</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:47px">19</div>
+          <div class="ic-bar ic-bar-be" style="width:115px">46</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">19</span> / <span style="color:#fb923c">46</span> / <span style="color:#c084fc">65</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS6 ⚠️ HEAVY</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:165px">66</div>
+          <div class="ic-bar ic-bar-be" style="width:162px">65</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">66</span> / <span style="color:#fb923c">65</span> / <span style="color:#c084fc">131</span> <span style="font-size:10px;color:#ef4444">peak load</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS7</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:127px">51</div>
+          <div class="ic-bar ic-bar-be" style="width:87px">35</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">51</span> / <span style="color:#fb923c">35</span> / <span style="color:#c084fc">86</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS8 ⚠️ HEAVY</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:135px">54</div>
+          <div class="ic-bar ic-bar-be" style="width:185px">74</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">54</span> / <span style="color:#fb923c">74</span> / <span style="color:#c084fc">128</span> <span style="font-size:10px;color:#ef4444">peak load</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS9</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:137px">55</div>
+          <div class="ic-bar ic-bar-be" style="width:120px">48</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">55</span> / <span style="color:#fb923c">48</span> / <span style="color:#c084fc">103</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS10</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:132px">53</div>
+          <div class="ic-bar ic-bar-be" style="width:87px">35</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">53</span> / <span style="color:#fb923c">35</span> / <span style="color:#c084fc">88</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label">MS11</div>
+        <div class="ic-bars">
+          <div class="ic-bar ic-bar-fe" style="width:57px">23</div>
+          <div class="ic-bar ic-bar-be" style="width:52px">21</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">23</span> / <span style="color:#fb923c">21</span> / <span style="color:#c084fc">44</span></div>
+      </div>
+      <div class="ic-row">
+        <div class="ic-label" style="color:#fca5a5">MS? (unscheduled)</div>
+        <div class="ic-bars">
+          <div class="ic-bar" style="background:#6b2020;width:10px">4</div>
+          <div class="ic-bar" style="background:#7c2e10;width:55px">22</div>
+        </div>
+        <div class="ic-val"><span style="color:#60a5fa">4</span> / <span style="color:#fb923c">22</span> / <span style="color:#c084fc">26</span> <span style="font-size:10px;color:#ef4444">needs scheduling</span></div>
+      </div>
+    </div>
+
+    <!-- MS feature breakdown -->
+    <div class="section-header" style="margin-top:24px">Feature Count &amp; Domain Mix per Milestone</div>
+    <div style="overflow-x:auto;border-radius:12px;border:1px solid #334155">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:#0f172a">
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Milestone</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Feats</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Total SP</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">FE SP</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">BE SP</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">FE%</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Dominant Domains</th>
+            <th style="padding:10px 14px;text-align:left;color:#64748b;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Alert</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1e293b"><td style="padding:10px 14px;font-weight:700">MS4</td><td style="padding:10px 14px">4</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">11</td><td style="padding:10px 14px;color:#60a5fa">5</td><td style="padding:10px 14px;color:#fb923c">6</td><td style="padding:10px 14px;color:#94a3b8">45%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">Platform (auth) · Admin (tenant)</td><td style="padding:10px 14px;font-size:11px;color:#64748b">Foundation — light load</td></tr>
+          <tr style="border-bottom:1px solid #1e293b"><td style="padding:10px 14px;font-weight:700">MS5</td><td style="padding:10px 14px">9</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">65</td><td style="padding:10px 14px;color:#60a5fa">19</td><td style="padding:10px 14px;color:#fb923c">46</td><td style="padding:10px 14px;color:#94a3b8">29%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">Platform (GIS pipelines) · Admin · Campaign · BM (AutoFOV pipeline)</td><td style="padding:10px 14px;font-size:11px;color:#f97316">BE-heavy — 71% BE. Needs 2 BE engineers.</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;background:#1a0a0a"><td style="padding:10px 14px;font-weight:700;color:#fca5a5">MS6 ⚠️</td><td style="padding:10px 14px">21</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">131</td><td style="padding:10px 14px;color:#60a5fa">66</td><td style="padding:10px 14px;color:#fb923c">65</td><td style="padding:10px 14px;color:#94a3b8">50%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">BM (map/panel/pipeline) · Admin · Campaign · Platform</td><td style="padding:10px 14px;font-size:11px;color:#ef4444">Peak load. 3 BM pipelines fire simultaneously (AutoFOV display, Gaps, LISA). Min 2 FE + 2 BE.</td></tr>
+          <tr style="border-bottom:1px solid #1e293b"><td style="padding:10px 14px;font-weight:700">MS7</td><td style="padding:10px 14px">15</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">86</td><td style="padding:10px 14px;color:#60a5fa">51</td><td style="padding:10px 14px;color:#fb923c">35</td><td style="padding:10px 14px;color:#94a3b8">59%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">BM (DS+AutoFOV+Gaps+LISA display) · Mobile (Driver View)</td><td style="padding:10px 14px;font-size:11px;color:#eab308">FE-leaning. Mobile starts here — need mobile FE in this MS.</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;background:#1a0a0a"><td style="padding:10px 14px;font-weight:700;color:#fca5a5">MS8 ⚠️</td><td style="padding:10px 14px">19</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">128</td><td style="padding:10px 14px;color:#60a5fa">54</td><td style="padding:10px 14px;color:#fb923c">74</td><td style="padding:10px 14px;color:#94a3b8">42%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">Hardware (car ingest · fleet map) · Admin (user mgmt) · Platform (staging · logging)</td><td style="padding:10px 14px;font-size:11px;color:#ef4444">BE-heavy + hardware starts. H-01/H-02 = 24 BE SP. Hardware lead must be hired/assigned NOW.</td></tr>
+          <tr style="border-bottom:1px solid #1e293b"><td style="padding:10px 14px;font-weight:700">MS9</td><td style="padding:10px 14px">14</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">103</td><td style="padding:10px 14px;color:#60a5fa">55</td><td style="padding:10px 14px;color:#fb923c">48</td><td style="padding:10px 14px;color:#94a3b8">53%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">BM (results · investigations) · Ops (reports) · Platform (i18n · migration) · Hardware (car setup)</td><td style="padding:10px 14px;font-size:11px;color:#eab308">Balanced. P-18 (data migration, 13 SP, 12 BE) is high-risk — needs dedicated BE.</td></tr>
+          <tr style="border-bottom:1px solid #1e293b"><td style="padding:10px 14px;font-weight:700">MS10</td><td style="padding:10px 14px">12</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">88</td><td style="padding:10px 14px;color:#60a5fa">53</td><td style="padding:10px 14px;color:#fb923c">35</td><td style="padding:10px 14px;color:#94a3b8">60%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">BM (investigations cont.) · Ops (reports) · Hardware (HH ingest · observer view) · Mobile (capture mode)</td><td style="padding:10px 14px;font-size:11px;color:#f97316">Mobile FE peak: M-DV-02 (15 FE SP) lands here. H-00 (11 BE SP) needs firmware/SDK.</td></tr>
+          <tr style="border-bottom:1px solid #1e293b"><td style="padding:10px 14px;font-weight:700">MS11</td><td style="padding:10px 14px">6</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">44</td><td style="padding:10px 14px;color:#60a5fa">23</td><td style="padding:10px 14px;color:#fb923c">21</td><td style="padding:10px 14px;color:#94a3b8">52%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">Platform (production envs) · Hardware (sensor metrics) · Intelligence (Data Explorer)</td><td style="padding:10px 14px;font-size:11px;color:#64748b">Wind-down. I-DE-01 is new analytics domain — scope carefully.</td></tr>
+          <tr><td style="padding:10px 14px;font-weight:700;color:#fca5a5">MS?</td><td style="padding:10px 14px">3</td><td style="padding:10px 14px;color:#c084fc;font-weight:700">26</td><td style="padding:10px 14px;color:#60a5fa">4</td><td style="padding:10px 14px;color:#fb923c">22</td><td style="padding:10px 14px;color:#94a3b8">15%</td><td style="padding:10px 14px;color:#94a3b8;font-size:12px">P-03b (User Onboarding) · P-07 (Security/Compliance) · P-22 (SFTP)</td><td style="padding:10px 14px;font-size:11px;color:#ef4444">Unscheduled. P-07 (SOC2/GDPR, 12 BE SP) is a ship blocker — must be placed in a milestone.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ TAB 3: FEATURE TABLE -->
+  <div id="tab-features" class="tab-panel">
+
+    <!-- Filter row 1: GTM Phase -->
+    <div class="filter-bar">
+      <span class="filter-label">GTM Phase</span>
+      <button class="filter-btn active" onclick="setFilter('gtm','ALL',this)">All Phases</button>
+      <button class="filter-btn" onclick="setFilter('gtm','Startup',this)" style="border-color:#16a34a;color:#4ade80">🚀 Startup</button>
+      <button class="filter-btn" onclick="setFilter('gtm','Maturity',this)" style="border-color:#ca8a04;color:#fbbf24">📈 Maturity</button>
+      <button class="filter-btn" onclick="setFilter('gtm','Excellence',this)" style="border-color:#dc2626;color:#fca5a5">🏆 Excellence</button>
+    </div>
+
+    <!-- Filter row 2: Group -->
+    <div class="filter-bar">
+      <span class="filter-label">Group</span>
+      <button class="filter-btn active" onclick="setFilter('group','ALL',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('group','Platform',this)">🏗 Platform</button>
+      <button class="filter-btn" onclick="setFilter('group','Admin',this)">⚙️ Admin</button>
+      <button class="filter-btn" onclick="setFilter('group','Campaign',this)">🗂 Campaign</button>
+      <button class="filter-btn" onclick="setFilter('group','BM',this)">🗺 BM</button>
+      <button class="filter-btn" onclick="setFilter('group','Ops',this)">📝 Ops</button>
+      <button class="filter-btn" onclick="setFilter('group','Hardware',this)">🔧 Hardware</button>
+      <button class="filter-btn" onclick="setFilter('group','Mobile',this)">📱 Mobile</button>
+      <button class="filter-btn" onclick="setFilter('group','Intelligence',this)">🧠 Intel</button>
+      <button class="filter-btn" onclick="setFilter('group','Emissions',this)">🌿 Emissions</button>
+      <button class="filter-btn" onclick="setFilter('group','Integrations',this)">🔌 Integrations</button>
+    </div>
+
+    <!-- Filter row 3: Milestone -->
+    <div class="filter-bar">
+      <span class="filter-label">Milestone</span>
+      <button class="filter-btn active" onclick="setFilter('ms','ALL',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('ms','4',this)">MS4</button>
+      <button class="filter-btn" onclick="setFilter('ms','5',this)">MS5</button>
+      <button class="filter-btn" onclick="setFilter('ms','6',this)">MS6</button>
+      <button class="filter-btn" onclick="setFilter('ms','7',this)">MS7</button>
+      <button class="filter-btn" onclick="setFilter('ms','8',this)">MS8</button>
+      <button class="filter-btn" onclick="setFilter('ms','9',this)">MS9</button>
+      <button class="filter-btn" onclick="setFilter('ms','10',this)">MS10</button>
+      <button class="filter-btn" onclick="setFilter('ms','11',this)">MS11</button>
+      <button class="filter-btn" onclick="setFilter('ms','?',this)" style="border-color:#ef4444;color:#fca5a5">Unscheduled</button>
+    </div>
+
+    <!-- Filter row 4: Source -->
+    <div class="filter-bar">
+      <span class="filter-label">Source</span>
+      <button class="filter-btn active" onclick="setFilter('src','ALL',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('src','V12',this)">V12 Confirmed</button>
+      <button class="filter-btn" onclick="setFilter('src','EST',this)">Estimated</button>
+      <div class="filter-divider"></div>
+      <span id="feat-count" style="font-size:12px;color:#64748b">141 features shown</span>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="feat-table" id="feat-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Feature</th>
+              <th>GTM Phase</th>
+              <th>Group</th>
+              <th>MS</th>
+              <th>SP Total</th>
+              <th>FE</th>
+              <th>BE</th>
+              <th>Src</th>
+            </tr>
+          </thead>
+          <tbody id="feat-tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════ TAB 4: STAFFING RISKS -->
+  <div id="tab-risks" class="tab-panel">
+
+    <div style="background:#1e293b;border:1px solid #ef4444;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#94a3b8">
+      Staffing analysis based on SP volume, FE/BE split by milestone, and domain specialization requirements.
+      These risks assume a <strong style="color:#e2e8f0">standard team of 2–3 FE + 2–3 BE engineers</strong>.
+      Velocity assumption: ~30–35 SP/engineer/milestone at standard pace (1.0×).
+    </div>
+
+    <div class="risk-grid">
+
+      <div class="risk-card critical">
+        <div class="risk-header">
+          <span class="risk-level rl-critical">Critical</span>
+          <span class="risk-title">MS6 + MS8 Are 2× Average Milestone Load</span>
+        </div>
+        <div class="risk-body">
+          MS6 = <strong>131 SP</strong> and MS8 = <strong>128 SP</strong> — nearly double the average milestone (85 SP).
+          MS6 alone requires 3 pipelines to ship simultaneously: AutoFOV display, Gaps pipeline, and LISA pipeline.
+          MS8 adds hardware ingest (H-01/H-02 = 24 BE SP) on top of User Management and Staging environments.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> At standard 30 SP/engineer/milestone, MS6 needs at least <strong>4–5 engineers</strong> (2 FE + 2–3 BE).
+          If the team is sized for average load (~3 engineers), MS6 and MS8 will overrun by 30–50%.
+          <br><strong>Mitigation:</strong> Rebalance scope from MS6 into MS5 (pre-ship BM prep) and MS7 (post-ship cleanup). Or staff up to 5 during MS6 window.
+        </div>
+      </div>
+
+      <div class="risk-card critical">
+        <div class="risk-header">
+          <span class="risk-level rl-critical">Critical</span>
+          <span class="risk-title">Hardware Has Zero Jira Epics &amp; Zero Owners</span>
+        </div>
+        <div class="risk-body">
+          All 11 hardware features (94 SP total) are unplanned in Jira.
+          <strong>H-00</strong> (Handheld ingest, 13 SP) and <strong>H-01</strong> (Car ingest, 13 SP) are each 2 FE / 11 BE — the BE work requires hardware SDK integration and firmware communication protocols.
+          Hardware procurement + firmware development typically requires <strong>8–12 week lead time</strong>.
+          MS8 is when hardware features start — every week of delay in assigning a hardware lead today = one week of risk at MS8.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> If no hardware engineer is assigned by MS5 start, H-01/H-02 will not be ready for MS8.
+          <br><strong>Mitigation:</strong> Assign hardware lead now. Create Jira epics for H-00 through H-13. Firmware integration contract must be established before MS6.
+        </div>
+      </div>
+
+      <div class="risk-card critical">
+        <div class="risk-header">
+          <span class="risk-level rl-critical">Critical</span>
+          <span class="risk-title">Mobile Requires Dedicated Mobile FE (Not Web FE)</span>
+        </div>
+        <div class="risk-body">
+          The 5 mobile features total <strong>60 SP at 70% FE (42 FE SP)</strong>.
+          <strong>M-DV-02</strong> (Driver View Capture Mode) alone is <strong>21 SP / 15 FE SP</strong> — the single largest FE feature in the entire plan.
+          It requires real-time indication capture, GPS tracking, and works on ChromeOS and iPadOS.
+          A web FE engineer assigned to mobile will take 2× longer and produce lower quality.
+          <strong>M-DV-01</strong> starts in MS7 — a mobile FE engineer needs to be onboarded by that milestone.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> Using a web FE engineer for mobile = ~30–42 SP effectively becomes 60+ SP in execution time.
+          <br><strong>Mitigation:</strong> Hire or contract a mobile FE specialist before MS7. Platform decision (browser vs native iOS/Android) must be locked in MS5–MS6 (Apple App Store review = 4–8 weeks if iOS).
+        </div>
+      </div>
+
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">High</span>
+          <span class="risk-title">P-07 Security &amp; Compliance Has No Milestone and No Owner</span>
+        </div>
+        <div class="risk-body">
+          <strong>P-07</strong> (GDPR / ISO 27001 / SOC 2) is <strong>13 SP, 12 BE SP</strong>, currently unscheduled (MS?).
+          This is a <strong>ship blocker for EU customers</strong> — EU product launch requires GDPR compliance.
+          SOC 2 audits typically require 6+ months of preparation including logging, access controls, and change management evidence.
+          The audit process itself cannot start until the platform is production-stable.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> If P-07 is not placed in a milestone by MS7, EU launch (planned MS11) is at risk.
+          <br><strong>Mitigation:</strong> Schedule P-07 in MS7 or MS8. Assign a security-focused BE engineer. Begin SOC 2 readiness checklist now.
+        </div>
+      </div>
+
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">High</span>
+          <span class="risk-title">MS5 is 71% BE — FE Engineers Idle in Early Milestones</span>
+        </div>
+        <div class="risk-body">
+          MS4 = 45% FE, MS5 = only <strong>29% FE (19 SP)</strong>.
+          The first two milestones are dominated by platform infra (auth, GIS pipelines, staging, logging) which is almost entirely BE work.
+          A team with 2 FE + 2 BE will have FE engineers significantly underutilized in MS4–MS5, then suddenly overloaded in MS6 (50% FE, 66 SP).
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> FE engineers may be blocked or underutilized for 2 milestones, then face a spike in MS6.
+          <br><strong>Mitigation:</strong> Use MS4–MS5 FE time for design system work, component library, Figma-to-code prep, and test infrastructure. Or re-sequence some MS6 FE features (e.g. Campaign CRUD, admin screens) into MS5.
+        </div>
+      </div>
+
+      <div class="risk-card high">
+        <div class="risk-header">
+          <span class="risk-level rl-high">High</span>
+          <span class="risk-title">P-18 Data Migration is High-Risk and Unowned</span>
+        </div>
+        <div class="risk-body">
+          <strong>P-18</strong> (Historical Data Migration, P-Cubed → PCP) is <strong>13 SP, 12 BE SP</strong>, scheduled in MS9.
+          Data migrations are notoriously underestimated. The P-Cubed data model may have inconsistencies, edge cases, and customer-specific configurations that only surface during migration.
+          A failed or partial migration in MS9 could block MS10 and MS11 delivery.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> If migration fails, customer onboarding to PCP is blocked regardless of feature completeness.
+          <br><strong>Mitigation:</strong> Assign dedicated BE to P-18 in MS8 for investigation/prototyping (treat as 2-milestone effort). Run migration against a staging environment first. Build rollback procedure before starting production migration.
+        </div>
+      </div>
+
+      <div class="risk-card medium">
+        <div class="risk-header">
+          <span class="risk-level rl-medium">Medium</span>
+          <span class="risk-title">3 Data Pipelines (AutoFOV + Gaps + LISA) Share a Single Critical Path</span>
+        </div>
+        <div class="risk-body">
+          O-BM-12 (AutoFOV, 3FE/10BE), O-BM-17 (Gaps, 3FE/10BE), and O-BM-24 (LISA, 3FE/10BE) are each 13 SP BE-heavy pipelines.
+          All 3 land in MS6. AutoFOV is the upstream dependency: Gaps and LISA both consume AutoFOV output.
+          If AutoFOV pipeline (O-BM-12) delays, all downstream Gaps and LISA work is blocked.
+          This is compounded by the fact that the LISA pipeline has zero technical design documented today.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> A 2-week AutoFOV delay cascades to both Gaps and LISA, potentially pushing them to MS7.
+          <br><strong>Mitigation:</strong> Complete LISA microservice TDD before MS6 starts. Treat O-BM-12 as the MS6 "anchor" — deliver it in Sprint 1. Assign one dedicated pipeline BE engineer who owns all three.
+        </div>
+      </div>
+
+      <div class="risk-card medium">
+        <div class="risk-header">
+          <span class="risk-level rl-medium">Medium</span>
+          <span class="risk-title">Observer View (H-05) Requires Real-Time Streaming Infrastructure</span>
+        </div>
+        <div class="risk-body">
+          <strong>H-05</strong> (Observer View — live view from the car) is estimated at <strong>13 SP (8 FE / 5 BE)</strong>.
+          This is FE-heavy because it requires a real-time streaming UI (WebSocket or WebRTC), but the BE must also support low-latency telemetry streaming from the car hardware.
+          This is architecturally different from all other features — it cannot share standard REST API patterns.
+        </div>
+        <div class="risk-impact">
+          <strong>Impact:</strong> If the real-time infrastructure is not designed early, H-05 in MS10 will block the observer workflow.
+          <br><strong>Mitigation:</strong> Architecture decision for streaming (WebSocket vs SSE vs WebRTC) must be made in MS7. Prototype in MS8 alongside H-01/H-02 hardware work.
+        </div>
+      </div>
+
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">Insight</span>
+          <span class="risk-title">Boundary Management is the Core of the Product (34% of All SP)</span>
+        </div>
+        <div class="risk-body">
+          At <strong>232 SP across 36 features</strong>, Boundary Management is by far the largest group — 34% of total product SP.
+          It spans MS5–MS11. The good news: it's nearly balanced at 51% FE / 48% BE, which means a standard FE+BE pair can co-own it across milestones without significant imbalance.
+          The 3 pipeline features (AutoFOV/Gaps/LISA) account for 39 BE SP total but unlock 33 display features worth 193 SP.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> Assign a dedicated BM "pod" (1 FE + 1 BE) from MS5 through MS11. This team owns the full BM vertical slice and can build institutional knowledge that prevents context-switching overhead.
+        </div>
+      </div>
+
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">Insight</span>
+          <span class="risk-title">Administration Group is FE-Dominant — Good Early FE Ramp Work</span>
+        </div>
+        <div class="risk-body">
+          The Administration group (18 features, 82 SP) is <strong>58% FE</strong> and mostly in MS4–MS6.
+          These are largely CRUD admin forms and settings panels — relatively low BE complexity (mostly standard API endpoints).
+          This makes them ideal work to assign FE engineers during the early milestones when BE is dominated by platform/infra.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> In MS4–MS5 when BE is heavily loaded, assign FE engineers to Admin CRUD work (A-T-*, A-O-*, A-U-*). This eliminates FE idle time and pre-delivers admin features ahead of their milestone target.
+        </div>
+      </div>
+
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">Insight</span>
+          <span class="risk-title">EU Compliance Gate Requires Gaps + AutoFOV — Both Are MS6 BE Features</span>
+        </div>
+        <div class="risk-body">
+          EU Methane Regulation 2024/1787 requires Gaps detection and FOV operational for LDAR compliance certification.
+          O-BM-12 (AutoFOV pipeline, MS5/MS6) and O-BM-17 (Gaps pipeline, MS6) are the two features that unlock EU customer onboarding.
+          Both are <strong>~80% BE SP</strong>. EU customers cannot be onboarded until these ship.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> Treat EU compliance as a formal milestone gate at MS6 end. If either pipeline slips to MS7, EU onboarding must be delayed. Track these as P0 items in every sprint.
+        </div>
+      </div>
+
+      <div class="risk-card insight">
+        <div class="risk-header">
+          <span class="risk-level rl-insight">Insight</span>
+          <span class="risk-title">Intelligence (I-DE-01) Is a New Analytics Domain — Scope Risk in MS11</span>
+        </div>
+        <div class="risk-body">
+          <strong>I-DE-01</strong> (Data Explorer: Network &amp; Program KPIs) is the only feature in the Intelligence group, scheduled at MS11.
+          It's estimated at 13 SP (7 FE / 6 BE) — but this is a new analytics domain with no prior art in the codebase.
+          "Network &amp; Program level KPIs" implies aggregating data across campaigns, operators, and tenants — which requires a new data model and query layer.
+          Placing it in MS11 (the final milestone before GA) is risky if it expands in scope.
+        </div>
+        <div class="risk-impact">
+          <strong>Recommendation:</strong> Define the exact KPI set and data sources for I-DE-01 before MS9. If scope exceeds 13 SP after definition, move to V2 or a post-GA release. Do not let an undefined analytics feature block MS11 launch.
+        </div>
+      </div>
+
+    </div><!-- /risk-grid -->
+
+  </div><!-- /tab-risks -->
+
+  <!-- ═══════════════════════════════════════════════════════ TAB 5: V1 PARALLEL PLAN -->
+  <div id="tab-parallel" class="tab-panel">
+
+    <!-- Header bar -->
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1a1040 100%);border:1px solid #4338ca;border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:800;color:#f8fafc">🤝 V1 Parallel Plan — Team Avengers + Team Gladiators</div>
+        <div style="font-size:12px;color:#94a3b8;margin-top:4px">Journey-based domain split · 4 releases · Apr 1 – Aug 31 dev · Sep testing · Oct 1 GA</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="badge" style="background:#0d2d52;color:#bfdbfe;border:1px solid #1d4ed8">⚡ Team Avengers: 4 devs · 72–80 SP/sprint</span>
+        <span class="badge" style="background:#2d1a00;color:#fed7aa;border:1px solid #b45309">👥 Team Gladiators: 8 devs · 72–96 SP/sprint</span>
+        <span class="badge badge-purple">795 SP · 101 Startup features</span>
+        <span class="badge badge-green">🏁 Rec: Sept 30 Launch</span>
+      </div>
+    </div>
+
+    <!-- Inner tab nav -->
+    <div style="display:flex;gap:4px;margin-bottom:20px;background:#1e293b;padding:4px;border-radius:10px;flex-wrap:wrap" id="pl-inner-nav">
+      <button id="pl-btn-swim"   onclick="plShow('swim')"   style="padding:8px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:#4f46e5;color:white">🏊 Parallel Swimlane</button>
+      <button id="pl-btn-table"  onclick="plShow('table')"  style="padding:8px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:none;color:#94a3b8">📋 Release Table</button>
+      <button id="pl-btn-launch" onclick="plShow('launch')" style="padding:8px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:none;color:#94a3b8">🚀 Launch Analysis</button>
+      <button id="pl-btn-risks"  onclick="plShow('risks')"  style="padding:8px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;cursor:pointer;background:none;color:#94a3b8">⚠️ Risk Register</button>
+    </div>
+
+    <!-- ── VIEW: SWIMLANE ───────────────────────────────────────────────── -->
+    <div id="pl-swim-view">
+
+      <!-- SP balance badge row -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center">
+        <div style="background:#0d2d52;border:1px solid #1d4ed8;border-radius:10px;padding:10px 16px;flex:1;min-width:220px">
+          <div style="font-size:11px;color:#7dd3fc;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">⚡ Team Avengers</div>
+          <div style="font-size:14px;font-weight:800;color:#f1f5f9">~430 SP &nbsp;·&nbsp; 4 devs (3 BE + 1 UI) &nbsp;·&nbsp; Agentic 1.5×</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:3px">Platform infra · BM pipelines · Investigations · Reports</div>
+        </div>
+        <div style="background:#2d1a00;border:1px solid #b45309;border-radius:10px;padding:10px 16px;flex:1;min-width:220px">
+          <div style="font-size:11px;color:#fdba74;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">👥 Team Gladiators</div>
+          <div style="font-size:14px;font-weight:800;color:#f1f5f9">~365 SP &nbsp;·&nbsp; 8 devs (3 BE + FS + UI + 3 GIS) &nbsp;·&nbsp; Standard 1.0×</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:3px">Campaign · Admin · Coverage · Hardware · Mobile (Driver View)</div>
+        </div>
+        <div style="background:#1e293b;border:1px solid #475569;border-radius:10px;padding:10px 16px;text-align:center;min-width:160px">
+          <div style="font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Balance Check</div>
+          <div style="font-size:14px;font-weight:800;color:#22c55e">430÷76 ≈ 5.7 vs 365÷84 ≈ 4.3 sprints</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:3px">Parallel — calendar governed by Avengers critical path</div>
+        </div>
+      </div>
+
+      <!-- Month header -->
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:4px">
+        <div></div>
+        <div style="display:flex;font-size:10px;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">
+          <div style="width:23.9%">APR 1</div>
+          <div style="width:25.1%">MAY 16</div>
+          <div style="width:25.1%">JUL 1</div>
+          <div style="width:8.7%">AUG 16</div>
+          <div style="width:16.4%">SEP 1</div>
+        </div>
+      </div>
+
+      <!-- Team Avengers track -->
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:6px;align-items:center">
+        <div style="font-size:11px;font-weight:700;color:#7dd3fc;padding-right:8px;text-align:right">⚡ Team Avengers</div>
+        <div style="display:flex;height:44px;border-radius:8px;overflow:hidden;gap:2px">
+          <div style="width:23.9%;background:linear-gradient(135deg,#1d4ed8,#1e40af);border-radius:6px 0 0 6px;display:flex;align-items:center;justify-content:center;padding:4px 6px;flex-direction:column">
+            <span style="font-size:10px;font-weight:800;color:white">R1</span>
+            <span style="font-size:9px;color:#bfdbfe">Apr 1–May 15</span>
+          </div>
+          <div style="width:25.1%;background:linear-gradient(135deg,#1d4ed8,#1e40af);display:flex;align-items:center;justify-content:center;padding:4px 6px;flex-direction:column">
+            <span style="font-size:10px;font-weight:800;color:white">R2</span>
+            <span style="font-size:9px;color:#bfdbfe">May 16–Jun 30</span>
+          </div>
+          <div style="width:25.1%;background:linear-gradient(135deg,#1d4ed8,#1e40af);display:flex;align-items:center;justify-content:center;padding:4px 6px;flex-direction:column">
+            <span style="font-size:10px;font-weight:800;color:white">R3</span>
+            <span style="font-size:9px;color:#bfdbfe">Jul 1–Aug 15</span>
+          </div>
+          <div style="width:8.7%;background:linear-gradient(135deg,#1e3a8a,#1e40af);display:flex;align-items:center;justify-content:center;padding:4px 2px;flex-direction:column;border-radius:0 6px 6px 0">
+            <span style="font-size:9px;font-weight:800;color:white">R4</span>
+          </div>
+          <div style="width:16.4%;background:#0f172a;border:1px dashed #334155;border-radius:6px;display:flex;align-items:center;justify-content:center">
+            <span style="font-size:9px;color:#475569;text-align:center">Testing<br/>Freeze</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Gladiators track -->
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:6px;align-items:center">
+        <div style="font-size:11px;font-weight:700;color:#fdba74;padding-right:8px;text-align:right">👥 Team Gladiators</div>
+        <div style="display:flex;height:44px;border-radius:8px;overflow:hidden;gap:2px">
+          <div style="width:23.9%;background:linear-gradient(135deg,#b45309,#92400e);border-radius:6px 0 0 6px;display:flex;align-items:center;justify-content:center;padding:4px 6px;flex-direction:column">
+            <span style="font-size:10px;font-weight:800;color:white">R1</span>
+            <span style="font-size:9px;color:#fed7aa">Apr 1–May 15</span>
+          </div>
+          <div style="width:25.1%;background:linear-gradient(135deg,#b45309,#92400e);display:flex;align-items:center;justify-content:center;padding:4px 6px;flex-direction:column">
+            <span style="font-size:10px;font-weight:800;color:white">R2</span>
+            <span style="font-size:9px;color:#fed7aa">May 16–Jun 30</span>
+          </div>
+          <div style="width:25.1%;background:linear-gradient(135deg,#b45309,#92400e);display:flex;align-items:center;justify-content:center;padding:4px 6px;flex-direction:column">
+            <span style="font-size:10px;font-weight:800;color:white">R3</span>
+            <span style="font-size:9px;color:#fed7aa">Jul 1–Aug 15</span>
+          </div>
+          <div style="width:8.7%;background:linear-gradient(135deg,#78350f,#92400e);display:flex;align-items:center;justify-content:center;padding:4px 2px;flex-direction:column;border-radius:0 6px 6px 0">
+            <span style="font-size:9px;font-weight:800;color:white">R4</span>
+          </div>
+          <div style="width:16.4%;background:#0f172a;border:1px dashed #334155;border-radius:6px;display:flex;align-items:center;justify-content:center">
+            <span style="font-size:9px;color:#475569;text-align:center">Testing<br/>Freeze</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Launch gate -->
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:20px;align-items:center">
+        <div></div>
+        <div style="display:flex;align-items:center">
+          <div style="width:75.2%;border-top:2px dashed #334155"></div>
+          <div style="padding:4px 14px;background:#14532d;border:2px solid #16a34a;border-radius:20px;font-size:11px;font-weight:800;color:#86efac;white-space:nowrap;margin:0 8px">🚀 Oct 1 — V1 GA Launch</div>
+        </div>
+      </div>
+
+      <!-- Release detail cards -->
+      <div class="section-header">Release Details</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px">
+
+        <div style="background:#0d1f40;border:1px solid #1d4ed8;border-radius:12px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <span style="font-size:13px;font-weight:800;color:#bfdbfe">R1 — Apr 1 – May 15</span>
+            <span style="font-size:10px;background:#1d4ed8;color:white;padding:2px 8px;border-radius:10px;font-weight:700">3 Sprints</span>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">⚡ Avengers: Platform infra · RBAC · AutoFOV pipeline · Gaps pipeline · BM map</div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">👥 Gladiators: Auth · Admin CRUD · Campaign mgmt · Hardware ingestion start</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:10px;background:#14532d;color:#86efac;border-radius:6px;padding:2px 7px;font-weight:700">~240 SP</span>
+            <span style="font-size:10px;background:#450a0a;color:#fca5a5;border-radius:6px;padding:2px 7px;font-weight:700">⚠️ Gate: AutoFOV pipeline in test</span>
+          </div>
+        </div>
+
+        <div style="background:#0d1f40;border:1px solid #1d4ed8;border-radius:12px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <span style="font-size:13px;font-weight:800;color:#bfdbfe">R2 — May 16 – Jun 30</span>
+            <span style="font-size:10px;background:#1d4ed8;color:white;padding:2px 8px;border-radius:10px;font-weight:700">3 Sprints</span>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">⚡ Avengers: LISA pipeline · Full BM data layer (Gaps+LISA displays) · Investigation framework</div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">👥 Gladiators: Driving sessions · AutoFOV display · Coverage · Driver View Basic · Fleet Map</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:10px;background:#14532d;color:#86efac;border-radius:6px;padding:2px 7px;font-weight:700">~280 SP</span>
+            <span style="font-size:10px;background:#14532d;color:#86efac;border-radius:6px;padding:2px 7px;font-weight:700">🇪🇺 EU pre-cert: Gaps+FOV live</span>
+          </div>
+        </div>
+
+        <div style="background:#0d1f40;border:1px solid #1d4ed8;border-radius:12px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <span style="font-size:13px;font-weight:800;color:#bfdbfe">R3 — Jul 1 – Aug 15</span>
+            <span style="font-size:10px;background:#1d4ed8;color:white;padding:2px 8px;border-radius:10px;font-weight:700">3 Sprints</span>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">⚡ Avengers: Investigation workflows · Reports · P-18 migration (parallel BE track) · SEC-01 pen test starts</div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">👥 Gladiators: Driver View Capture Mode · Mobile App · Hardware (Handheld + Observer) · i18n</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:10px;background:#14532d;color:#86efac;border-radius:6px;padding:2px 7px;font-weight:700">~235 SP</span>
+            <span style="font-size:10px;background:#1e293b;color:#94a3b8;border-radius:6px;padding:2px 7px;font-weight:700">P-18: dedicated BE parallel track</span>
+          </div>
+        </div>
+
+        <div style="background:#0d1f40;border:1px solid #1d4ed8;border-radius:12px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <span style="font-size:13px;font-weight:800;color:#bfdbfe">R4 — Aug 16 – Aug 31</span>
+            <span style="font-size:10px;background:#1d4ed8;color:white;padding:2px 8px;border-radius:10px;font-weight:700">1 Sprint (Hardening)</span>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">⚡ Avengers: Data Explorer · SEC-01 complete · P-18 final validation · Compliance hardening</div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:8px">👥 Gladiators: P-10/P-11 launch prep · BM labels · SEC-02 scalability test · Final polish</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:10px;background:#14532d;color:#86efac;border-radius:6px;padding:2px 7px;font-weight:700">~40 SP</span>
+            <span style="font-size:10px;background:#2d1a00;color:#fed7aa;border-radius:6px;padding:2px 7px;font-weight:700">Feature freeze — R3 spillover absorption</span>
+          </div>
+        </div>
+
+      </div><!-- /release detail cards -->
+
+      <!-- Critical path chain -->
+      <div class="section-header">Critical Path — Team Avengers (AutoFOV → Gaps → LISA chain)</div>
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;margin-bottom:20px">
+        <div style="display:flex;gap:0;align-items:center;flex-wrap:wrap">
+          <div style="background:#1d4ed8;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:white;white-space:nowrap">Sprint 1<br/>RBAC + Auth<br/>O-BM-12 AutoFOV</div>
+          <div style="color:#475569;font-size:16px;padding:0 6px">→</div>
+          <div style="background:#1d4ed8;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:white;white-space:nowrap">Sprint 2<br/>Gaps Pipeline<br/>O-BM-17</div>
+          <div style="color:#475569;font-size:16px;padding:0 6px">→</div>
+          <div style="background:#1d4ed8;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:white;white-space:nowrap">Sprint 3<br/>R1 Gate ✓<br/>(AutoFOV in test)</div>
+          <div style="color:#475569;font-size:16px;padding:0 6px">→</div>
+          <div style="background:#1d4ed8;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:white;white-space:nowrap">Sprint 4<br/>LISA Pipeline<br/>O-BM-24</div>
+          <div style="color:#475569;font-size:16px;padding:0 6px">→</div>
+          <div style="background:#1d4ed8;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:white;white-space:nowrap">Sprint 5–6<br/>BM displays<br/>Invest. framework</div>
+          <div style="color:#475569;font-size:16px;padding:0 6px">→</div>
+          <div style="background:#1d4ed8;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:white;white-space:nowrap">Sprint 7–9<br/>Invest. workflows<br/>Reports</div>
+          <div style="color:#475569;font-size:16px;padding:0 6px">→</div>
+          <div style="background:#14532d;border:1px solid #16a34a;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:#86efac;white-space:nowrap">Sprint 10<br/>Hardening<br/>All features ✓</div>
+        </div>
+        <div style="font-size:11px;color:#64748b;margin-top:10px">⚠️ P-18 (66 SP, 61 BE) runs as a parallel dedicated BE track starting Sprint 4, completing Sprint 7. Does not block other work.</div>
+      </div>
+
+    </div><!-- /pl-swim-view -->
+
+    <!-- ── VIEW: RELEASE TABLE ───────────────────────────────────────────── -->
+    <div id="pl-table-view" style="display:none">
+
+      <!-- Filter row -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
+        <span class="filter-label">Team:</span>
+        <button class="filter-btn active" id="plt-all-team" onclick="plFilter('team','ALL',this)">ALL</button>
+        <button class="filter-btn" onclick="plFilter('team','AVG',this)">⚡ Avengers</button>
+        <button class="filter-btn" onclick="plFilter('team','GLD',this)">👥 Gladiators</button>
+        <div class="filter-divider"></div>
+        <span class="filter-label">Release:</span>
+        <button class="filter-btn active" id="plt-all-rel" onclick="plFilter('rel','ALL',this)">ALL</button>
+        <button class="filter-btn" onclick="plFilter('rel','R1',this)">R1</button>
+        <button class="filter-btn" onclick="plFilter('rel','R2',this)">R2</button>
+        <button class="filter-btn" onclick="plFilter('rel','R3',this)">R3</button>
+        <button class="filter-btn" onclick="plFilter('rel','R4',this)">R4</button>
+        <div class="filter-divider"></div>
+        <span class="filter-label">Group:</span>
+        <button class="filter-btn active" id="plt-all-grp" onclick="plFilter('grp','ALL',this)">ALL</button>
+        <button class="filter-btn" onclick="plFilter('grp','Platform',this)">Platform</button>
+        <button class="filter-btn" onclick="plFilter('grp','BM',this)">BM</button>
+        <button class="filter-btn" onclick="plFilter('grp','Admin',this)">Admin</button>
+        <button class="filter-btn" onclick="plFilter('grp','Campaign',this)">Campaign</button>
+        <button class="filter-btn" onclick="plFilter('grp','Hardware',this)">Hardware</button>
+        <button class="filter-btn" onclick="plFilter('grp','Mobile',this)">Mobile</button>
+        <button class="filter-btn" onclick="plFilter('grp','Ops',this)">Ops</button>
+      </div>
+      <div style="font-size:12px;color:#64748b;margin-bottom:10px"><span id="pl-feat-count">101 features shown</span></div>
+
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table class="feat-table" id="pl-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Feature</th>
+                <th>Team</th>
+                <th>Release</th>
+                <th>Group</th>
+                <th>SP</th>
+                <th>FE</th>
+                <th>BE</th>
+              </tr>
+            </thead>
+            <tbody id="pl-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /pl-table-view -->
+
+    <!-- ── VIEW: LAUNCH ANALYSIS ─────────────────────────────────────────── -->
+    <div id="pl-launch-view" style="display:none">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:24px">
+
+        <!-- Aug 31 card -->
+        <div style="background:#1a0a0a;border:2px solid #ef4444;border-radius:14px;padding:20px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <span style="font-size:20px">❌</span>
+            <div>
+              <div style="font-size:16px;font-weight:800;color:#fca5a5">Aug 31 Launch — HIGH RISK</div>
+              <div style="font-size:11px;color:#64748b">Dev complete Aug 15 · Testing window: 2 weeks only</div>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #2d1a1a">Capacity</td><td style="padding:5px 8px;color:#86efac;border-bottom:1px solid #2d1a1a">✅ 795 SP well within 9-sprint capacity</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #2d1a1a">Critical path</td><td style="padding:5px 8px;color:#fde68a;border-bottom:1px solid #2d1a1a">⚠️ LISA chain completes Sprint 4 — zero slack if Sprint 1–3 slips</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #2d1a1a">P-18 migration</td><td style="padding:5px 8px;color:#fde68a;border-bottom:1px solid #2d1a1a">⚠️ 66 SP parallel BE track — no buffer if legacy data quality issues</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #2d1a1a">Testing window</td><td style="padding:5px 8px;color:#fca5a5;border-bottom:1px solid #2d1a1a">❌ 2 weeks — insufficient for data migration QA + E2E + compliance cert</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8">Risk level</td><td style="padding:5px 8px;color:#fca5a5;font-weight:700">HIGH — any Sprint 1–3 slip cascades to full schedule</td></tr>
+          </table>
+        </div>
+
+        <!-- Sept 30 card -->
+        <div style="background:#0a1a0a;border:2px solid #16a34a;border-radius:14px;padding:20px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <span style="font-size:20px">✅</span>
+            <div>
+              <div style="font-size:16px;font-weight:800;color:#86efac">Sept 30 Launch — RECOMMENDED</div>
+              <div style="font-size:11px;color:#64748b">Dev complete Aug 31 · Testing window: 4 weeks · GA Oct 1</div>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #0f2d0f">Capacity</td><td style="padding:5px 8px;color:#86efac;border-bottom:1px solid #0f2d0f">✅ 795 SP across 10 sprints — combined 1,440–1,760 SP available</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #0f2d0f">Critical path</td><td style="padding:5px 8px;color:#86efac;border-bottom:1px solid #0f2d0f">✅ LISA pipeline Sprint 4 · Full 6 sprints for BM + investigations</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #0f2d0f">P-18 migration</td><td style="padding:5px 8px;color:#86efac;border-bottom:1px solid #0f2d0f">✅ 4-sprint parallel track with 1-sprint buffer before testing freeze</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #0f2d0f">Testing window</td><td style="padding:5px 8px;color:#86efac;border-bottom:1px solid #0f2d0f">✅ Full 4 weeks: E2E + data migration QA + EU compliance cert</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8;border-bottom:1px solid #0f2d0f">EU compliance</td><td style="padding:5px 8px;color:#86efac;border-bottom:1px solid #0f2d0f">✅ Gaps + FOV live by Jun 30 — can pre-certify before launch</td></tr>
+            <tr><td style="padding:5px 8px;color:#94a3b8">Risk level</td><td style="padding:5px 8px;color:#86efac;font-weight:700">MEDIUM — manageable with dependency tracking</td></tr>
+          </table>
+        </div>
+
+      </div><!-- /launch cards -->
+
+      <!-- Timeline summary -->
+      <div class="section-header">Compressed Timeline vs Original 11-Milestone Plan</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:20px">
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:10px;color:#64748b;text-transform:uppercase;font-weight:700;margin-bottom:4px">Original Plan</div>
+          <div style="font-size:22px;font-weight:800;color:#f1f5f9">11</div>
+          <div style="font-size:11px;color:#94a3b8">Milestones · 1 team</div>
+          <div style="font-size:11px;color:#64748b;margin-top:4px">Dec 31, 2026 target</div>
+        </div>
+        <div style="background:#0d2d52;border:1px solid #1d4ed8;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:10px;color:#7dd3fc;text-transform:uppercase;font-weight:700;margin-bottom:4px">Parallel Plan</div>
+          <div style="font-size:22px;font-weight:800;color:#f1f5f9">4</div>
+          <div style="font-size:11px;color:#94a3b8">Releases · 2 parallel teams</div>
+          <div style="font-size:11px;color:#86efac;margin-top:4px">Oct 1, 2026 target</div>
+        </div>
+        <div style="background:#14532d;border:1px solid #16a34a;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:10px;color:#86efac;text-transform:uppercase;font-weight:700;margin-bottom:4px">Time Saved</div>
+          <div style="font-size:22px;font-weight:800;color:#f1f5f9">~3 mo</div>
+          <div style="font-size:11px;color:#94a3b8">Oct 1 vs Dec 31</div>
+          <div style="font-size:11px;color:#86efac;margin-top:4px">Same 795 SP scope</div>
+        </div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:10px;color:#64748b;text-transform:uppercase;font-weight:700;margin-bottom:4px">Combined Velocity</div>
+          <div style="font-size:22px;font-weight:800;color:#f1f5f9">144–176</div>
+          <div style="font-size:11px;color:#94a3b8">SP/sprint combined</div>
+          <div style="font-size:11px;color:#64748b;margin-top:4px">vs original single-team</div>
+        </div>
+      </div>
+
+    </div><!-- /pl-launch-view -->
+
+    <!-- ── VIEW: RISK REGISTER ────────────────────────────────────────────── -->
+    <div id="pl-risks-view" style="display:none">
+
+      <div class="risk-grid">
+
+        <div class="risk-card critical">
+          <div class="risk-header">
+            <span class="risk-level rl-critical">CRITICAL</span>
+            <span class="risk-title">AutoFOV Pipeline Not Production-Ready at Sprint 1</span>
+          </div>
+          <div class="risk-body">
+            O-BM-12 AutoFOV pipeline is the keystone of the entire Avengers track. If it's not production-ready at Apr 1 kickoff, the Gaps pipeline (Sprint 2) and LISA pipeline (Sprint 4) are both blocked, cascading to all BM displays and investigation workflows.
+          </div>
+          <div class="risk-impact"><strong>Mitigation:</strong> Sprint 0 (Mar 25–Apr 1) validation sprint. If not done, delay R2 start by 1 sprint and absorb into R1 buffer. Assign second Avengers BE dev to AutoFOV in Sprint 1 if validation fails.</div>
+        </div>
+
+        <div class="risk-card critical">
+          <div class="risk-header">
+            <span class="risk-level rl-critical">CRITICAL</span>
+            <span class="risk-title">P-18 Historical Data Migration (66 SP) Blocked by Data Quality</span>
+          </div>
+          <div class="risk-body">
+            P-18 is 61 BE SP — the largest single feature in the plan. It's assigned as a parallel dedicated BE track (Sprint 4–7). If legacy data quality issues surface mid-migration, it blocks the testing freeze (Sep 1) since migrated data is needed for golden data validation.
+          </div>
+          <div class="risk-impact"><strong>Mitigation:</strong> Start migration analysis and data profiling in Sprint 3 (Jun). Lock data cleansing rules before Sprint 6 begins (Jul 1). Allocate 1 dedicated Avengers BE dev. Do not share with investigation work.</div>
+        </div>
+
+        <div class="risk-card high">
+          <div class="risk-header">
+            <span class="risk-level rl-high">HIGH</span>
+            <span class="risk-title">Driver View Platform Decision Still TBD</span>
+          </div>
+          <div class="risk-body">
+            Driver View v2 PRD (v0.1) lists platform as TBD — browser vs iPad vs desktop. iOS App Store review takes 4–8 weeks. ChromeOS needs specific compatibility testing. M-DV-01 (13 SP) starts Sprint 5 (May 27) in Team Gladiators. Platform must be locked before dev begins.
+          </div>
+          <div class="risk-impact"><strong>Mitigation:</strong> Lock browser vs iPad decision by Apr 14 (end Sprint 1). If iOS: submit Apple developer account setup and initial App Store review request immediately. Assign to Gladiators regular UI dev (NOT GIS).</div>
+        </div>
+
+        <div class="risk-card high">
+          <div class="risk-header">
+            <span class="risk-level rl-high">HIGH</span>
+            <span class="risk-title">Hardware Lead Time — Car + Handheld Systems</span>
+          </div>
+          <div class="risk-body">
+            H-01/H-02 (car ingestion, 21 SP) are in Gladiators R1 starting Sprint 2 (Apr 15). Hardware procurement and firmware setup takes 8–12 weeks. If hardware is not ordered by Apr 1, firmware development (H-01/H-02) cannot start Sprint 2, pushing them to R2 and creating a cascade into Observer View (H-05) and fleet features.
+          </div>
+          <div class="risk-impact"><strong>Mitigation:</strong> Order car hardware by Apr 1. Handheld (H-00) assigned R3 (Sprint 7, Jul 1) — order by Apr 15. Assign hardware lead from Gladiators BE team now. Create Jira epics for H-01/H-02 this week.</div>
+        </div>
+
+        <div class="risk-card high">
+          <div class="risk-header">
+            <span class="risk-level rl-high">HIGH</span>
+            <span class="risk-title">FE Single Point of Failure</span>
+          </div>
+          <div class="risk-body">
+            Team Avengers has 1 UI dev responsible for all BM map/panel/table views (36 BM features, many FE-heavy). If unavailable for 2 sprints, all BM display features across R1–R3 slip. Team Gladiators has 1 UI + 1 fullstack for Driver View, Admin, Campaign — also concentrated.
+          </div>
+          <div class="risk-impact"><strong>Mitigation:</strong> From Sprint 2: Gladiators UI dev cross-trains on BM Leaflet/map patterns alongside Avengers UI dev. In Sprint 4+, Gladiators UI can absorb BM display work if Avengers UI is blocked. Fullstack dev also cross-trained on FE from Sprint 3.</div>
+        </div>
+
+        <div class="risk-card medium">
+          <div class="risk-header">
+            <span class="risk-level rl-medium">MEDIUM</span>
+            <span class="risk-title">LISA Microservice Has No Technical Design at Kickoff</span>
+          </div>
+          <div class="risk-body">
+            O-BM-24 (LISA pipeline, 13 SP) is in R2 Sprint 4. At the original plan kickoff the LISA microservice had zero TDD. The LISA Boundary Results PRD was only published Mar 20, 2026 and cannot be groomed before Sprint 4. Without TDD, Avengers BE cannot start the LISA pipeline.
+          </div>
+          <div class="risk-impact"><strong>Mitigation:</strong> Assign LISA TDD writing in R1 Sprint 2–3 (alongside AutoFOV/Gaps). TDD must be reviewed and approved before Sprint 4 start. Block Sprint 4 LISA start if TDD is not in "Reviewed" state.</div>
+        </div>
+
+      </div><!-- /risk-grid -->
+
+    </div><!-- /pl-risks-view -->
+
+  </div><!-- /tab-parallel -->
+
+</div><!-- /page -->
+
+<script>
+// ── Tab switching ─────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'features' && !window._tableBuilt) buildTable();
+}
+
+// ── Feature data ──────────────────────────────────────────────────────────
+// [id, name, group, ms, total, fe, be, src, gtm]
+var FEATS = [
+  // ── STARTUP (99 features) ────────────────────────────────────────────────
+  ['P-01','RBAC and Multi-Tenancy Phase 1','Platform','6',13,5,8,'V12','Startup'],
+  ['P-03','Sign-on and Authentication (basic)','Platform','4',8,2,6,'EST','Startup'],
+  ['P-03b','User Onboarding','Platform','?',5,2,3,'EST','Startup'],
+  ['P-07','Security and Compliance (GDPR/ISO/SOC2)','Platform','?',13,1,12,'EST','Startup'],
+  ['P-08','Product Analytics (Pendo)','Platform','9',5,3,2,'EST','Startup'],
+  ['P-10','P-Cubed Pro NA (Production)','Platform','11',5,0,5,'V12','Startup'],
+  ['P-11','P-Cubed Pro EU (Production)','Platform','11',5,0,5,'V12','Startup'],
+  ['P-14','P-Cubed Pro NA Staging','Platform','8',8,0,8,'V12','Startup'],
+  ['P-15','P-Cubed Pro EU Staging','Platform','8',8,0,8,'V12','Startup'],
+  ['P-18','Historical Data Migration','Platform','9',66,5,61,'EST','Startup'],
+  ['P-19','Internationalization of Language','Platform','9',8,5,3,'EST','Startup'],
+  ['P-20','Internationalization of Units','Platform','9',5,3,2,'EST','Startup'],
+  ['P-21','Centralized Logging','Platform','8',8,1,7,'V12','Startup'],
+  ['P-22','SFTP Configuration','Platform','?',8,1,7,'EST','Startup'],
+  ['P-23','Dynamic User Manual','Platform','8',5,4,1,'V12','Startup'],
+  ['P-26','GIS Data Hub NA','Platform','5',8,2,6,'EST','Startup'],
+  ['P-27','GIS Data Hub EU','Platform','5',8,2,6,'V12','Startup'],
+  ['A-T-01','Tenant Management (CRUD)','Admin','5',5,3,2,'EST','Startup'],
+  ['A-T-02','Tenant Settings - General','Admin','4',3,2,1,'EST','Startup'],
+  ['A-T-03','Tenant Settings - Summary','Admin','5',3,2,1,'EST','Startup'],
+  ['A-T-04','Tenant Settings - FOV','Admin','5',5,3,2,'EST','Startup'],
+  ['A-T-05','Tenant Settings - PS2 Equations','Admin','6',5,2,3,'V12','Startup'],
+  ['A-T-06','Tenant Settings - RFR Formations','Admin','6',5,2,3,'V12','Startup'],
+  ['A-T-07','Tenant Settings - GIS Summary','Admin','6',5,3,2,'EST','Startup'],
+  ['A-O-01','Operator Management (CRUD)','Admin','5',5,3,2,'EST','Startup'],
+  ['A-O-02','Operator Settings - General','Admin','6',3,2,1,'V12','Startup'],
+  ['A-O-03','Operator Settings - Summary','Admin','6',3,2,1,'V12','Startup'],
+  ['A-O-04','Operator Settings - Driving Session','Admin','6',3,2,1,'V12','Startup'],
+  ['A-O-05','Operator Settings - Licensed Features','Admin','8',3,2,1,'V12','Startup'],
+  ['A-O-06','Operator Settings - GIS Summary','Admin','6',5,3,2,'EST','Startup'],
+  ['A-U-01','User Management (CRUD)','Admin','8',8,4,4,'V12','Startup'],
+  ['A-U-02','User Management - List View','Admin','8',3,2,1,'V12','Startup'],
+  ['A-U-02b','User Settings - General','Admin','8',5,3,2,'EST','Startup'],
+  ['A-I-01','Investigation - Components Framework','Admin','8',8,5,3,'V12','Startup'],
+  ['A-I-02','Investigation - Templates','Admin','8',5,3,2,'V12','Startup'],
+  ['O-C-01','Campaign Management (CRUD)','Campaign','5',5,3,2,'EST','Startup'],
+  ['O-C-02','Campaign - Upload Boundary CSV/JSON','Campaign','6',8,3,5,'EST','Startup'],
+  ['O-C-03','Campaign - Manually Select Boundaries','Campaign','5',8,5,3,'EST','Startup'],
+  ['O-C-02b','Campaign List View','Campaign','5',5,3,2,'EST','Startup'],
+  ['O-C-03b','Campaign - Copy Campaign','Campaign','8',8,4,4,'EST','Startup'],
+  ['O-BM-01','BM: View Campaign (Map)','BM','6',8,5,3,'V12','Startup'],
+  ['O-BM-02','BM: Campaign Symbology','BM','6',3,2,1,'V12','Startup'],
+  ['O-BM-03','BM: Assign Boundaries (Map)','BM','7',8,5,3,'EST','Startup'],
+  ['O-BM-04','BM: Assign Boundaries (Table)','BM','7',5,3,2,'EST','Startup'],
+  ['O-BM-06','BM: Driving Sessions (Panel)','BM','6',5,3,2,'V12','Startup'],
+  ['O-BM-07','BM: Driving Sessions (Map)','BM','6',8,5,3,'V12','Startup'],
+  ['O-BM-08','BM: Driving Sessions (Table)','BM','7',5,3,2,'V12','Startup'],
+  ['O-BM-09','BM: Driving Sessions (Download)','BM','7',3,1,2,'V12','Startup'],
+  ['O-BM-10','BM: Download Driving Session Artifacts','BM','8',5,2,3,'EST','Startup'],
+  ['O-BM-12','BM: AutoFOV Data Pipeline','BM','5',13,3,10,'V12','Startup'],
+  ['O-BM-13','BM: AutoFOV (Panel)','BM','6',5,3,2,'V12','Startup'],
+  ['O-BM-14','BM: AutoFOV (Map)','BM','6',8,5,3,'V12','Startup'],
+  ['O-BM-15','BM: AutoFOV Metadata','BM','7',5,3,2,'V12','Startup'],
+  ['O-BM-16','BM: Driving Session QA/QC','BM','6',8,4,4,'V12','Startup'],
+  ['O-BM-17','BM: Gaps Data Pipeline','BM','6',13,3,10,'V12','Startup'],
+  ['O-BM-18','BM: Gaps (Panel)','BM','7',5,3,2,'V12','Startup'],
+  ['O-BM-19','BM: Gaps (Map)','BM','7',8,5,3,'V12','Startup'],
+  ['O-BM-20','BM: Gaps (Table)','BM','8',5,3,2,'V12','Startup'],
+  ['O-BM-21','BM: Gap Metadata','BM','9',3,1,2,'V12','Startup'],
+  ['O-BM-22','BM: Highlighted Assets for Gaps','BM','7',5,3,2,'V12','Startup'],
+  ['O-BM-24','BM: LISA Data Pipeline','BM','6',13,3,10,'V12','Startup'],
+  ['O-BM-25','BM: LISAs (Panel)','BM','7',5,3,2,'V12','Startup'],
+  ['O-BM-26','BM: LISAs (Map)','BM','7',8,5,3,'V12','Startup'],
+  ['O-BM-27','BM: LISAs (Table)','BM','8',5,3,2,'V12','Startup'],
+  ['O-BM-28','BM: LISA Metadata','BM','7',3,1,2,'V12','Startup'],
+  ['O-BM-29','BM: Highlighted Assets for LISAs','BM','7',5,3,2,'V12','Startup'],
+  ['O-BM-30','BM: LISA PS2 Ranking','BM','6',5,2,3,'V12','Startup'],
+  ['O-BM-32','BM: Boundary Results View','BM','9',8,5,3,'V12','Startup'],
+  ['O-BM-33','BM: Download Boundary Data','BM','9',5,2,3,'V12','Startup'],
+  ['O-BM-34','BM: Assign LISAs for Investigation','BM','9',8,5,3,'V12','Startup'],
+  ['O-BM-35','BM: Assign Gaps for Investigation','BM','9',8,5,3,'V12','Startup'],
+  ['O-BM-36','BM: View/Assign Investigations (Table)','BM','9',8,5,3,'V12','Startup'],
+  ['O-BM-37','BM: Individual Investigation Sessions','BM','10',5,3,2,'V12','Startup'],
+  ['O-BM-38','BM: Aggregated Investigation Results','BM','10',8,5,3,'V12','Startup'],
+  ['O-BM-39','BM: Download Investigation Data','BM','10',5,2,3,'V12','Startup'],
+  ['O-BM-42','BM: Boundary Labels','BM','11',5,3,2,'V12','Startup'],
+  ['O-01','Handheld Timeseries Data','Ops','9',8,4,4,'EST','Startup'],
+  ['O-04','Manual Report Creation','Ops','10',8,5,3,'V12','Startup'],
+  ['O-05','Manual Report Artifacts','Ops','10',5,2,3,'V12','Startup'],
+  ['O-06','Manual Report Labels','Ops','9',3,2,1,'V12','Startup'],
+  ['O-07','LISA/Gap Geocode','Ops','10',5,3,2,'V12','Startup'],
+  ['O-08','Driving Session Snap-to-Street','Ops','10',5,3,2,'V12','Startup'],
+  ['H-00','Handheld Data Ingestion & Storage','Hardware','10',13,2,11,'EST','Startup'],
+  ['H-01','Car Data Ingestion & Storage','Hardware','8',13,2,11,'V12','Startup'],
+  ['H-02','PSA (in-car) Updates','Hardware','8',8,2,6,'V12','Startup'],
+  ['H-03','Fleet Map: Map View','Hardware','8',5,3,2,'V12','Startup'],
+  ['H-04','Fleet Map: Table View','Hardware','8',5,3,2,'EST','Startup'],
+  ['H-05','Observer View (live car stream)','Hardware','10',13,8,5,'EST','Startup'],
+  ['H-07','Create System: Car','Hardware','9',8,4,4,'EST','Startup'],
+  ['H-08','Create Peripherals: Car','Hardware','9',8,4,4,'EST','Startup'],
+  ['H-09','Manage System: Car','Hardware','9',5,3,2,'EST','Startup'],
+  ['H-12','Sample Line Integrity Metrics','Hardware','11',8,3,5,'EST','Startup'],
+  ['H-13','Anemometer Rotation Metrics','Hardware','11',8,3,5,'EST','Startup'],
+  ['I-DE-01','Data Explorer: Network KPIs','Intelligence','11',13,7,6,'EST','Startup'],
+  ['M-DV-00','Driver View: Requirements Evaluation','Mobile','6',5,4,1,'EST','Startup'],
+  ['M-DV-01','Driver View: Basic','Mobile','7',13,10,3,'EST','Startup'],
+  ['M-DV-02','Driver View: Capture Mode','Mobile','10',21,15,6,'EST','Startup'],
+  ['M-DV-03','Driver View: Assignment Dispatching','Mobile','7',8,5,3,'EST','Startup'],
+  ['M-App-01','Mobile App (current): PCP Integration','Mobile','8',13,8,5,'EST','Startup'],
+  ['SEC-01','Penetration Testing','Platform','?',30,5,25,'EST','Startup'],
+  ['SEC-02','Scalability & Performance Testing','Platform','?',30,10,20,'EST','Startup'],
+  // ── MATURITY (24 features) ───────────────────────────────────────────────
+  ['P-05','Sign-on Authentication (SSO)','Platform','?',8,2,6,'EST','Maturity'],
+  ['P-24','Help / Resource Center','Platform','?',5,4,1,'EST','Maturity'],
+  ['O-BM-11','BM: Curtain / Heat Map View','BM','?',13,8,5,'EST','Maturity'],
+  ['O-02','Handheld: Source Localization','Ops','?',13,5,8,'EST','Maturity'],
+  ['O-03','Handheld: Source Disposition','Ops','?',8,4,4,'EST','Maturity'],
+  ['H-10','Create System: Handheld','Hardware','?',8,4,4,'EST','Maturity'],
+  ['H-11','Manage System: Handheld','Hardware','?',5,3,2,'EST','Maturity'],
+  ['H-14','Anemometer Predictions (anomaly detection)','Hardware','?',13,5,8,'EST','Maturity'],
+  ['H-15','Cavity Dashboard','Hardware','?',8,5,3,'EST','Maturity'],
+  ['I-DE-02','Data Explorer: Productivity KPIs','Intelligence','?',13,7,6,'EST','Maturity'],
+  ['I-DE-03','Data Explorer: Investigation Metrics','Intelligence','?',8,5,3,'EST','Maturity'],
+  ['I-E-01','ESRi: Mains & Services Integration','Integrations','?',13,3,10,'EST','Maturity'],
+  ['I-E-03','ESRi: Driving Sessions Integration','Integrations','?',8,2,6,'EST','Maturity'],
+  ['I-E-04','ESRi: Boundary Results Integration','Integrations','?',8,2,6,'EST','Maturity'],
+  ['I-E-06','ESRi: Investigation Sessions Integration','Integrations','?',8,2,6,'EST','Maturity'],
+  ['I-E-07','ESRi: Investigation Results Integration','Integrations','?',8,2,6,'EST','Maturity'],
+  ['I-OTA-01','OTA: Infra & APIs','Integrations','?',13,2,11,'EST','Maturity'],
+  ['I-OTA-02','OTA: Admin Portal','Integrations','?',8,5,3,'EST','Maturity'],
+  ['I-OTA-03','OTA: Push Driver Session Data','Integrations','?',8,1,7,'EST','Maturity'],
+  ['I-OTA-04','OTA: Push Boundary Results Data','Integrations','?',8,1,7,'EST','Maturity'],
+  ['M-App-02','Mobile App: Source Gas Capture','Mobile','?',13,10,3,'EST','Maturity'],
+  ['E360-1','Emissions: Super Emitter Program Planner','Emissions','?',13,7,6,'EST','Maturity'],
+  ['E360-2','Emissions: Area Based Emissions (Below Ground)','Emissions','?',13,5,8,'EST','Maturity'],
+  ['E360-7','Emissions: Picarro Inventory Metrics','Emissions','?',8,5,3,'EST','Maturity'],
+  // ── EXCELLENCE (18 features) ─────────────────────────────────────────────
+  ['P-02','RBAC and Multi-Tenancy Phase 2 (Custom Roles)','Platform','?',13,5,8,'EST','Excellence'],
+  ['P-06','Sign-on Authentication (MFA)','Platform','?',8,2,6,'EST','Excellence'],
+  ['P-25','GDPR - Purge PII Methodology','Platform','?',8,1,7,'EST','Excellence'],
+  ['A-S-01','Subcontractor Management (CRUD)','Admin','?',5,3,2,'EST','Excellence'],
+  ['A-S-02','Subcontractor - General View','Admin','?',3,2,1,'EST','Excellence'],
+  ['O-BM-05','BM: Driver Workload Management','BM','?',8,5,3,'EST','Excellence'],
+  ['O-BM-31','BM: Enhanced PS2 Visuals (Map)','BM','?',8,6,2,'EST','Excellence'],
+  ['O-BM-40','BM: Investigation QA/QC (Automated)','BM','?',13,5,8,'EST','Excellence'],
+  ['O-BM-41','BM: Route Planning & Generation','BM','?',21,10,11,'EST','Excellence'],
+  ['H-16','Hardware: Internal Support Metrics','Hardware','?',8,5,3,'EST','Excellence'],
+  ['I-DE-04','Data Explorer: Compliance KPIs','Intelligence','?',8,5,3,'EST','Excellence'],
+  ['I-E-02','ESRi: MSA & M&R Integration','Integrations','?',8,2,6,'EST','Excellence'],
+  ['I-E-05','ESRi: Manual Reports Integration','Integrations','?',5,2,3,'EST','Excellence'],
+  ['I-OTA-05','OTA: Push Investigation Results','Integrations','?',8,1,7,'EST','Excellence'],
+  ['I-OTA-16','OTA: Admin Configuration Portal','Integrations','?',13,6,7,'EST','Excellence'],
+  ['E360-3','Emissions: Area Based (Above Ground)','Emissions','?',13,5,8,'EST','Excellence'],
+  ['E360-4','Emissions: GHGI Inventory Distribution','Emissions','?',13,5,8,'EST','Excellence'],
+  ['E360-5','Emissions: Marcogaz Inventory','Emissions','?',13,5,8,'EST','Excellence']
+];
+
+var _filters = { gtm: 'ALL', group: 'ALL', ms: 'ALL', src: 'ALL' };
+window._tableBuilt = false;
+
+function groupClass(g) {
+  return { Platform:'gp-platform', Admin:'gp-admin', Campaign:'gp-campaign',
+           BM:'gp-bm', Ops:'gp-ops', Hardware:'gp-hardware',
+           Mobile:'gp-mobile', Intelligence:'gp-intel',
+           Emissions:'gp-ops', Integrations:'gp-platform' }[g] || 'gp-intel';
+}
+function groupLabel(g) {
+  return { Platform:'🏗 Platform', Admin:'⚙️ Admin', Campaign:'🗂 Campaign',
+           BM:'🗺 BM', Ops:'📝 Ops', Hardware:'🔧 HW',
+           Mobile:'📱 Mobile', Intelligence:'🧠 Intel',
+           Emissions:'🌿 Emissions', Integrations:'🔌 Integrations' }[g] || g;
+}
+function gtmClass(p) {
+  return { Startup:'gtm-startup', Maturity:'gtm-maturity', Excellence:'gtm-excellence' }[p] || 'gtm-startup';
+}
+function gtmLabel(p) {
+  return { Startup:'🚀 Startup', Maturity:'📈 Maturity', Excellence:'🏆 Excellence' }[p] || p;
+}
+
+function buildTable() {
+  var tbody = document.getElementById('feat-tbody');
+  var html = '';
+  FEATS.forEach(function(f) {
+    var id=f[0], name=f[1], grp=f[2], ms=f[3], tot=f[4], fe=f[5], be=f[6], src=f[7], gtm=f[8];
+    var msClass = ms === '?' ? 'ms-unset' : 'ms-pill';
+    var msLabel = ms === '?' ? 'TBD' : 'MS' + ms;
+    var gc = groupClass(grp);
+    var gl = groupLabel(grp);
+    var pc = gtmClass(gtm);
+    var pl = gtmLabel(gtm);
+    var srcCls = src === 'V12' ? 'src-v12' : 'src-est';
+    var fePct = Math.round(fe/tot*100);
+    html += '<tr data-group="' + grp + '" data-ms="' + ms + '" data-src="' + src + '" data-gtm="' + gtm + '">' +
+      '<td><span class="id-code">' + id + '</span></td>' +
+      '<td><div class="feat-name">' + name + '</div></td>' +
+      '<td><span class="group-pill ' + pc + '">' + pl + '</span></td>' +
+      '<td><span class="group-pill ' + gc + '">' + gl + '</span></td>' +
+      '<td><span class="' + msClass + '">' + msLabel + '</span></td>' +
+      '<td>' +
+        '<div class="sp-inline">' +
+          '<span class="sp-tot-badge">' + tot + '</span>' +
+          '<div style="flex:1;max-width:80px;background:#0f172a;height:6px;border-radius:3px;overflow:hidden">' +
+            '<div style="width:' + fePct + '%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div>' +
+          '</div>' +
+        '</div>' +
+      '</td>' +
+      '<td><span class="sp-fe-badge">' + fe + '</span></td>' +
+      '<td><span class="sp-be-badge">' + be + '</span></td>' +
+      '<td><span class="' + srcCls + '">' + src + '</span></td>' +
+      '</tr>';
+  });
+  tbody.innerHTML = html;
+  window._tableBuilt = true;
+  applyFilters();
+}
+
+function setFilter(type, val, btn) {
+  _filters[type] = val;
+  var idx = { gtm:0, group:1, ms:2, src:3 }[type];
+  var bars = document.querySelectorAll('#tab-features .filter-bar');
+  if (bars[idx]) bars[idx].querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (!window._tableBuilt) buildTable();
+  else applyFilters();
+}
+
+function applyFilters() {
+  var rows = document.querySelectorAll('#feat-tbody tr');
+  var visible = 0;
+  rows.forEach(function(row) {
+    var pOk = _filters.gtm   === 'ALL' || row.dataset.gtm   === _filters.gtm;
+    var gOk = _filters.group === 'ALL' || row.dataset.group === _filters.group;
+    var mOk = _filters.ms    === 'ALL' || row.dataset.ms    === _filters.ms;
+    var sOk = _filters.src   === 'ALL' || row.dataset.src   === _filters.src;
+    if (pOk && gOk && mOk && sOk) { row.classList.remove('hidden'); visible++; }
+    else { row.classList.add('hidden'); }
+  });
+  var el = document.getElementById('feat-count');
+  if (el) el.textContent = visible + ' feature' + (visible !== 1 ? 's' : '') + ' shown';
+}
+
+// ── Parallel Plan tab ─────────────────────────────────────────────────────
+var _plFilters = { team: 'ALL', rel: 'ALL', grp: 'ALL' };
+var _plTableBuilt = false;
+
+var TEAM_RELEASE = {
+  'P-01':{'t':'AVG','r':'R1'},'P-14':{'t':'AVG','r':'R1'},'P-15':{'t':'AVG','r':'R1'},
+  'P-21':{'t':'AVG','r':'R1'},'P-26':{'t':'AVG','r':'R1'},'P-27':{'t':'AVG','r':'R1'},
+  'O-BM-12':{'t':'AVG','r':'R1'},'O-BM-17':{'t':'AVG','r':'R1'},
+  'O-BM-01':{'t':'AVG','r':'R1'},'O-BM-02':{'t':'AVG','r':'R1'},
+  'O-BM-24':{'t':'AVG','r':'R2'},'O-BM-18':{'t':'AVG','r':'R2'},'O-BM-19':{'t':'AVG','r':'R2'},
+  'O-BM-20':{'t':'AVG','r':'R2'},'O-BM-21':{'t':'AVG','r':'R2'},'O-BM-22':{'t':'AVG','r':'R2'},
+  'O-BM-25':{'t':'AVG','r':'R2'},'O-BM-26':{'t':'AVG','r':'R2'},'O-BM-27':{'t':'AVG','r':'R2'},
+  'O-BM-28':{'t':'AVG','r':'R2'},'O-BM-29':{'t':'AVG','r':'R2'},'O-BM-30':{'t':'AVG','r':'R2'},
+  'A-I-01':{'t':'AVG','r':'R2'},'A-I-02':{'t':'AVG','r':'R2'},
+  'O-BM-32':{'t':'AVG','r':'R3'},'O-BM-33':{'t':'AVG','r':'R3'},'O-BM-34':{'t':'AVG','r':'R3'},
+  'O-BM-35':{'t':'AVG','r':'R3'},'O-BM-36':{'t':'AVG','r':'R3'},'O-BM-37':{'t':'AVG','r':'R3'},
+  'O-BM-38':{'t':'AVG','r':'R3'},'O-BM-39':{'t':'AVG','r':'R3'},
+  'O-04':{'t':'AVG','r':'R3'},'O-05':{'t':'AVG','r':'R3'},'O-06':{'t':'AVG','r':'R3'},
+  'O-07':{'t':'AVG','r':'R3'},'O-08':{'t':'AVG','r':'R3'},
+  'P-18':{'t':'AVG','r':'R3'},'SEC-01':{'t':'AVG','r':'R3'},
+  'I-DE-01':{'t':'AVG','r':'R4'},
+  'P-03':{'t':'GLD','r':'R1'},'P-03b':{'t':'GLD','r':'R1'},
+  'A-T-01':{'t':'GLD','r':'R1'},'A-T-02':{'t':'GLD','r':'R1'},'A-T-03':{'t':'GLD','r':'R1'},
+  'A-T-04':{'t':'GLD','r':'R1'},'A-T-05':{'t':'GLD','r':'R1'},'A-T-06':{'t':'GLD','r':'R1'},
+  'A-T-07':{'t':'GLD','r':'R1'},
+  'A-O-01':{'t':'GLD','r':'R1'},'A-O-02':{'t':'GLD','r':'R1'},'A-O-03':{'t':'GLD','r':'R1'},
+  'A-O-04':{'t':'GLD','r':'R1'},'A-O-05':{'t':'GLD','r':'R1'},'A-O-06':{'t':'GLD','r':'R1'},
+  'O-C-01':{'t':'GLD','r':'R1'},'O-C-02':{'t':'GLD','r':'R1'},'O-C-02b':{'t':'GLD','r':'R1'},
+  'A-U-01':{'t':'GLD','r':'R1'},'A-U-02':{'t':'GLD','r':'R1'},'A-U-02b':{'t':'GLD','r':'R1'},
+  'H-01':{'t':'GLD','r':'R1'},'H-02':{'t':'GLD','r':'R1'},
+  'O-BM-06':{'t':'GLD','r':'R2'},'O-BM-07':{'t':'GLD','r':'R2'},'O-BM-08':{'t':'GLD','r':'R2'},
+  'O-BM-09':{'t':'GLD','r':'R2'},'O-BM-10':{'t':'GLD','r':'R2'},
+  'O-BM-13':{'t':'GLD','r':'R2'},'O-BM-14':{'t':'GLD','r':'R2'},'O-BM-15':{'t':'GLD','r':'R2'},
+  'O-BM-16':{'t':'GLD','r':'R2'},
+  'H-03':{'t':'GLD','r':'R2'},'H-04':{'t':'GLD','r':'R2'},
+  'H-07':{'t':'GLD','r':'R2'},'H-08':{'t':'GLD','r':'R2'},'H-09':{'t':'GLD','r':'R2'},
+  'M-DV-00':{'t':'GLD','r':'R2'},'M-DV-01':{'t':'GLD','r':'R2'},
+  'O-C-03':{'t':'GLD','r':'R2'},'P-07':{'t':'GLD','r':'R2'},
+  'M-DV-02':{'t':'GLD','r':'R3'},'M-DV-03':{'t':'GLD','r':'R3'},'M-App-01':{'t':'GLD','r':'R3'},
+  'H-00':{'t':'GLD','r':'R3'},'H-05':{'t':'GLD','r':'R3'},
+  'H-12':{'t':'GLD','r':'R3'},'H-13':{'t':'GLD','r':'R3'},
+  'O-C-03b':{'t':'GLD','r':'R3'},'O-BM-03':{'t':'GLD','r':'R3'},'O-BM-04':{'t':'GLD','r':'R3'},
+  'P-08':{'t':'GLD','r':'R3'},'P-19':{'t':'GLD','r':'R3'},'P-20':{'t':'GLD','r':'R3'},
+  'P-22':{'t':'GLD','r':'R3'},'O-01':{'t':'GLD','r':'R3'},'P-23':{'t':'GLD','r':'R3'},
+  'P-10':{'t':'GLD','r':'R4'},'P-11':{'t':'GLD','r':'R4'},
+  'O-BM-42':{'t':'GLD','r':'R4'},'SEC-02':{'t':'GLD','r':'R4'}
+};
+
+function plShow(view) {
+  ['swim','table','launch','risks'].forEach(function(v) {
+    document.getElementById('pl-' + v + '-view').style.display = (v === view) ? 'block' : 'none';
+    var btn = document.getElementById('pl-btn-' + v);
+    if (btn) {
+      btn.style.background = (v === view) ? '#4f46e5' : 'none';
+      btn.style.color = (v === view) ? 'white' : '#94a3b8';
+    }
+  });
+  if (view === 'table' && !_plTableBuilt) buildPlTable();
+}
+
+function buildPlTable() {
+  var tbody = document.getElementById('pl-tbody');
+  var html = '';
+  FEATS.forEach(function(f) {
+    var id=f[0], name=f[1], grp=f[2], tot=f[4], fe=f[5], be=f[6], gtm=f[8];
+    if (gtm !== 'Startup') return; // Only startup features in parallel plan
+    var tr = TEAM_RELEASE[id];
+    if (!tr) return;
+    var team = tr.t, rel = tr.r;
+    var teamBg = team === 'AVG' ? '#0d1f40' : '#2d1a00';
+    var teamColor = team === 'AVG' ? '#bfdbfe' : '#fed7aa';
+    var teamBorder = team === 'AVG' ? '#1d4ed8' : '#b45309';
+    var teamLabel = team === 'AVG' ? '⚡ Avengers' : '👥 Gladiators';
+    var relColors = {R1:'#166534',R2:'#0369a1',R3:'#7c3aed',R4:'#b45309'};
+    var relBg = {R1:'#0a1f10',R2:'#071626',R3:'#1a0a2e',R4:'#1a0a00'};
+    var gc = groupClass(grp), gl = groupLabel(grp);
+    var fePct = Math.round(fe/tot*100);
+    html += '<tr data-team="' + team + '" data-rel="' + rel + '" data-grp="' + grp + '">' +
+      '<td><span class="id-code">' + id + '</span></td>' +
+      '<td><div class="feat-name">' + name + '</div></td>' +
+      '<td><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:' + teamBg + ';color:' + teamColor + ';border:1px solid ' + teamBorder + '">' + teamLabel + '</span></td>' +
+      '<td><span style="font-size:10px;font-weight:800;padding:2px 10px;border-radius:8px;background:' + relBg[rel] + ';color:white;border:1px solid ' + relColors[rel] + '">' + rel + '</span></td>' +
+      '<td><span class="group-pill ' + gc + '">' + gl + '</span></td>' +
+      '<td><div class="sp-inline"><span class="sp-tot-badge">' + tot + '</span><div style="flex:1;max-width:80px;background:#0f172a;height:6px;border-radius:3px;overflow:hidden"><div style="width:' + fePct + '%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div></div></td>' +
+      '<td><span class="sp-fe-badge">' + fe + '</span></td>' +
+      '<td><span class="sp-be-badge">' + be + '</span></td>' +
+      '</tr>';
+  });
+  tbody.innerHTML = html;
+  _plTableBuilt = true;
+  applyPlFilters();
+}
+
+var _plFilterState = { team: 'ALL', rel: 'ALL', grp: 'ALL' };
+
+function plFilter(type, val, btn) {
+  _plFilterState[type] = val;
+  var prefix = 'plt-all-' + type;
+  document.querySelectorAll('#pl-table-view .filter-btn').forEach(function(b) {
+    if (b.id === prefix || (b !== btn && b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("plFilter('" + type + "'") === 0)) {
+      b.classList.remove('active');
+    }
+  });
+  // Simpler: clear all buttons in the same filter group
+  document.querySelectorAll('#pl-table-view .filter-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("plFilter('" + type + "'") === 0) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  if (!_plTableBuilt) buildPlTable();
+  else applyPlFilters();
+}
+
+function applyPlFilters() {
+  var rows = document.querySelectorAll('#pl-tbody tr');
+  var visible = 0;
+  rows.forEach(function(row) {
+    var tOk = _plFilterState.team === 'ALL' || row.dataset.team === _plFilterState.team;
+    var rOk = _plFilterState.rel  === 'ALL' || row.dataset.rel  === _plFilterState.rel;
+    var gOk = _plFilterState.grp  === 'ALL' || row.dataset.grp  === _plFilterState.grp;
+    if (tOk && rOk && gOk) { row.classList.remove('hidden'); visible++; }
+    else { row.classList.add('hidden'); }
+  });
+  var el = document.getElementById('pl-feat-count');
+  if (el) el.textContent = visible + ' feature' + (visible !== 1 ? 's' : '') + ' shown';
+}
+
+</script>
+</body>
+</html>
