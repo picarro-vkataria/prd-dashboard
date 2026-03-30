@@ -178,11 +178,11 @@
       <h1>P-Cubed Pro — GTM Feature Plan</h1>
       <div class="subtitle">GTM Tier: Demo - Start Up &nbsp;·&nbsp; Original 11-Milestone Plan (MS4–MS11) &nbsp;·&nbsp; Story Point analysis with FE / BE breakdown</div>
       <div class="header-badges">
-        <span class="badge badge-purple">141 Features · 3 GTM Phases</span>
-        <span class="badge badge-blue">1,202 Total SP</span>
-        <span class="badge badge-green">510 FE SP · 42%</span>
-        <span class="badge badge-amber">692 BE SP · 58%</span>
-        <span class="badge" style="background:#0c2a0c;color:#86efac;border:1px solid #16a34a">Startup 795 SP · 101 feats</span>
+        <span class="badge badge-purple">144 Features · 3 GTM Phases</span>
+        <span class="badge badge-blue">1,228 Total SP</span>
+        <span class="badge badge-green">515 FE SP · 42%</span>
+        <span class="badge badge-amber">713 BE SP · 58%</span>
+        <span class="badge" style="background:#0c2a0c;color:#86efac;border:1px solid #16a34a">Startup 821 SP · 104 feats</span>
         <span class="badge" style="background:#1a1a00;color:#fde68a;border:1px solid #ca8a04">Maturity 231 SP · 24 feats</span>
         <span class="badge" style="background:#2d0a00;color:#fca5a5;border:1px solid #dc2626">Excellence 176 SP · 18 feats</span>
         <span class="badge badge-slate">Original 11-Milestone Plan</span>
@@ -1235,6 +1235,7 @@
         <button class="filter-btn" onclick="plFilter('rel','R2',this)">R2</button>
         <button class="filter-btn" onclick="plFilter('rel','R3',this)">R3</button>
         <button class="filter-btn" onclick="plFilter('rel','R4',this)">R4</button>
+        <button class="filter-btn" onclick="plFilter('rel','STR',this)">🎯 R1-Stretch</button>
         <div class="filter-divider"></div>
         <span class="filter-label">Group:</span>
         <button class="filter-btn active" id="plt-all-grp" onclick="plFilter('grp','ALL',this)">ALL</button>
@@ -1654,6 +1655,16 @@
 
   </div><!-- /tab-v1risks -->
 
+  <!-- ═══════════════════════════════════════════════════════ TAB 8: STRETCH GOALS -->
+  <div id="tab-stretch" class="tab-panel">
+    <div style="background:#1e293b;border:1px solid #f59e0b;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#94a3b8">
+      <strong style="color:#fbbf24">🎯 R1 Stretch Goals</strong> — These features were pulled from R2 into a stretch pool.
+      They are <strong style="color:#e2e8f0">at-risk items</strong> that will be delivered if R1 completes ahead of schedule, or deferred to R2/R3.
+      Stretch items are <strong>not counted</strong> in the R1–R4 release SP totals.
+    </div>
+    <div id="stretch-content"></div>
+  </div><!-- /tab-stretch -->
+
 </div><!-- /page -->
 
 <script>
@@ -1666,6 +1677,7 @@ function showTab(id, btn) {
   if (btn) btn.classList.add('active');
   if (id === 'features' && !window._tableBuilt) buildTable();
   if (id === 'r4plan') buildR4PlanTab();
+  if (id === 'stretch') buildStretchTab();
 }
 
 // ── Feature data ──────────────────────────────────────────────────────────
@@ -1712,6 +1724,9 @@ var FEATS = [
   ['O-C-03','Campaign - Manually Select Boundaries','Campaign','5',8,5,3,'EST','Startup'],
   ['O-C-02b','Campaign List View','Campaign','5',5,3,2,'EST','Startup'],
   ['O-C-03b','Campaign - Copy Campaign','Campaign','8',8,4,4,'EST','Startup'],
+  ['Engg-001','Campaign Management - SLA','Campaign','5',5,2,3,'EST','Startup'],
+  ['Engg-002','Campaign Boundaries - Phase 2','Campaign','5',5,3,2,'EST','Startup'],
+  ['Engg-003','Hardening of Data Pipeline','Platform','5',16,0,16,'EST','Startup'],
   ['O-BM-01','BM: View Campaign (Map)','BM','6',8,5,3,'V12','Startup'],
   ['O-BM-02','BM: Campaign Symbology','BM','6',3,2,1,'V12','Startup'],
   ['O-BM-03','BM: Assign Boundaries (Map)','BM','7',8,5,3,'EST','Startup'],
@@ -1908,47 +1923,69 @@ var _plFilters = { team: 'ALL', rel: 'ALL', grp: 'ALL' };
 var _plTableBuilt = false;
 
 var TEAM_RELEASE = {
-  'P-01':{'t':'AVG','r':'R1'},'P-14':{'t':'AVG','r':'R1'},'P-15':{'t':'AVG','r':'R1'},
-  'P-21':{'t':'AVG','r':'R1'},'P-26':{'t':'AVG','r':'R1'},'P-27':{'t':'AVG','r':'R1'},
+  // ── Team Avengers ──────────────────────────────────────────────────────
+  // R1 (Apr 1–May 15): P-14/P-15/P-27 moved → R3
+  'P-01':{'t':'AVG','r':'R1'},
+  'P-21':{'t':'AVG','r':'R1'},'P-26':{'t':'AVG','r':'R1'},
   'O-BM-12':{'t':'AVG','r':'R1'},'O-BM-17':{'t':'AVG','r':'R1'},
   'O-BM-01':{'t':'AVG','r':'R1'},'O-BM-02':{'t':'AVG','r':'R1'},
-  'O-BM-24':{'t':'AVG','r':'R2'},'O-BM-18':{'t':'AVG','r':'R2'},'O-BM-19':{'t':'AVG','r':'R2'},
-  'O-BM-20':{'t':'AVG','r':'R2'},'O-BM-21':{'t':'AVG','r':'R2'},'O-BM-22':{'t':'AVG','r':'R2'},
+  // R2
+  'O-BM-24':{'t':'AVG','r':'R2'},
+  'O-BM-22':{'t':'AVG','r':'R2'},
   'O-BM-25':{'t':'AVG','r':'R2'},'O-BM-26':{'t':'AVG','r':'R2'},'O-BM-27':{'t':'AVG','r':'R2'},
   'O-BM-28':{'t':'AVG','r':'R2'},'O-BM-29':{'t':'AVG','r':'R2'},'O-BM-30':{'t':'AVG','r':'R2'},
   'A-I-01':{'t':'AVG','r':'R2'},'A-I-02':{'t':'AVG','r':'R2'},
+  // R3 (+ P-14, P-15, P-27 moved from R1)
+  'P-14':{'t':'AVG','r':'R3'},'P-15':{'t':'AVG','r':'R3'},'P-27':{'t':'AVG','r':'R3'},
   'O-BM-32':{'t':'AVG','r':'R3'},'O-BM-33':{'t':'AVG','r':'R3'},'O-BM-34':{'t':'AVG','r':'R3'},
   'O-BM-35':{'t':'AVG','r':'R3'},'O-BM-36':{'t':'AVG','r':'R3'},'O-BM-37':{'t':'AVG','r':'R3'},
   'O-BM-38':{'t':'AVG','r':'R3'},'O-BM-39':{'t':'AVG','r':'R3'},
   'O-04':{'t':'AVG','r':'R3'},'O-05':{'t':'AVG','r':'R3'},'O-06':{'t':'AVG','r':'R3'},
   'O-07':{'t':'AVG','r':'R3'},'O-08':{'t':'AVG','r':'R3'},
   'P-18':{'t':'AVG','r':'R3'},'SEC-01':{'t':'AVG','r':'R3'},
+  // R4
+  'Engg-003':{'t':'AVG','r':'R1'},
   'I-DE-01':{'t':'AVG','r':'R4'},
+  // Stretch (moved from R2)
+  'O-BM-18':{'t':'AVG','r':'STR'},'O-BM-19':{'t':'AVG','r':'STR'},
+  'O-BM-20':{'t':'AVG','r':'STR'},'O-BM-21':{'t':'AVG','r':'STR'},
+
+  // ── Team Gladiators ────────────────────────────────────────────────────
+  // R1: removed A-O-05, A-U-01, A-U-02, A-U-02b, O-C-02 → R2; added O-BM-13/14/15, O-C-03, Engg-001
   'P-03':{'t':'GLD','r':'R1'},'P-03b':{'t':'GLD','r':'R1'},
   'A-T-01':{'t':'GLD','r':'R1'},'A-T-02':{'t':'GLD','r':'R1'},'A-T-03':{'t':'GLD','r':'R1'},
   'A-T-04':{'t':'GLD','r':'R1'},'A-T-05':{'t':'GLD','r':'R1'},'A-T-06':{'t':'GLD','r':'R1'},
   'A-T-07':{'t':'GLD','r':'R1'},
   'A-O-01':{'t':'GLD','r':'R1'},'A-O-02':{'t':'GLD','r':'R1'},'A-O-03':{'t':'GLD','r':'R1'},
-  'A-O-04':{'t':'GLD','r':'R1'},'A-O-05':{'t':'GLD','r':'R1'},'A-O-06':{'t':'GLD','r':'R1'},
-  'O-C-01':{'t':'GLD','r':'R1'},'O-C-02':{'t':'GLD','r':'R1'},'O-C-02b':{'t':'GLD','r':'R1'},
-  'A-U-01':{'t':'GLD','r':'R1'},'A-U-02':{'t':'GLD','r':'R1'},'A-U-02b':{'t':'GLD','r':'R1'},
-  'H-01':{'t':'GLD','r':'R1'},'H-02':{'t':'GLD','r':'R1'},
-  'O-BM-06':{'t':'GLD','r':'R2'},'O-BM-07':{'t':'GLD','r':'R2'},'O-BM-08':{'t':'GLD','r':'R2'},
+  'A-O-04':{'t':'GLD','r':'R1'},'A-O-06':{'t':'GLD','r':'R1'},
+  'O-C-01':{'t':'GLD','r':'R1'},'O-C-02b':{'t':'GLD','r':'R1'},
+  'H-01':{'t':'GLD','r':'R1'},
+  'O-BM-13':{'t':'GLD','r':'R1'},'O-BM-14':{'t':'GLD','r':'R1'},'O-BM-15':{'t':'GLD','r':'R1'},
+  'O-C-03':{'t':'GLD','r':'R1'},
+  'Engg-001':{'t':'GLD','r':'R1'},
+  // R2 (+ A-O-05, A-U-01, A-U-02, A-U-02b, O-C-02 from R1; removed O-BM-06/07/08, O-BM-13/14/15, O-C-03)
+  'A-O-05':{'t':'GLD','r':'R2'},'A-U-01':{'t':'GLD','r':'R2'},'A-U-02':{'t':'GLD','r':'R2'},
+  'A-U-02b':{'t':'GLD','r':'R2'},'O-C-02':{'t':'GLD','r':'R2'},
   'O-BM-09':{'t':'GLD','r':'R2'},'O-BM-10':{'t':'GLD','r':'R2'},
-  'O-BM-13':{'t':'GLD','r':'R2'},'O-BM-14':{'t':'GLD','r':'R2'},'O-BM-15':{'t':'GLD','r':'R2'},
   'O-BM-16':{'t':'GLD','r':'R2'},
   'H-03':{'t':'GLD','r':'R2'},'H-04':{'t':'GLD','r':'R2'},
   'H-07':{'t':'GLD','r':'R2'},'H-08':{'t':'GLD','r':'R2'},'H-09':{'t':'GLD','r':'R2'},
   'M-DV-00':{'t':'GLD','r':'R2'},'M-DV-01':{'t':'GLD','r':'R2'},
-  'O-C-03':{'t':'GLD','r':'R2'},'P-07':{'t':'GLD','r':'R2'},
+  'P-07':{'t':'GLD','r':'R2'},
+  // R3 (+ H-02 from R1)
+  'H-02':{'t':'GLD','r':'R3'},
   'M-DV-02':{'t':'GLD','r':'R3'},'M-DV-03':{'t':'GLD','r':'R3'},'M-App-01':{'t':'GLD','r':'R3'},
   'H-00':{'t':'GLD','r':'R3'},'H-05':{'t':'GLD','r':'R3'},
   'H-12':{'t':'GLD','r':'R3'},'H-13':{'t':'GLD','r':'R3'},
   'O-C-03b':{'t':'GLD','r':'R3'},'O-BM-03':{'t':'GLD','r':'R3'},'O-BM-04':{'t':'GLD','r':'R3'},
   'P-08':{'t':'GLD','r':'R3'},'P-19':{'t':'GLD','r':'R3'},'P-20':{'t':'GLD','r':'R3'},
   'P-22':{'t':'GLD','r':'R3'},'O-01':{'t':'GLD','r':'R3'},'P-23':{'t':'GLD','r':'R3'},
+  // R4
   'P-10':{'t':'GLD','r':'R4'},'P-11':{'t':'GLD','r':'R4'},
-  'O-BM-42':{'t':'GLD','r':'R4'},'SEC-02':{'t':'GLD','r':'R4'}
+  'O-BM-42':{'t':'GLD','r':'R4'},'SEC-02':{'t':'GLD','r':'R4'},
+  // Stretch (moved from R2)
+  'O-BM-06':{'t':'GLD','r':'STR'},'O-BM-07':{'t':'GLD','r':'STR'},'O-BM-08':{'t':'GLD','r':'STR'},
+  'Engg-002':{'t':'GLD','r':'STR'}
 };
 
 function plShow(view) {
@@ -1976,15 +2013,15 @@ function buildPlTable() {
     var teamColor = team === 'AVG' ? '#bfdbfe' : '#fed7aa';
     var teamBorder = team === 'AVG' ? '#1d4ed8' : '#b45309';
     var teamLabel = team === 'AVG' ? '⚡ Avengers' : '👥 Gladiators';
-    var relColors = {R1:'#166534',R2:'#0369a1',R3:'#7c3aed',R4:'#b45309'};
-    var relBg = {R1:'#0a1f10',R2:'#071626',R3:'#1a0a2e',R4:'#1a0a00'};
+    var relColors = {R1:'#166534',R2:'#0369a1',R3:'#7c3aed',R4:'#b45309',STR:'#d97706'};
+    var relBg = {R1:'#0a1f10',R2:'#071626',R3:'#1a0a2e',R4:'#1a0a00',STR:'#1c1000'};
     var gc = groupClass(grp), gl = groupLabel(grp);
     var fePct = Math.round(fe/tot*100);
     html += '<tr data-team="' + team + '" data-rel="' + rel + '" data-grp="' + grp + '">' +
       '<td><span class="id-code">' + id + '</span></td>' +
       '<td><div class="feat-name">' + name + '</div></td>' +
       '<td><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:' + teamBg + ';color:' + teamColor + ';border:1px solid ' + teamBorder + '">' + teamLabel + '</span></td>' +
-      '<td><span style="font-size:10px;font-weight:800;padding:2px 10px;border-radius:8px;background:' + relBg[rel] + ';color:white;border:1px solid ' + relColors[rel] + '">' + rel + '</span></td>' +
+      '<td><span style="font-size:10px;font-weight:800;padding:2px 10px;border-radius:8px;background:' + relBg[rel] + ';color:white;border:1px solid ' + relColors[rel] + '">' + (rel === 'STR' ? '🎯 R1-Stretch' : rel) + '</span></td>' +
       '<td><span class="group-pill ' + gc + '">' + gl + '</span></td>' +
       '<td><div class="sp-inline"><span class="sp-tot-badge">' + tot + '</span><div style="flex:1;max-width:80px;background:#0f172a;height:6px;border-radius:3px;overflow:hidden"><div style="width:' + fePct + '%;height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6)"></div></div></div></td>' +
       '<td><span class="sp-fe-badge">' + fe + '</span></td>' +
@@ -2052,6 +2089,7 @@ function buildR4MilestoneView() {
     var id=f[0], tot=f[4], fe=f[5], be=f[6], gtm=f[8];
     if (gtm !== 'Startup') return;
     var tr = TEAM_RELEASE[id]; if (!tr) return;
+    if (tr.r === 'STR') return;
     var d = data[tr.t][tr.r];
     d.sp += tot; d.fe += fe; d.be += be; d.n += 1;
   });
@@ -2132,7 +2170,8 @@ function buildR4MilestoneView() {
 // ── R1-R4 Plan tab (tab-r4plan) ────────────────────────────────────────────
 var _r4PlanBuilt = false;
 function buildR4PlanTab() {
-  if (_r4PlanBuilt) return;
+  if (_r4PlanBuilt && !window._r4ForceRebuild) return;
+  window._r4ForceRebuild = false;
 
   // Compute per-team-per-release
   var data = { AVG:{R1:{sp:0,fe:0,be:0,feats:[]},R2:{sp:0,fe:0,be:0,feats:[]},R3:{sp:0,fe:0,be:0,feats:[]},R4:{sp:0,fe:0,be:0,feats:[]}},
@@ -2141,6 +2180,7 @@ function buildR4PlanTab() {
     var id=f[0], name=f[1], grp=f[2], tot=f[4], fe=f[5], be=f[6], gtm=f[8];
     if (gtm !== 'Startup') return;
     var tr = TEAM_RELEASE[id]; if (!tr) return;
+    if (tr.r === 'STR') return;
     var d = data[tr.t][tr.r];
     d.sp += tot; d.fe += fe; d.be += be;
     d.feats.push({id:id, name:name, grp:grp, tot:tot, fe:fe, be:be});
@@ -2223,8 +2263,9 @@ function buildR4PlanTab() {
     'S10 Aug 5-18'
   ];
   // Approximate SP per sprint (from plan distribution)
-  var sprintAvg = [30,35,25, 30,30,23, 59,59,59, 13];  // Avengers (R3 includes P-18 distributed)
-  var sprintGld = [50,50,47, 45,40,45, 48,48,48, 45];  // Gladiators
+  // Rebalanced: R1 lighter (–28 SP net), R2 lighter (–38 SP from stretch removal), R3 heavier (+40 SP infra)
+  var sprintAvg = [22,24,18, 30,30,23, 65,65,65, 13];  // Avengers: R1 lighter (lost P-14/15/27), R3 heavier
+  var sprintGld = [38,38,34, 38,33,38, 52,52,52, 45];  // Gladiators: R1 lighter, R2 lighter (stretch out)
   var sprintHtml = '';
   for (var i = 0; i < 10; i++) {
     var combined = sprintAvg[i] + sprintGld[i];
@@ -2238,6 +2279,75 @@ function buildR4PlanTab() {
   document.getElementById('r4plan-sprints').innerHTML = sprintHtml;
 
   _r4PlanBuilt = true;
+}
+
+// ── Stretch Goals tab (tab-stretch) ──────────────────────────────────────
+var _stretchBuilt = false;
+function buildStretchTab() {
+  if (_stretchBuilt) return;
+
+  var stretchFeats = [];
+  var totSP = 0, totFE = 0, totBE = 0;
+  FEATS.forEach(function(f) {
+    var id=f[0], name=f[1], grp=f[2], tot=f[4], fe=f[5], be=f[6], gtm=f[8];
+    if (gtm !== 'Startup') return;
+    var tr = TEAM_RELEASE[id]; if (!tr) return;
+    if (tr.r !== 'STR') return;
+    stretchFeats.push({id:id, name:name, grp:grp, tot:tot, fe:fe, be:be, team:tr.t});
+    totSP += tot; totFE += fe; totBE += be;
+  });
+
+  var html = '';
+  // Summary card
+  html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px">';
+  html += '<div style="background:#1e293b;border:1px solid #f59e0b;border-radius:12px;padding:18px;text-align:center">' +
+    '<div style="font-size:28px;font-weight:800;color:#fbbf24">' + stretchFeats.length + '</div>' +
+    '<div style="font-size:11px;color:#64748b;margin-top:4px">STRETCH FEATURES</div></div>';
+  html += '<div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;text-align:center">' +
+    '<div style="font-size:28px;font-weight:800;color:#f1f5f9">' + totSP + '</div>' +
+    '<div style="font-size:11px;color:#64748b;margin-top:4px">TOTAL SP</div></div>';
+  html += '<div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;text-align:center">' +
+    '<div style="font-size:28px;font-weight:800;color:#60a5fa">' + totFE + '</div>' +
+    '<div style="font-size:11px;color:#64748b;margin-top:4px">FE SP</div></div>';
+  html += '<div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;text-align:center">' +
+    '<div style="font-size:28px;font-weight:800;color:#fb923c">' + totBE + '</div>' +
+    '<div style="font-size:11px;color:#64748b;margin-top:4px">BE SP</div></div>';
+  html += '</div>';
+
+  // Feature cards grid
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:24px">';
+  stretchFeats.forEach(function(f) {
+    var teamColor = f.team === 'AVG' ? '#7dd3fc' : '#fdba74';
+    var teamLabel = f.team === 'AVG' ? '⚡ Avengers' : '👥 Gladiators';
+    var gc = groupClass(f.grp);
+    html += '<div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+        '<span style="font-size:11px;font-weight:700;color:#94a3b8;font-family:monospace">' + f.id + '</span>' +
+        '<span style="font-size:10px;color:' + teamColor + ';font-weight:700">' + teamLabel + '</span>' +
+      '</div>' +
+      '<div style="font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:10px">' + f.name + '</div>' +
+      '<div style="display:flex;gap:6px;align-items:center">' +
+        '<span class="sp-tot-badge">' + f.tot + ' SP</span>' +
+        '<span class="sp-fe-badge">' + f.fe + ' FE</span>' +
+        '<span class="sp-be-badge">' + f.be + ' BE</span>' +
+        '<span class="group-pill ' + gc + '" style="font-size:10px;padding:2px 8px">' + f.grp + '</span>' +
+      '</div>' +
+    '</div>';
+  });
+
+  // Hardening card (label only, no SP)
+  html += '<div style="background:#1e293b;border:1px solid #ef4444;border-radius:12px;padding:16px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+      '<span style="font-size:11px;font-weight:700;color:#94a3b8;font-family:monospace">HARDENING</span>' +
+      '<span style="font-size:10px;color:#fca5a5;font-weight:700;background:#450a0a;padding:2px 8px;border-radius:10px">Label Only</span>' +
+    '</div>' +
+    '<div style="font-size:13px;font-weight:600;color:#e2e8f0;margin-bottom:10px">Hardening & Stability Sprint</div>' +
+    '<div style="font-size:11px;color:#94a3b8">Bug fixes, performance tuning, and stability improvements. No new SP — absorbs R1 spillover and tech debt.</div>' +
+  '</div>';
+  html += '</div>';
+
+  document.getElementById('stretch-content').innerHTML = html;
+  _stretchBuilt = true;
 }
 
 </script>
